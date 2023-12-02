@@ -5,8 +5,15 @@ export default {
     "./resources/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sans': ['IBM Plex Sans', 'ui-sans-serif', 'system-ui'],
+        'serif': ['Noto Serif', 'ui-serif'],
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
 
