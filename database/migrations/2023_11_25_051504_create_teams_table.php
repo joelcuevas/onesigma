@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('velocity_id')->nullable();
-            $table->integer('parent_teams')->default(0);
-            $table->integer('nested_teams')->default(0);
+            $table->bigInteger('velocity_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

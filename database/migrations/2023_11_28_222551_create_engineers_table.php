@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('engineers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('ladder');
-            $table->integer('level');
-            $table->string('position');
+            $table->string('ladder')->nullable();
+            $table->integer('level')->nullable();
+            $table->string('position')->nullable();
+            $table->string('email')->nullable();
+            $table->string('github_user')->nullable();
+            $table->bigInteger('velocity_id')->unsigned()->nullable();
             $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });

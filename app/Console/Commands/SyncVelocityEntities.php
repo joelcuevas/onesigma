@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use App\Models\Team;
-use Http;
-use Cache;
+use App\Models\Engineer;
 
 class SyncVelocityEntities extends Command
 {
@@ -44,8 +46,6 @@ class SyncVelocityEntities extends Command
         }
 
         $this->insertTeams($this->teamsTree);
-
-        //dd(json_decode(json_encode($this->teamsTree)));
     }
 
     protected function fetchTeams($url = null)
@@ -139,12 +139,41 @@ class SyncVelocityEntities extends Command
 
             if (isset($tree['nested'])) {
                 $nestedIds = $this->insertTeams($tree['nested']);
-                $team->setNestedTeams($nestedIds);
+                $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => 'subteam']);
             }
 
-            $team->touch();
+            $this->insertEngineers($team);
         }
 
         return $ids;
+    }
+
+    protected function insertEngineers($team)
+    {
+        $engineerIds = [];
+
+        $url = $this->teamsUrl."/{$team->velocity_id}/people";
+        $response = Http::withToken($this->bearerToken)->get($url);
+
+        if ($response->ok()) {
+            foreach ($response['data'] as $eng) {
+                $email = null;
+
+                if (! Str::endsWith($eng['attributes']['email'], '@users.noreply.github.com')) {
+                    $email = $eng['attributes']['email'];
+                }
+
+                $engineer = Engineer::firstOrCreate([
+                    'velocity_id' => $eng['id'],
+                ], [
+                    'name' => $eng['attributes']['name'],
+                    'email' => $email,
+                ]);
+
+                $engineerIds[] = $engineer->id;
+            }
+        }
+
+        $team->engineers()->sync($engineerIds);
     }
 }

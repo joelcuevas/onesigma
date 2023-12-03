@@ -17,19 +17,6 @@ class Team extends Model
         'velocity_id',
     ];
 
-    protected static function booted(): void
-    {
-        static::saving(function (Team $t) {
-            $t->parent_teams = $t->parentTeams()->count();
-            $t->nested_teams = $t->nestedTeams()->count();
-        });
-    }
-
-    public function setNestedTeams(array $teamIds)
-    {
-        $this->nestedTeams()->syncWithPivotValues($teamIds, ['role' => 'subteam']);
-    }
-
     public function engineers(): MorphToMany 
     {
         return $this->morphedByMany(Engineer::class, 'teamable')->withPivot('role');

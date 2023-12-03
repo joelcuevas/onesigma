@@ -15,6 +15,9 @@ class Engineer extends Model
         'name',
         'ladder',
         'level',
+        'email',
+        'github_user',
+        'velocity_id',
     ];
 
     protected static function booted(): void
