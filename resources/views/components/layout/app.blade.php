@@ -94,7 +94,7 @@
     <header class="bg-white shadow">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 md:flex md:items-center md:justify-between">
         <div class="min-w-0 flex-1">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+          <h1 class="text-3xl leading-10 align-middle  font-bold tracking-tight text-gray-900">
               {{ isset($header) ? $header : $pageTitle }}
           </h1>
         </div>
@@ -105,7 +105,7 @@
         @endif
       </div>
     </header>
-    
+
     <main class="text-gray-600">
       <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         {{ $slot }}

@@ -1,6 +1,6 @@
-<x-layout.app pageTitle="{{ __('Equipo') }}: {{ $team->name }}">
+<x-layout.app pageTitle="{{ $team->name }} : {{ __('Equipo') }}">
   <x-slot:header>
-    <span class="text-gray-400 font-medium">{{ __('Team') }}:</span> {{ $team->name }}
+    {{ $team->name }} <span class="text-gray-400 font-medium">: {{ __('Equipo') }}</span>
   </x-slot>
 
   <livewire:teams.team-members-table :$team />

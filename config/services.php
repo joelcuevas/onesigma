@@ -37,4 +37,8 @@ return [
         'redirect' => '/auth/callback',
     ],
 
+    'velocity' => [
+        'token' => env('VELOCITY_TOKEN'),
+    ],
+
 ];

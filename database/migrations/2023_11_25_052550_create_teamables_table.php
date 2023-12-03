@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('team_id');
             $table->string('teamable_type');
             $table->bigInteger('teamable_id')->unsigned();
-            $table->string('role');
+            $table->string('role')->nullable();
         });
     }
 
