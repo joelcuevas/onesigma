@@ -18,9 +18,4 @@ class TeamsController extends Controller
     {
         return view('teams.show', ['team' => $team, 'engineers' => $team->engineers]);
     }
-
-    public function create(Request $request)
-    {
-        return view('teams.create');
-    }
 }

@@ -1,8 +1,4 @@
 <x-layout.app pageTitle="{{ __('Equipos') }}">
-  <x-slot:actions>
-    <x-button primary href="{{ route('teams.create') }}" label="Nuevo Equipo" icon="plus" />
-  </x-slot>
-
   <x-layout.panel>
     <x-table :headers="['Nombre', '']">
       <x-slot:body>

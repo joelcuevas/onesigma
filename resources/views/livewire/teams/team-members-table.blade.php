@@ -8,24 +8,23 @@
           {{ count($team->engineers) }} {{ __('ingenieros') }}
         </p>
       </div>
-      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        @livewire('teams.add-team-member', ['team' => $team])
-      </div>
     </div>
 
-    <x-table :headers="['Nombre', 'Posición', 'Rol', '']">
-      <x-slot:body>
-        @foreach ($team->engineers->sortBy('name') as $engineer)
-          <tr>
-            <x-table.td class="font-medium text-gray-900">{{ $engineer->name }}</x-table.td>
-            <x-table.td>{{ $engineer->position }}</x-table.td>
-            <x-table.td>{{ __(ucfirst($engineer->pivot->role)) }}</x-table.td>
-            <x-table.td class="font-medium text-right">
-              <x-table.link href="#">Ladder</x-table.link>
-            </x-table.td>
-          </tr>
-        @endforeach
-      </x-slot:body>
-    </x-table>
+    @if ($team->engineers->count())
+      <x-table :headers="['Nombre', 'Posición', 'Rol', '']">
+        <x-slot:body>
+          @foreach ($team->engineers->sortBy('name') as $engineer)
+            <tr>
+              <x-table.td class="font-medium text-gray-900">{{ $engineer->name }}</x-table.td>
+              <x-table.td>{{ $engineer->position }}</x-table.td>
+              <x-table.td>{{ __(ucfirst($engineer->pivot->role)) }}</x-table.td>
+              <x-table.td class="font-medium text-right">
+                <x-table.link href="#">Ladder</x-table.link>
+              </x-table.td>
+            </tr>
+          @endforeach
+        </x-slot:body>
+      </x-table>
+    @endif
   </x-layout.panel>
 </div>
