@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('level')->nullable();
             $table->string('position')->nullable();
             $table->string('email')->nullable();
+            $table->tinyInteger('internal')->default(1);
             $table->string('github_user')->nullable();
             $table->bigInteger('velocity_id')->unsigned()->nullable();
             $table->foreignId('user_id')->nullable();

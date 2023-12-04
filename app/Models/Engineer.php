@@ -16,8 +16,13 @@ class Engineer extends Model
         'ladder',
         'level',
         'email',
+        'internal',
         'github_user',
         'velocity_id',
+    ];
+
+    protected $casts = [
+        'internal' => 'bool',
     ];
 
     protected static function booted(): void
