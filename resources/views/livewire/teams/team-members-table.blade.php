@@ -19,7 +19,7 @@
               <x-table.td>{{ $engineer->position }}</x-table.td>
               <x-table.td>{{ __(ucfirst($engineer->pivot->role)) }}</x-table.td>
               <x-table.td class="font-medium text-right">
-                <x-table.link href="#">Ladder</x-table.link>
+                <x-table.link href="{{ route('engineers.show', $engineer) }}">Detalles</x-table.link>
               </x-table.td>
             </tr>
           @endforeach

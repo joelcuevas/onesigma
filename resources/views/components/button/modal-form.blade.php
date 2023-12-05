@@ -1,7 +1,7 @@
 @props(['buttonLabel', 'submitAction', 'submitLabel'])
 
 <div x-data="{open: false}" x-on:close-modal="open=false" class="inline-block">
-  <x-button primary x-on:click="open=true" label="{{ $buttonLabel }}" icon="plus" />
+  <x-button primary x-on:click="open=true" label="{{ __('Evaluar') }}" icon="trophy" />
 
   <x-modal>
     <form wire:submit.prevent="{{ $submitAction }}">

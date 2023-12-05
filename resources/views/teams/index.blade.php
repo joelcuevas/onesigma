@@ -1,5 +1,5 @@
-<x-layout.app pageTitle="{{ __('Equipos') }}">
-  <x-layout.panel>
+<x-layout.app title="{{ __('Equipos') }}">
+  <x-layout.panel class="px-8 py-4">
     <x-table :headers="['Nombre', '']">
       <x-slot:body>
         @foreach ($teams as $team)

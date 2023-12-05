@@ -1,8 +1,8 @@
-<x-layout.app pageTitle="{{ __('Ingenieros') }}">
+<x-layout.app title="{{ __('Ingenieros') }}">
   <x-layout.panel>
     <div class="text-right">
       <form action="{{ route('engineers') }}" method="get">
-        <div class="inline-block relative mt-2 rounded-md shadow-sm">
+        <div class="inline-block relative rounded-md shadow-sm">
           <div class="pointer-events-none absolute inset-y-0 left-0 text-gray-400 flex items-center pl-3">
             <x-heroicon-o-magnifying-glass class="h-5 w-5" />
           </div>
@@ -26,7 +26,7 @@
             <x-table.td class="font-medium text-gray-900">{{ $engineer->name }}</x-table.td>
             <x-table.td>{{ $engineer->position }}</x-table.td>
             <x-table.td class="font-medium text-right">
-              <x-table.link href="#">Ladder</x-table.link>
+              <x-table.link href="{{ route('engineers.show', $engineer) }}">Detalles</x-table.link>
             </x-table.td>
           </tr>
         @endforeach

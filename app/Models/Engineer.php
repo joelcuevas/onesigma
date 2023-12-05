@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Enums\Career;
+use App\Enums\Domain;
 
 class Engineer extends Model
 {
@@ -13,8 +17,10 @@ class Engineer extends Model
 
     protected $fillable = [
         'name',
-        'ladder',
-        'level',
+        'career',
+        'career_level',
+        'domain',
+        'domain_level',
         'email',
         'internal',
         'github_user',
@@ -22,14 +28,17 @@ class Engineer extends Model
     ];
 
     protected $casts = [
+        'career' => Career::class,
+        'domain' => Domain::class,
         'internal' => 'bool',
     ];
 
-    protected static function booted(): void
+    public function getInitialsAttribute()
     {
-        static::saving(function (Engineer $e) {
-            $e->position = $e->ladder.$e->level;
-        });
+        $tokens = explode(' ', $this->name);
+        $initials = ($tokens[0][0] ?? '').($tokens[1][0] ?? '');
+
+        return trim(mb_strtoupper($initials));
     }
 
     public function teams(): MorphToMany
@@ -37,8 +46,15 @@ class Engineer extends Model
         return $this->morphToMany(Team::class, 'teamable');
     }
 
-    public function ladders(): MorphMany
+    public function grades(): MorphMany
     {
-        return $this->morphMany(Ladder::class, 'ladderable');
+        return $this->morphMany(Grade::class, 'gradeable');
+    }
+
+    public function careerGrades(): MorphOne
+    {
+        return $this->morphOne(Grade::class, 'gradeable')
+            ->where('track', 'career')
+            ->orderBy('id', 'desc');
     }
 }

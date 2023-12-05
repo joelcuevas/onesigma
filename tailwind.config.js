@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['IBM Plex Sans', 'ui-sans-serif', 'system-ui'],
+        'sans': ['Noto Sans', 'ui-sans-serif', 'system-ui'],
         'serif': ['Noto Serif', 'ui-serif'],
       },
     },

@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ladder extends Model
+class Grade extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'ladder',
-        'technology',
-        'system',
-        'people',
-        'process',
-        'influence',
+        'track',
+        'd1',
+        'd2',
+        'd3',
+        'd4',
+        'd5',
     ];
 }

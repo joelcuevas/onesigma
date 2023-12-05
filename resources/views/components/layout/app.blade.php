@@ -1,12 +1,12 @@
-@props(['pageTitle'])
+@props(['title'])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ $pageTitle.' - '.config('app.name') ?? config('app.name') }}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700|Noto+Serif:400,500,600,700">
+  <title>{{ $title.' - '.config('app.name') ?? config('app.name') }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:400,500,600,700|Noto+Serif:400,500,600,700">
   @livewireStyles
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -95,7 +95,7 @@
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 md:flex md:items-center md:justify-between">
         <div class="min-w-0 flex-1">
           <h1 class="text-3xl leading-10 align-middle  font-bold tracking-tight text-gray-900">
-              {{ isset($header) ? $header : $pageTitle }}
+              {{ isset($header) ? $header : $title }}
           </h1>
         </div>
         @if (isset($actions) && $actions)
@@ -113,5 +113,6 @@
     </main>
   </div>
   @livewireScripts
+  @livewireChartsScripts
 </body>
 </html>

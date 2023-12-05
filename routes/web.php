@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EngineersController;
 use App\Http\Controllers\TeamsController;
+use App\Livewire\Engineers\ShowEngineer;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(EngineersController::class)->group(function() {
         Route::get('/engineers', 'index')->name('engineers');
     });
+
+    Route::get('engineers/{engineer}', ShowEngineer::class)->name('engineers.show');
 
     Route::controller(TeamsController::class)->group(function() {
         Route::get('/teams', 'index')->name('teams');

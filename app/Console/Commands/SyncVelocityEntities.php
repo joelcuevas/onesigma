@@ -11,7 +11,7 @@ use App\Models\Engineer;
 
 class SyncVelocityEntities extends Command
 {
-    protected $signature = 'velocity:sync-entities {--cs}';
+    protected $signature = 'velocity:sync-entities';
 
     protected $description = 'Sync Velocity\'s teams and users';
 
@@ -29,20 +29,18 @@ class SyncVelocityEntities extends Command
     {
         $this->bearerToken = config('services.velocity.token');
 
-        $roots = [];
-
-        if ($this->option('cs')) {
-            $roots = [175269];
-        }
-
         $this->line('Fetching teams');
         $this->teams = $this->fetchTeams();
 
         $this->line('Building teams tree');
         $this->teamParents = $this->fetchTeamParents($this->teams);
 
+        // @to-do: add more roots
+        // 175269 = consumer services
+        $roots = [175269];
+
         foreach ($roots as $root) {
-            $this->teamsTree[$root] = $this->buildTeamsTree($this->teams, 175269);
+            $this->teamsTree[$root] = $this->buildTeamsTree($this->teams, $root);
         }
 
         $this->insertTeams($this->teamsTree);

@@ -1,10 +1,12 @@
-<x-layout.app pageTitle="{{ $team->name }} : {{ __('Equipo') }}">
+<x-layout.app title="{{ $team->name }} : {{ __('Equipo') }}">
   <x-slot:header>
     {{ $team->name }} <span class="text-gray-400 font-medium">: {{ __('Equipo') }}</span>
   </x-slot>
 
+  <livewire:teams.team-members-table :$team />
+
   @if ($team->nestedTeams->count())
-    <x-layout.panel>
+    <x-layout.panel class="px-8 py-4">
       <div class="py-6 sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-lg font-semibold leading-6 text-gray-900">
@@ -31,6 +33,4 @@
       </x-table>  
     </x-layout.panel>
   @endif
-
-  <livewire:teams.team-members-table :$team />
 </x-layout.app>
