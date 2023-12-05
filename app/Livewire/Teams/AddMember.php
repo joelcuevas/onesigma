@@ -5,7 +5,7 @@ namespace App\Livewire\Teams;
 use Livewire\Component;
 use App\Models\Engineer;
 
-class AddTeamMember extends Component
+class AddMember extends Component
 {
     public $team;
 

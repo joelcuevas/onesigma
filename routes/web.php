@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EngineersController;
-use App\Http\Controllers\TeamsController;
+
+use App\Livewire\Engineers\ListEngineers;
 use App\Livewire\Engineers\ShowEngineer;
+use App\Livewire\Teams\ListTeams;
+use App\Livewire\Teams\ShowTeam;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,20 +31,20 @@ Route::get('/dashboard', function() {
     return redirect('/teams');
 })->name('dashboard');
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/auth/callback', [AuthController::class, 'callback']);
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::controller(EngineersController::class)->group(function() {
+    Route::get('/login', 'login')->name('login');
+    Route::get('/auth/callback', 'callback');
+    Route::get('/logout', 'logout')->name('logout');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(EngineersController::class)->group(function() {
         Route::get('/engineers', 'index')->name('engineers');
     });
 
+    Route::get('/engineers', ListEngineers::class)->name('engineers');
     Route::get('engineers/{engineer}', ShowEngineer::class)->name('engineers.show');
 
-    Route::controller(TeamsController::class)->group(function() {
-        Route::get('/teams', 'index')->name('teams');
-        Route::get('/teams/create', 'create')->name('teams.create');
-        Route::get('/teams/{team}', 'show')->name('teams.show');
-    });
+    Route::get('/teams', ListTeams::class)->name('teams');
+    Route::get('/teams/{team}', ShowTeam::class)->name('teams.show');
 });

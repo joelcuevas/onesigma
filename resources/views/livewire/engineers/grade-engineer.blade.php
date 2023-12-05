@@ -1,8 +1,5 @@
 <div 
-  x-data="{
-    open: false,
-    step: @entangle('step')
-  }" 
+  x-data="{ open: false, step: @entangle('step') }" 
   x-on:close-modal="open=false" 
   class="inline-block">
 
