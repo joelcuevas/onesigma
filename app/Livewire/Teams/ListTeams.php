@@ -11,8 +11,7 @@ class ListTeams extends Component
 
     public function mount()
     {
-        $this->teams = Team::orderBy('name')->get();
-    }
+        $this->teams = Team::nestedTree();    }
 
     public function render()
     {

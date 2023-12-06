@@ -96,6 +96,7 @@ class SyncVelocityEntities extends Command
             $teamParents[$team['id']] = [
                 'id' => $team['id'],
                 'parent_id' => $parent,
+                'is_root' => $parent == null,
             ];
         });
 
@@ -131,6 +132,7 @@ class SyncVelocityEntities extends Command
                 'velocity_id' => $tree['id'],
             ], [
                 'name' => $tree['name'],
+                'is_root' => $tree['is_root'],
             ]);
 
             $ids[] = $team->id;

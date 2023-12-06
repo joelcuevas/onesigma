@@ -3,7 +3,10 @@
     <x-slot:body>
       @foreach ($teams as $team)
         <tr>
-          <x-table.td class="font-medium text-gray-900">{{ $team->name }}</x-table.td>
+          <!-- pl-0 pl-1 pl-2 pl-3 -->
+          <x-table.td class="font-medium text-gray-900" style="padding-left: {{ $team->nestedLevel * 25 }}px">
+            <div>{{ $team->name }}</div>
+          </x-table.td>
           <x-table.td class="font-medium text-right">
             <x-table.link href="{{ route('teams.show', $team) }}">{{ __('Detalles') }}</x-table.link>
           </x-table.td>

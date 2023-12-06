@@ -31,7 +31,7 @@ Route::get('/dashboard', function() {
     return redirect('/teams');
 })->name('dashboard');
 
-Route::controller(EngineersController::class)->group(function() {
+Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::get('/auth/callback', 'callback');
     Route::get('/logout', 'logout')->name('logout');
