@@ -17,10 +17,17 @@
             <h3>{{ mb_convert_case($dimension ?? '', MB_CASE_TITLE) }}</h3>
 
             <div class="space-y-5 mb-4">
-              @foreach ($levels as $d)
-                <x-radio wire:model="score" id="{{ $d }}" value="{{ $loop->iteration }}" label="{{ ucwords($d) }}" />
+              @foreach ($levels as $l)
+                <x-radio 
+                  wire:model="score" 
+                  id="l{{ $l }}" 
+                  value="{{ $loop->iteration }}" 
+                  label="{{ mb_convert_case(ucwords($l), MB_CASE_TITLE) }}"
+                  help="" />
               @endforeach
             </div>
+
+            @error('score') <div>{{ $message }}</div> @enderror
           </div>
         </div>
       </div>

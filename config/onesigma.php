@@ -5,6 +5,8 @@ return [
     'email_domain' => '@digitalfemsa.com',
     
     'skills' => [
+
+        'domains' => ['software'],
     
         'dimensions' => [
             'career' => [
@@ -15,7 +17,13 @@ return [
                 'influence' => ['subsystem', 'team', 'multiteams', 'company', 'community'],
             ],
 
-            'software' => ['programming', 'database', 'testing', 'devops', 'sysdesign'],
+            'software' => [
+                'programming' => [], 
+                'database' => [], 
+                'testing' => [], 
+                'devops' => [], 
+                'sysdesign' => [],
+            ],
         ],
 
         'levels' => [

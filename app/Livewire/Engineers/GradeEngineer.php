@@ -24,16 +24,20 @@ class GradeEngineer extends Component
     public function mount(Engineer $engineer)
     {
         $this->engineer = $engineer;
-        $this->setDimensionLevels();
+        $this->loadDimensionLevels();
     }
 
     public function grade() 
     {
+        $validated = $this->validate([ 
+            'score' => 'required|in:1,2,3,4,5',
+        ]);
+
         $this->step++;
 
-        $this->scores['d'.$this->step] = $this->score;
+        $this->scores['d'.$this->step] = $validated['score'];
         $this->reset('score');
-        $this->setDimensionLevels();
+        $this->loadDimensionLevels();
 
         // save scores and reset modal
         if ($this->step > 4) {
@@ -49,10 +53,10 @@ class GradeEngineer extends Component
     {
         $this->dispatch('close-modal');
         $this->resetExcept('engineer');
-        $this->setDimensionLevels();
+        $this->loadDimensionLevels();
     }
 
-    protected function setDimensionLevels()
+    protected function loadDimensionLevels()
     {
         $dimensions = config('onesigma.skills.dimensions.'.$this->track);
         $values = array_slice($dimensions, $this->step, 1);

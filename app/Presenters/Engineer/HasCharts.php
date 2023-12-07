@@ -9,13 +9,18 @@ trait HasCharts
     public function getCareerChart()
     {
         $grade = $this->careerGrade;
-        $chart = new RadarChartModel();
+
+        $chart = (new RadarChartModel())
+            ->setJsonConfig([
+                'yaxis.min' => 0,
+                'yaxis.max' => 5,
+                'yaxis.tickAmount' => 5,
+            ]);
 
         $scores = $grade ? $grade->getScores() : [0, 0, 0, 0, 0];
-        $dimensions = array_keys(config('onesigma.skills.dimensions.career'));
 
-        foreach ($scores as $i => $score) {
-            $chart->addSeries('', __(mb_convert_case($dimensions[$i], MB_CASE_TITLE)), $score);
+        foreach ($scores as $dimension => $score) {
+            $chart->addSeries('', $dimension, $score);
         }
 
         return $chart;

@@ -11,21 +11,19 @@ class Grade extends Model
 
     protected $fillable = [
         'track',
-        'd1',
-        'd2',
-        'd3',
-        'd4',
-        'd5',
+        'd1', 'd2', 'd3', 'd4', 'd5',
     ];
 
     public function getScores()
     {
-        return [
-            $this->d1,
-            $this->d2,
-            $this->d3,
-            $this->d4,
-            $this->d5,
-        ];
+        $dimensions = array_keys(config('onesigma.skills.dimensions.'.$this->track));
+        $scores = [];
+
+        foreach ($dimensions as $i => $dimension) {
+            $label = __(mb_convert_case($dimension, MB_CASE_TITLE));
+            $scores[$label] = $this['d'.$i+1];
+        }
+
+        return $scores;
     }
 }
