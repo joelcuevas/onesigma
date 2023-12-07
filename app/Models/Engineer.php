@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Enums\EngineerCareer;
 use App\Enums\EngineerDomain;
+use App\Presenters\Engineer\HasCharts;
 
 class Engineer extends Model
 {
-    use HasFactory;
+    use HasFactory, HasCharts;
 
     protected $fillable = [
         'name',
@@ -46,12 +47,12 @@ class Engineer extends Model
 
     public function getCareerNameAttribute()
     {;
-        return __(ucwords($this->career->name));
+        return __(mb_convert_case($this->career->name, MB_CASE_TITLE));
     }
 
     public function getDomainNameAttribute()
     {
-        return __(ucwords($this->domain->name));
+        return __(mb_convert_case($this->domain->name, MB_CASE_TITLE));
     }
 
     public static function scopeWithoutGuests(Builder $query)
@@ -69,7 +70,7 @@ class Engineer extends Model
         return $this->morphMany(Grade::class, 'gradeable');
     }
 
-    public function careerGrades(): MorphOne
+    public function careerGrade(): MorphOne
     {
         return $this->morphOne(Grade::class, 'gradeable')
             ->where('track', 'career')

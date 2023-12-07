@@ -1,5 +1,5 @@
 <div 
-  x-data="{ open: false, step: @entangle('step') }" 
+  x-data="{ open: false, step: @entangle('step'), track: @entangle('track') }" 
   x-on:close-modal="open=false" 
   class="inline-block">
 
@@ -13,15 +13,8 @@
         </h2>
 
         <div class="col-span-full">
-          <div x-show="step == 0">
-            <div class="space-y-5 mb-4">
-              <x-radio wire:model="track" id="career" value="career" label="Carrera" help="{{ $engineer->career->name }}" />
-              <x-radio wire:model="track" id="domain" value="domain" label="Dominio" help="{{ $engineer->domain->name }}" />
-            </div>
-          </div>
-
-          <div x-show="step >= 1 && step <= 5">
-            <h3>{{ ucwords($dimension) }}</h3>
+          <div>
+            <h3>{{ mb_convert_case($dimension ?? '', MB_CASE_TITLE) }}</h3>
 
             <div class="space-y-5 mb-4">
               @foreach ($levels as $d)

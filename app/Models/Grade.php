@@ -17,4 +17,15 @@ class Grade extends Model
         'd4',
         'd5',
     ];
+
+    public function getScores()
+    {
+        return [
+            $this->d1,
+            $this->d2,
+            $this->d3,
+            $this->d4,
+            $this->d5,
+        ];
+    }
 }

@@ -1,4 +1,4 @@
-<div>
+<div x-data>
   <x-slot:header>
     <div class="md:flex md:items-center md:justify-between md:space-x-5">
       <div class="flex items-center space-x-5">
@@ -41,7 +41,9 @@
     <div class="space-y-6 lg:col-span-2 lg:col-start-1">
       <x-layout.panel>
         <div style="height: 24rem;">
-          <livewire:livewire-radar-chart :radar-chart-model="$careerChartModel" />
+          <livewire:livewire-radar-chart 
+            key="{{ $this->careerChart->reactiveKey() }}"
+            :radar-chart-model="$this->careerChart" />
         </div>
       </x-layout.panel>
     </div>

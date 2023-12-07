@@ -24,37 +24,22 @@ class GradeEngineer extends Component
     public function mount(Engineer $engineer)
     {
         $this->engineer = $engineer;
-    }
-
-    public function render()
-    {
-        return view('livewire.engineers.grade-engineer');
+        $this->setDimensionLevels();
     }
 
     public function grade() 
     {
-        // prepare dimensions for next step
-        if ($this->step < 5) {
-            $dimensions = config('onesigma.skills.dimensions.'.$this->track);
-            $values = array_slice($dimensions, $this->step, 1);
-            $keys = array_keys($values);
+        $this->step++;
 
-            $this->dimension = array_shift($keys);
-            $this->levels = array_shift($values);
-        }
+        $this->scores['d'.$this->step] = $this->score;
+        $this->reset('score');
+        $this->setDimensionLevels();
 
-        // get score from prev step
-        if ($this->step >=1 && $this->step <=5) {
-            $this->scores['d'.$this->step] = $this->score;
-            $this->reset('score');
-        }
-
-        $this->step++;  
-
-        // save all scores in db and finish
-        if ($this->step > 5) {
+        // save scores and reset modal
+        if ($this->step > 4) {
             $this->scores['track'] = $this->track;
             $this->engineer->grades()->create($this->scores);
+            $this->dispatch('engineer-updated');
 
             $this->resetModal();
         }
@@ -64,5 +49,16 @@ class GradeEngineer extends Component
     {
         $this->dispatch('close-modal');
         $this->resetExcept('engineer');
+        $this->setDimensionLevels();
+    }
+
+    protected function setDimensionLevels()
+    {
+        $dimensions = config('onesigma.skills.dimensions.'.$this->track);
+        $values = array_slice($dimensions, $this->step, 1);
+        $keys = array_keys($values);
+
+        $this->dimension = array_shift($keys);
+        $this->levels = array_shift($values);
     }
 }
