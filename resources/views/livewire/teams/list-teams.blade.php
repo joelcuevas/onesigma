@@ -8,7 +8,7 @@
             <div>{{ $team->name }}</div>
           </x-table.td>
           <x-table.td>
-            {{ $team->engineers_count }}
+            {{ $team->members_count }}
           </x-table.td>
           <x-table.td>
             {{ $team->nestedTeams->count() }}

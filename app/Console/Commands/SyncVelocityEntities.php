@@ -159,14 +159,14 @@ class SyncVelocityEntities extends Command
         if ($response->ok()) {
             foreach ($response['data'] as $eng) {
                 $email = null;
-                $internal = true;
+                $is_internal = true;
 
                 if (! Str::endsWith($eng['attributes']['email'], '@users.noreply.github.com')) {
                     $email = $eng['attributes']['email'];
                 }
 
                 if (! $email || ! Str::endsWith($email, config('onesigma.email_domain'))) {
-                    $internal = false;
+                    $is_internal = false;
                 }
 
                 $engineer = Engineer::firstOrCreate([
@@ -174,13 +174,14 @@ class SyncVelocityEntities extends Command
                 ], [
                     'name' => $eng['attributes']['name'],
                     'email' => $email,
-                    'internal' => $internal,
+                    'github_email' => $eng['attributes']['email'],
+                    'is_internal' => $is_internal,
                 ]);
 
                 $engineerIds[] = $engineer->id;
             }
         }
 
-        $team->engineers()->sync($engineerIds, ['role' => TeamRole::Developer->value]);
+        $team->members()->syncWithPivotValues($engineerIds, ['role' => TeamRole::Developer->value]);
     }
 }

@@ -11,7 +11,10 @@ class ListEngineers extends Component
 
     public function mount()
     {
-        $this->engineers = Engineer::orderBy('name')->get();
+        $this->engineers = Engineer::query()
+            ->withoutGuests()
+            ->orderBy('name')
+            ->get();
     }
 
     public function render()

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -22,15 +23,17 @@ class Engineer extends Model
         'domain',
         'domain_level',
         'email',
-        'internal',
-        'github_user',
+        'is_internal',
+        'is_guest',
         'velocity_id',
+        'github_email',
     ];
 
     protected $casts = [
         'career' => EngineerCareer::class,
         'domain' => EngineerDomain::class,
-        'internal' => 'bool',
+        'is_internal' => 'boolean',
+        'is_guest' => 'boolean',
     ];
 
     public function getInitialsAttribute()
@@ -39,6 +42,21 @@ class Engineer extends Model
         $initials = ($tokens[0][0] ?? '').($tokens[1][0] ?? '');
 
         return trim(mb_strtoupper($initials));
+    }
+
+    public function getCareerNameAttribute()
+    {;
+        return __(ucwords($this->career->name));
+    }
+
+    public function getDomainNameAttribute()
+    {
+        return __(ucwords($this->domain->name));
+    }
+
+    public static function scopeWithoutGuests(Builder $query)
+    {
+        $query->where('is_guest', 0);
     }
 
     public function teams(): MorphToMany

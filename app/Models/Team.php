@@ -26,7 +26,7 @@ class Team extends Model
     {
         $teams = static::orderBy('name')
             ->with('nestedTeams')
-            ->withCount('engineers')
+            ->withCount('members')
             ->get();
 
         $flat = collect([]);
@@ -49,7 +49,7 @@ class Team extends Model
         return $flat;
     }
 
-    public function engineers(): MorphToMany 
+    public function members(): MorphToMany 
     {
         return $this
             ->morphedByMany(Engineer::class, 'teamable')
@@ -75,7 +75,7 @@ class Team extends Model
         return $this
             ->morphedByMany(Team::class, 'teamable')
             ->with('nestedTeams')
-            ->withCount('engineers')
+            ->withCount('members')
             ->orderBy('name');
     }
 
