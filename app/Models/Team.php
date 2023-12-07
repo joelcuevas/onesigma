@@ -24,7 +24,11 @@ class Team extends Model
 
     public static function nestedTree()
     {
-        $teams = static::orderBy('name')->with('nestedTeams')->get();
+        $teams = static::orderBy('name')
+            ->with('nestedTeams')
+            ->withCount('engineers')
+            ->get();
+
         $flat = collect([]);
 
         $fn = function($team, $n = 0) use (&$fn, $flat) {
@@ -48,7 +52,7 @@ class Team extends Model
     public function engineers(): MorphToMany 
     {
         return $this
-        ->morphedByMany(Engineer::class, 'teamable')
+            ->morphedByMany(Engineer::class, 'teamable')
             ->withPivot('role')
             ->orderBy('name');
     }
@@ -65,10 +69,13 @@ class Team extends Model
             ->where('track', 'career')
             ->orderBy('id', 'desc');
     }
+
     public function nestedTeams(): MorphToMany
     {
         return $this
             ->morphedByMany(Team::class, 'teamable')
+            ->with('nestedTeams')
+            ->withCount('engineers')
             ->orderBy('name');
     }
 

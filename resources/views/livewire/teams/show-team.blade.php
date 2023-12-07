@@ -4,8 +4,8 @@
   </x-slot:header>
 
   <div x-data x-on:engineers-updated="$wire.$refresh">
-    <x-layout.panel>
-      <div class="py-6 sm:flex sm:items-center">
+    <x-layout.panel class="px-8 py-4">
+      <div class="py-4 sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-lg font-semibold leading-6 text-gray-900">{{ __('Miembros del Equipo') }}</h1>
           <p class="mt-2 text-sm text-gray-700">
@@ -36,7 +36,7 @@
 
   @if ($team->nestedTeams->count())
     <x-layout.panel class="px-8 py-4">
-      <div class="py-6 sm:flex sm:items-center">
+      <div class="py-4 sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-lg font-semibold leading-6 text-gray-900">
             {{ __('Equipos Anidados') }}

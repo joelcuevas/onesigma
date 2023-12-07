@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use App\Models\Team;
 use App\Models\Engineer;
+use App\Enums\TeamRole;
 
 class SyncVelocityEntities extends Command
 {
@@ -139,7 +140,7 @@ class SyncVelocityEntities extends Command
 
             if (isset($tree['nested'])) {
                 $nestedIds = $this->insertTeams($tree['nested']);
-                $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => 'subteam']);
+                $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => TeamRole::Subteam->value]);
             }
 
             $this->insertEngineers($team);
@@ -180,6 +181,6 @@ class SyncVelocityEntities extends Command
             }
         }
 
-        $team->engineers()->sync($engineerIds);
+        $team->engineers()->sync($engineerIds, ['role' => TeamRole::Developer->value]);
     }
 }

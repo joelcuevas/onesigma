@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Domain: string
+enum EngineerDomain: string
 {
     case Software = 'software';
     case Data = 'data';

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Enums\Career;
-use App\Enums\Domain;
+use App\Enums\EngineerCareer;
+use App\Enums\EngineerDomain;
 
 class Engineer extends Model
 {
@@ -28,8 +28,8 @@ class Engineer extends Model
     ];
 
     protected $casts = [
-        'career' => Career::class,
-        'domain' => Domain::class,
+        'career' => EngineerCareer::class,
+        'domain' => EngineerDomain::class,
         'internal' => 'bool',
     ];
 

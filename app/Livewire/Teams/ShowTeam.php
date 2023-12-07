@@ -17,6 +17,6 @@ class ShowTeam extends Component
     public function render()
     {
         return view('livewire.teams.show-team')
-            ->title($this->team.' : '.__('Equipo'));
+            ->title($this->team->name.' : '.__('Equipo'));
     }
 }

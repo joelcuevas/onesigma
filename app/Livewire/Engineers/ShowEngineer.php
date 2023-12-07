@@ -9,7 +9,6 @@ class ShowEngineer extends Component
 {
     public Engineer $engineer;
 
-
     public function mount(Engineer $engineer) 
     {
         $this->engineer = $engineer;

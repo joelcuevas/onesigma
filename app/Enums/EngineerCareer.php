@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Career: string
+enum EngineerCareer: string
 {
     case Engineer = 'E';
     case TechLead = 'TL';
