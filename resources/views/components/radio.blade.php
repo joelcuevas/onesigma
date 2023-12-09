@@ -14,10 +14,10 @@
       <label for="{{ $id }}" class="font-medium text-gray-900 cursor-pointer">
         {{ __($label) }}
         @if ($helpInline)
-          <span class="ml-1 text-gray-500">{{ __($helpInline) }}</span>
+          <span class="ml-1 font-normal text-gray-500">{{ __($helpInline) }}</span>
         @endif
         @if ($help)
-          <div class="mt-1 text-gray-500">{{ __($help) }}</div>
+          <div class="mt-1 font-normal text-gray-500">{{ __($help) }}</div>
         @endif
       </label>
     </div>

@@ -4,6 +4,7 @@ namespace App\Livewire\Engineers;
 
 use Livewire\Component;
 use App\Models\Engineer;
+use OneSigma;
 
 class GradeEngineer extends Component
 {
@@ -15,16 +16,14 @@ class GradeEngineer extends Component
 
     public $dimension;
 
-    public $levels = [];
-
-    public $score;
+    public $score = 1;
 
     public $scores = [];
 
     public function mount(Engineer $engineer)
     {
         $this->engineer = $engineer;
-        $this->loadDimensionLevels();
+        $this->loadDimension();
     }
 
     public function grade() 
@@ -37,7 +36,7 @@ class GradeEngineer extends Component
 
         $this->scores['d'.$this->step] = $validated['score'];
         $this->reset('score');
-        $this->loadDimensionLevels();
+        $this->loadDimension();
 
         // save scores and reset modal
         if ($this->step > 4) {
@@ -53,16 +52,12 @@ class GradeEngineer extends Component
     {
         $this->dispatch('close-modal');
         $this->resetExcept('engineer');
-        $this->loadDimensionLevels();
+        $this->loadDimension();
     }
 
-    protected function loadDimensionLevels()
+    protected function loadDimension()
     {
-        $dimensions = config('onesigma.skills.dimensions.'.$this->track);
-        $values = array_slice($dimensions, $this->step, 1);
-        $keys = array_keys($values);
-
-        $this->dimension = array_shift($keys);
-        $this->levels = array_shift($values);
+        $track = OneSigma::track($this->track);
+        $this->dimension = $track->dimension($this->step);
     }
 }

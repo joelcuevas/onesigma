@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.grade-engineer-help p {
+    @apply mb-4;
+}
+
+.grade-engineer-help p strong {
+    @apply font-medium text-gray-900;
+}

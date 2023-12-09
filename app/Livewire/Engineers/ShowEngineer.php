@@ -19,7 +19,7 @@ class ShowEngineer extends Component
     #[Computed, On('engineer-updated')]
     public function careerChart()
     {
-        return $this->engineer->getCareerChart();
+        return $this->engineer->fresh()->getCareerChart();
     }
 
     public function render()

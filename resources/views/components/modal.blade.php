@@ -12,6 +12,7 @@
     class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
   </div>
   
+  <!-- accepts: sm:max-w-xl sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl -->
   <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
     <div class="flex min-h-full items-start justify-center p-4 text-center sm:items-center sm:p-0">
       <div
@@ -25,6 +26,4 @@
       </div>
     </div>
   </div>
-
-  <div style="display:none" class="sm:max-w-xl sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl"></div>
 </div>

@@ -16,12 +16,12 @@ class Grade extends Model
 
     public function getScores()
     {
-        $dimensions = array_keys(config('onesigma.skills.dimensions.'.$this->track));
+        $dimensions = array_keys(config('onesigma.tracks.'.$this->track));
         $scores = [];
 
         foreach ($dimensions as $i => $dimension) {
-            $label = __(mb_convert_case($dimension, MB_CASE_TITLE));
-            $scores[$label] = $this['d'.$i+1];
+            $label = __(mb_ucwords($dimension));
+            $scores[$label] = $this['d'.$i+1] ?? 0;
         }
 
         return $scores;

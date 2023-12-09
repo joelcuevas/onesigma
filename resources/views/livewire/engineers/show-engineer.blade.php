@@ -1,4 +1,4 @@
-<div x-data>
+<div x-data x-on:engineer-updated.window="$wire.$refresh">
   <x-slot:header>
     <div class="md:flex md:items-center md:justify-between md:space-x-5">
       <div class="flex items-center space-x-5">

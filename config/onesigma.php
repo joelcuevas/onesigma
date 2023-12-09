@@ -4,26 +4,24 @@ return [
 
     'email_domain' => '@digitalfemsa.com',
     
-    'skills' => [
+    'tracks' => [
 
         'domains' => ['software'],
     
-        'dimensions' => [
-            'career' => [
-                'technology' => ['adopts', 'specializes', 'evangelizes', 'masters', 'creates'], 
-                'system' => ['enhances', 'designs', 'owns', 'evolves', 'leads'], 
-                'people' => ['learns', 'supports', 'mentors', 'coordinates', 'manages'], 
-                'process' => ['follows', 'enforces', 'challenges', 'adjusts', 'defines'], 
-                'influence' => ['subsystem', 'team', 'multiteams', 'company', 'community'],
-            ],
+        'career' => [
+            'technology' => ['adopts', 'specializes', 'evangelizes', 'masters', 'creates'], 
+            'system' => ['enhances', 'designs', 'owns', 'evolves', 'leads'], 
+            'people' => ['learns', 'supports', 'mentors', 'coordinates', 'manages'], 
+            'process' => ['follows', 'enforces', 'challenges', 'adjusts', 'defines'], 
+            'influence' => ['subsystem', 'team', 'multiteams', 'company', 'community'],
+        ],
 
-            'software' => [
-                'programming' => [], 
-                'database' => [], 
-                'testing' => [], 
-                'devops' => [], 
-                'sysdesign' => [],
-            ],
+        'software' => [
+            'programming' => [], 
+            'database' => [], 
+            'testing' => [], 
+            'devops' => [], 
+            'sysdesign' => [],
         ],
 
         'levels' => [
@@ -45,4 +43,5 @@ return [
         ],
 
     ],
+
 ];

@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'markdown' => [
+            'driver' => 'local',
+            'root' => base_path('resources/md'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

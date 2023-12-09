@@ -8,8 +8,6 @@ trait HasCharts
 {
     public function getCareerChart()
     {
-        $grade = $this->careerGrade;
-
         $chart = (new RadarChartModel())
             ->setJsonConfig([
                 'yaxis.min' => 0,
@@ -17,7 +15,9 @@ trait HasCharts
                 'yaxis.tickAmount' => 5,
             ]);
 
-        $scores = $grade ? $grade->getScores() : [0, 0, 0, 0, 0];
+        $scores = $this->careerGrade 
+            ? $this->careerGrade->getScores() 
+            : [0, 0, 0, 0, 0];
 
         foreach ($scores as $dimension => $score) {
             $chart->addSeries('', $dimension, $score);

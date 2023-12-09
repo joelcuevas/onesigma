@@ -47,12 +47,12 @@ class Engineer extends Model
 
     public function getCareerNameAttribute()
     {;
-        return __(mb_convert_case($this->career->name, MB_CASE_TITLE));
+        return __(mb_ucwords($this->career->name));
     }
 
     public function getDomainNameAttribute()
     {
-        return __(mb_convert_case($this->domain->name, MB_CASE_TITLE));
+        return __(mb_ucwords($this->domain->name));
     }
 
     public static function scopeWithoutGuests(Builder $query)
