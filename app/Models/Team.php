@@ -53,27 +53,6 @@ class Team extends Model
         return $flat;
     }
 
-    public function members(): MorphToMany 
-    {
-        return $this
-            ->morphedByMany(Engineer::class, 'teamable')
-            ->withPivot('role')
-            ->orderBy('name');
-    }
-
-    public function grades(): MorphMany
-    {
-        return $this->morphMany(Grade::class, 'gradeable');
-    }
-
-    public function careerGrades(): MorphOne
-    {
-        return $this
-            ->morphOne(Grade::class, 'gradeable')
-            ->where('track', 'career')
-            ->orderBy('id', 'desc');
-    }
-
     public function nestedTeams(): MorphToMany
     {
         return $this
@@ -86,6 +65,14 @@ class Team extends Model
     {
         return $this
             ->morphToMany(Team::class, 'teamable')
+            ->orderBy('name');
+    }
+
+    public function members(): MorphToMany 
+    {
+        return $this
+            ->morphedByMany(Engineer::class, 'teamable')
+            ->withPivot('role')
             ->orderBy('name');
     }
 }

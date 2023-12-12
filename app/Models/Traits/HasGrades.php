@@ -14,7 +14,7 @@ trait HasGrades
         return $this->morphMany(Grade::class, 'gradeable');
     }
 
-    public function careerGrade(): MorphOne
+    public function careerGrades(): MorphOne
     {
         return $this->morphOne(Grade::class, 'gradeable')
             ->where('track', 'career')

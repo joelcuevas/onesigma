@@ -15,9 +15,7 @@ trait HasCharts
                 'yaxis.tickAmount' => 5,
             ]);
 
-        $scores = $this->careerGrade 
-            ? $this->careerGrade->getScores() 
-            : [0, 0, 0, 0, 0];
+        $scores = $this->careerGrades?->getScores() ?? [0, 0, 0, 0, 0];
 
         foreach ($scores as $dimension => $score) {
             $chart->addSeries('', $dimension, $score);
