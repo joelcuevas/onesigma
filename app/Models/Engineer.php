@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Enums\EngineerCareer;
 use App\Enums\EngineerDomain;
 use App\Presenters\Engineer\HasCharts;
+use App\Models\Traits\HasMetrics;
+use App\Models\Traits\HasGrades;
 
 class Engineer extends Model
 {
-    use HasFactory, HasCharts;
+    use HasFactory, HasCharts, HasMetrics, HasGrades;
 
     protected $fillable = [
         'name',
@@ -37,6 +39,10 @@ class Engineer extends Model
         'is_guest' => 'boolean',
     ];
 
+    protected $with = [
+        'latestMetrics',
+    ];
+
     public function getInitialsAttribute()
     {
         $tokens = explode(' ', $this->name);
@@ -55,6 +61,11 @@ class Engineer extends Model
         return __(mb_ucwords($this->domain->name));
     }
 
+    public function getPositionAttribute()
+    {
+        return $this->careerName.' @ '.$this->domainName;
+    }
+
     public static function scopeWithoutGuests(Builder $query)
     {
         $query->where('is_guest', 0);
@@ -63,17 +74,5 @@ class Engineer extends Model
     public function teams(): MorphToMany
     {
         return $this->morphToMany(Team::class, 'teamable');
-    }
-
-    public function grades(): MorphMany
-    {
-        return $this->morphMany(Grade::class, 'gradeable');
-    }
-
-    public function careerGrade(): MorphOne
-    {
-        return $this->morphOne(Grade::class, 'gradeable')
-            ->where('track', 'career')
-            ->orderBy('id', 'desc');
     }
 }

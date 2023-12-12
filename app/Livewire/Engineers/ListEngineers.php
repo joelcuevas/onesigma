@@ -13,6 +13,7 @@ class ListEngineers extends Component
     {
         $this->engineers = Engineer::query()
             ->withoutGuests()
+            ->with('weeklyCodingDays')
             ->orderBy('name')
             ->get();
     }

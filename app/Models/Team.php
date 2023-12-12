@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Traits\HasMetrics;
+use App\Models\Traits\HasGrades;
 
 class Team extends Model
 {
-    use HasFactory;
+    use HasFactory, HasMetrics, HasGrades;
 
     protected $fillable = [
         'name',
@@ -22,12 +24,14 @@ class Team extends Model
         'is_root' => 'boolean',
     ];
 
+    protected $with = [
+        'nestedTeams',
+        'latestMetrics',
+    ];
+
     public static function nestedTree()
     {
-        $teams = static::orderBy('name')
-            ->with('nestedTeams')
-            ->withCount('members')
-            ->get();
+        $teams = static::orderBy('name')->withCount('members')->get();
 
         $flat = collect([]);
 
@@ -74,7 +78,6 @@ class Team extends Model
     {
         return $this
             ->morphedByMany(Team::class, 'teamable')
-            ->with('nestedTeams')
             ->withCount('members')
             ->orderBy('name');
     }

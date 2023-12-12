@@ -1,5 +1,5 @@
 <x-layout.panel class="px-8 py-4">
-  <x-table :headers="['Nombre', 'Miembros', 'Equipos']">
+  <x-table :headers="['Nombre', 'Miembros', 'WCD']">
     <x-slot:body>
       @foreach ($teams as $team)
         <tr>
@@ -11,7 +11,7 @@
             {{ $team->members_count }}
           </x-table.td>
           <x-table.td>
-            {{ $team->nestedTeams->count() }}
+            {{ $team->getMetric('wcd') }}
           </x-table.td>
           <x-table.td class="font-medium text-right">
             <x-table.link href="{{ route('teams.show', $team) }}">{{ __('Detalles') }}</x-table.link>

@@ -37,6 +37,23 @@
     <livewire:engineers.grade-engineer :$engineer />
   </x-slot>
 
+  <div class="mb-6">
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="truncate text-sm font-medium text-gray-500">{{ __('Weekly Coding Days') }}</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{{ $engineer->weeklyCodingDays ?? 0 }}</dd>
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="truncate text-sm font-medium text-gray-500">{{ __('Autonomía') }}</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="truncate text-sm font-medium text-gray-500">{{ __('Maduréz') }}</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
+      </div>
+    </dl>
+  </div>
+
   <div class="grid grid-cols-1 gap-6 lg:grid-flow-col-dense lg:grid-cols-3">
     <div class="space-y-6 lg:col-span-2 lg:col-start-1">
       <x-layout.panel>
