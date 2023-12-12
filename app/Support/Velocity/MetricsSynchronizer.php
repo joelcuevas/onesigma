@@ -11,12 +11,14 @@ class MetricsSynchronizer
 {
     protected $engineers;
 
-    protected $baseUrl;
-
-    protected $bearerToken; 
+    protected $teams;
 
     protected $period;
 
+    protected $baseUrl;
+
+    protected $bearerToken; 
+    
     public function __construct()
     {
         $this->engineers = Engineer::whereNotNull('velocity_id')->get();

@@ -44,7 +44,7 @@
               <tr>
                 <x-table.td class="font-medium text-gray-900">{{ $member->name }}</x-table.td>
                 <x-table.td>{{ $member->career_name }} @ {{ $member->domain_name }}</x-table.td>
-                <x-table.td>{{ __(ucfirst($member->pivot->role)) }}</x-table.td>
+                <x-table.td>{{ $member->teamMember->role->name }}</x-table.td>
                 <x-table.td>{{ $member->getMetric('wcd') }}</x-table.td>
                 <x-table.td class="font-medium text-right">
                   <x-table.link href="{{ route('engineers.show', $member) }}">Detalles</x-table.link>

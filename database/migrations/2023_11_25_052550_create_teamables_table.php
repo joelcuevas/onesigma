@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('teamable_type');
             $table->bigInteger('teamable_id')->unsigned();
             $table->string('role')->nullable();
+            $table->tinyInteger('is_locked')->default(0);
         });
     }
 

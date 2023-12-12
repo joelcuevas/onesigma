@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\EngineerCareer;
-use App\Enums\EngineerDomain;
+use App\Models\Enums\EngineerCareer;
+use App\Models\Enums\EngineerDomain;
 
 return new class extends Migration
 {

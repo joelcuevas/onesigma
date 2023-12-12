@@ -1,69 +1,60 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Support\Velocity;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use App\Models\Team;
 use App\Models\Engineer;
-use App\Enums\TeamRole;
+use App\Models\Enums\TeamRole;
 
-class SyncVelocityEntities extends Command
+class EngineersSynchronizer
 {
-    protected $signature = 'velocity:sync-entities';
-
-    protected $description = 'Sync Velocity\'s teams and users';
-
     protected $teams;
 
     protected $teamParents;
 
     protected $teamsTree;
 
-    protected $teamsUrl = 'https://api.velocity.codeclimate.com/v1/teams';
+    protected $baseUrl;
 
-    protected $bearerToken;
-
-    public function handle()
+    protected $bearerToken; 
+    
+    public function __construct()
     {
+        $this->baseUrl = 'https://api.velocity.codeclimate.com/v1/teams';
         $this->bearerToken = config('services.velocity.token');
 
-        $this->line('Fetching teams');
-        $this->teams = $this->fetchTeams();
+        $this->period = now(); 
+    }
 
-        $this->line('Building teams tree');
-        $this->teamParents = $this->fetchTeamParents($this->teams);
+    public function sync()
+    {
+        $this->teams = $this->fetchTeams();
+        $this->fetchTeamParents();
 
         // @to-do: add more roots
         // 175269 = consumer services
-        $roots = [175269];
+        $teamRoots = [175269];
 
-        foreach ($roots as $root) {
+        foreach ($teamRoots as $root) {
             $this->teamsTree[$root] = $this->buildTeamsTree($this->teams, $root);
         }
 
-        $this->insertTeams($this->teamsTree);
+        $this->insertTeamsAndEngineers($this->teamsTree);
     }
 
     protected function fetchTeams($url = null)
     {
         $isRoot = $url === null;
 
-        if ($isRoot && Cache::has('velocity.teams')) {
-            $this->line('  Retrieved from cache!');
-
-            return Cache::get('velocity.teams');
-        }
-
         $teams = collect([]);
-        $url = $url ?? $this->teamsUrl;
+        $url = $url ?? $this->baseUrl;
 
-        $this->line('  Retrieving from source...');
-        $response = Http::withToken($this->bearerToken)->get($url);
+        $response = $this->cachedRequest($url);
 
-        if ($response->ok()) {
+        if ($response) {
             $teams = collect($response['data']);
             
             if (isset($response['links']['next'])) {
@@ -72,38 +63,29 @@ class SyncVelocityEntities extends Command
             }
         }
 
-        if ($isRoot) {
-            Cache::put('velocity.teams', $teams, 3600);
-        }
-
         return $teams;
     }
 
-    protected function fetchTeamParents($teams)
+    protected function fetchTeamParents()
     {
-        if (Cache::has('velocity.team-parents')) {
-            $this->line('  Retrieved from cache!');
+        $teamParents = [];
 
-            return Cache::get('velocity.team-parents');
+        foreach ($this->teams as $team) {
+            $url = $this->baseUrl.'/'.$team['id'].'/parent';
+            $response = $this->cachedRequest($url);
+
+            if ($response) {
+                $parent = $response['data']['id'] ?? null;
+                
+                $teamParents[$team['id']] = [
+                    'id' => $team['id'],
+                    'parent_id' => $parent,
+                    'is_root' => $parent == null,
+                ];
+            }
         }
 
-        $teamParents = collect([]);
-
-        $this->withProgressBar($teams, function ($team) use (&$teamParents) {
-            $url = $this->teamsUrl.'/'.$team['id'].'/parent';
-            $response = Http::withToken($this->bearerToken)->get($url);
-            $parent = $response['data']['id'] ?? null;
-            
-            $teamParents[$team['id']] = [
-                'id' => $team['id'],
-                'parent_id' => $parent,
-                'is_root' => $parent == null,
-            ];
-        });
-
-        Cache::put('velocity.team-parents', $teamParents, 3600);
-
-        return collect($teamParents);
+        $this->teamParents = collect($teamParents);
     }
 
     protected function buildTeamsTree($teams, $root)
@@ -124,11 +106,11 @@ class SyncVelocityEntities extends Command
         return collect($team);
     }
 
-    protected function insertTeams($teams)
+    protected function insertTeamsAndEngineers($teamsTree)
     {
-        $ids = [];
+        $teamIds = [];
 
-        foreach ($teams as $tree) {
+        foreach ($teamsTree as $tree) {
             $team = Team::firstOrCreate([
                 'velocity_id' => $tree['id'],
             ], [
@@ -136,27 +118,27 @@ class SyncVelocityEntities extends Command
                 'is_root' => $tree['is_root'],
             ]);
 
-            $ids[] = $team->id;
+            $teamIds[] = $team->id;
 
             if (isset($tree['nested'])) {
-                $nestedIds = $this->insertTeams($tree['nested']);
+                $nestedIds = $this->insertTeamsAndEngineers($tree['nested']);
                 $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => null]);
             }
 
-            $this->insertEngineers($team);
+            $this->fetchAndInsertTeamEngineers($team);
         }
 
-        return $ids;
+        return $teamIds;
     }
 
-    protected function insertEngineers($team)
+    protected function fetchAndInsertTeamEngineers($team)
     {
         $engineerIds = [];
 
-        $url = $this->teamsUrl."/{$team->velocity_id}/people";
-        $response = Http::withToken($this->bearerToken)->get($url);
+        $url = $this->baseUrl."/{$team->velocity_id}/people";
+        $response = $this->cachedRequest($url);
 
-        if ($response->ok()) {
+        if ($response) {
             foreach ($response['data'] as $eng) {
                 $email = null;
                 $is_internal = true;
@@ -182,6 +164,33 @@ class SyncVelocityEntities extends Command
             }
         }
 
-        $team->members()->syncWithPivotValues($engineerIds, ['role' => TeamRole::Engineer->value]);
+        $sync = [];
+
+        foreach ($engineerIds as $id) {
+            $e = $team->members->where('id', $id)->first();
+            
+            $sync[$id] = [
+                'role' => $e?->pivot->role ?? TeamRole::Engineer->value,
+                'is_locked' => true,
+            ];
+        }
+
+        $team->members()->sync($sync);
+    }
+
+    protected function cachedRequest($url)
+    {
+        $hash = 'request-cache.'.md5($url);
+
+        return Cache::remember($hash, 10000, function() use ($url) {
+            $response = Http::withToken($this->bearerToken)->get($url);
+            $body = null;
+        
+            if ($response->ok()) {
+                $body = json_decode($response->getBody()->getContents(), true);
+            }
+
+            return $body;
+        });
     }
 }

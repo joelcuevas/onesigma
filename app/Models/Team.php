@@ -29,15 +29,15 @@ class Team extends Model
         'latestMetrics',
     ];
 
-    public static function nestedTree()
+    public static function getNestedTree()
     {
         $teams = static::orderBy('name')->withCount('members')->get();
 
-        $flat = collect([]);
+        $flatTree = collect([]);
 
-        $fn = function($team, $n = 0) use (&$fn, $flat) {
+        $fn = function($team, $n = 0) use (&$fn, $flatTree) {
             $team->nestedLevel = $n;
-            $flat->add($team);
+            $flatTree->add($team);
 
             if ($team->nestedTeams) {
                 foreach ($team->nestedTeams as $nt) {
@@ -50,7 +50,7 @@ class Team extends Model
 
         $teams->where('is_root', true)->map(fn($t) => $fn($t));
 
-        return $flat;
+        return $flatTree;
     }
 
     public function nestedTeams(): MorphToMany
@@ -72,7 +72,9 @@ class Team extends Model
     {
         return $this
             ->morphedByMany(Engineer::class, 'teamable')
-            ->withPivot('role')
+            ->using(TeamMember::class)
+            ->as('teamMember')
+            ->withPivot('role', 'is_locked')
             ->orderBy('name');
     }
 }

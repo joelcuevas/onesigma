@@ -11,7 +11,7 @@ class ListTeams extends Component
 
     public function mount()
     {
-        $this->teams = Team::nestedTree();    
+        $this->teams = Team::getNestedTree();    
     }
 
     public function render()

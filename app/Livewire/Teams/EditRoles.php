@@ -40,7 +40,7 @@ class EditRoles extends Component
     protected function loadRoles()
     {
         foreach ($this->team->members as $m) {
-            $this->roles[$m->id] = $m->pivot->role;
+            $this->roles[$m->id] = $m->teamMember->role;
         }
     }
 }

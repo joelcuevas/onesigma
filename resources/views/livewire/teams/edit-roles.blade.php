@@ -22,7 +22,7 @@
                   class="sm:mt-0"
                   wire:model="roles.{{ $member->id }}">
 
-                  @foreach (App\Enums\TeamRole::cases() as $c)
+                  @foreach (App\Models\Enums\TeamRole::cases() as $c)
                     <option value="{{ $c->value }}">{{ __($c->name) }}</option>
                   @endforeach
                 </x-select>
