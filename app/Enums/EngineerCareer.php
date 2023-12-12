@@ -5,8 +5,8 @@ namespace App\Enums;
 enum EngineerCareer: string
 {
     case Engineer = 'E';
-    case TechLead = 'TL';
-    case EngineeringManager = 'EM';
-    case TechProductManager = 'TPM';
-    case ScrumMaster = 'SM';
+    case Lead = 'TL';
+    case Manager = 'EM';
+    case TPM = 'TPM';
+    case Scrum = 'SM';
 }

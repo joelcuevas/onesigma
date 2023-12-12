@@ -3,9 +3,10 @@
     {{ $team->name }} <span class="text-gray-400 font-medium">: {{ __('Equipo') }}</span>
   </x-slot:header>
 
-  <div x-data x-on:engineers-updated="$wire.$refresh" class="space-y-6">
+  <div x-data 
+    x-on:team-updated="$wire.$refresh" 
+    class="space-y-6">
     <div>
-      <h3 class="text-base font-semibold leading-6 text-gray-900">{{ __('Últimos 7 días') }}</h3>
       <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
           <dt class="truncate text-sm font-medium text-gray-500">{{ __('Weekly Coding Days') }}</dt>
@@ -16,7 +17,7 @@
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
         </div>
         <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-          <dt class="truncate text-sm font-medium text-gray-500">{{ __('Maduréz') }}</dt>
+          <dt class="truncate text-sm font-medium text-gray-500">{{ __('Madurez') }}</dt>
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
         </div>
       </dl>
@@ -30,6 +31,9 @@
             <x-heroicon-o-users class="inline-block h-5 w-5 mr-1 align-bottom" />
             {{ count($team->members) }} {{ __('miembros') }}
           </p>
+        </div>
+        <div>
+          <livewire:teams.edit-roles :$team />
         </div>
       </div>
 

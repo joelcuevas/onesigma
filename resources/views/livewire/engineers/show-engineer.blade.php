@@ -34,7 +34,7 @@
   </x-slot>
 
   <x-slot:actions>
-    <livewire:engineers.grade-engineer :$engineer />
+    
   </x-slot>
 
   <div class="mb-6">
@@ -48,7 +48,7 @@
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
       </div>
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-        <dt class="truncate text-sm font-medium text-gray-500">{{ __('Maduréz') }}</dt>
+        <dt class="truncate text-sm font-medium text-gray-500">{{ __('Madurez') }}</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">--</dd>
       </div>
     </dl>
@@ -62,6 +62,7 @@
             key="{{ $this->careerChart->reactiveKey() }}"
             :radar-chart-model="$this->careerChart" />
         </div>
+        <livewire:engineers.grade-engineer :$engineer />
       </x-layout.panel>
     </div>
     <div class="lg:col-span-1 lg:col-start-3">

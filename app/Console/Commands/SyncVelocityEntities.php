@@ -140,7 +140,7 @@ class SyncVelocityEntities extends Command
 
             if (isset($tree['nested'])) {
                 $nestedIds = $this->insertTeams($tree['nested']);
-                $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => TeamRole::Subteam->value]);
+                $team->nestedTeams()->syncWithPivotValues($nestedIds, ['role' => null]);
             }
 
             $this->insertEngineers($team);
@@ -182,6 +182,6 @@ class SyncVelocityEntities extends Command
             }
         }
 
-        $team->members()->syncWithPivotValues($engineerIds, ['role' => TeamRole::Developer->value]);
+        $team->members()->syncWithPivotValues($engineerIds, ['role' => TeamRole::Engineer->value]);
     }
 }
