@@ -3,9 +3,8 @@
     <x-slot:body>
       @foreach ($teams as $team)
         <tr>
-          <!-- pl-0 pl-1 pl-2 pl-3 -->
-          <x-table.td class="font-medium text-gray-900" style="padding-left: {{ $team->nestedLevel * 25 }}px">
-            <div>{{ $team->name }}</div>
+          <x-table.td class="font-medium text-gray-900">
+            <div style="padding-left: {{ $team->nestedLevel * 25 }}px">{{ $team->name }}</div>
           </x-table.td>
           <x-table.td>
             {{ $team->members_count }}

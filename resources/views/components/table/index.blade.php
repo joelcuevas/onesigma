@@ -5,7 +5,7 @@
     <thead>
       <tr>
         @foreach ($headers as $h)
-          <th class="py-3.5 text-left text-sm font-semibold text-gray-900">{{ __($h) }}</th>
+          <th class="py-3.5 px-2 text-left text-sm font-semibold text-gray-900">{{ __($h) }}</th>
         @endforeach
       </tr>
     </thead>

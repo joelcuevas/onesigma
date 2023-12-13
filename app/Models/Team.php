@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Traits\HasMetrics;
 use App\Models\Traits\HasGrades;
+use App\Models\Enums\TeamRole;
 
 class Team extends Model
 {
@@ -76,5 +77,37 @@ class Team extends Model
             ->as('teamMember')
             ->withPivot('role', 'is_locked')
             ->orderBy('name');
+    }
+
+    public function getEngineersAttribute()
+    {
+        return $this->members
+            ->whereIn('teamMember.role.value', [
+                TeamRole::Engineer->value,
+                TeamRole::Leader->value,
+            ])
+            ->sort(function ($a, $b) {
+                if ($a->teamMember->role == $b->teamMember->role) {
+                    return strcmp($a->name, $b->name);
+                }
+
+                return $a->teamMember->role == TeamRole::Leader ? -1 : 1;
+            });
+    }
+
+    public function getManagersAttribute()
+    {
+        return $this->members
+            ->whereIn('teamMember.role.value', [
+                TeamRole::Manager->value,
+            ]);
+    }
+
+    public function getGuestsAttribute()
+    {
+        return $this->members
+            ->whereIn('teamMember.role.value', [
+                TeamRole::Guest->value,
+            ]);
     }
 }
