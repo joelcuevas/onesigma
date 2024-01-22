@@ -1,6 +1,13 @@
 <div>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipo') }}: {{ $team->name }}</h2>
+        <div class="sm:flex sm:items-center sm:justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipo') }}: {{ $team->name }}</h2>
+            <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
+                <x-link-button href="{{ route('teams.edit', $team) }}">
+                    {{ __('Editar') }}
+                </x-link-button>
+            </div>
+        </div>
     </x-slot>
 
     <div class="flex flex-col space-y-6">
