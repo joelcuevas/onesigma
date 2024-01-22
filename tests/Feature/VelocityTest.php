@@ -1,0 +1,220 @@
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use App\Jobs\Velocity\SyncEngineers;
+use App\Jobs\Velocity\SyncMetrics;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Engineer;
+
+class VelocityTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_velocity_engineers_and_metrics_are_synced()
+    {
+        $this->fakeVelocityPayloads();
+
+        SyncEngineers::dispatch();
+
+        $engineer = Engineer::where('email', 'velocity1@engineer.com')->first();
+        $team = $engineer->teams->first();
+
+        $this->assertNotNull($engineer);
+        $this->assertEquals('Velocity Team', $team->name);
+
+        $identity = $engineer->identities->where('source', 'velocity')->first();
+        $this->assertEquals($engineer->id, $identity->identifiable->id);
+        $this->assertEquals('17024891', $identity->source_id);
+        $this->assertEquals('velocity1@engineer.com', $identity->source_email);
+
+        $this->assertEquals(0, $engineer->getLatestMetrics()->count());
+
+        SyncMetrics::dispatch();
+
+        $metrics = $engineer->getLatestMetrics();
+
+        $this->assertEquals(3, $metrics->count());
+
+        foreach (config('onesigma.metrics.watching') as $w) {
+            $this->assertDatabaseHas('metrics', [
+                'metricable_type' => 'engineer',
+                'metricable_id' => $engineer->id,
+                'metric' => $w,
+                'value' => 100,
+            ]);
+        }
+    }
+
+    public function test_sync_velocity_command_runs()
+    {
+        $this->fakeVelocityPayloads();
+
+        Artisan::call('velocity:sync');
+
+        $this->assertDatabaseHas('engineers', ['email' => 'velocity1@engineer.com']);
+        $this->assertDatabaseHas('teams', ['name' => 'Velocity Team']);
+
+        $engineer = Engineer::where('email', 'velocity1@engineer.com')->first();
+        $metric = config('onesigma.metrics.watching')[0];
+
+        $this->assertDatabaseHas('metrics', [
+            'metricable_type' => 'engineer',
+            'metricable_id' => $engineer->id,
+            'metric' => $metric,
+            'value' => 100,
+        ]);
+    }
+
+    protected function fakeVelocityPayloads()
+    {
+        Http::fakeSequence()
+            ->push($this->peoplePayload(1), 200)
+            ->push($this->teamsPayload(), 200)
+            ->push($this->peoplePayload(2), 200)
+            ->push($this->teamsPayload(), 200)
+            ->push($this->metricPayload(), 200)
+            ->push($this->metricPayload(), 200)
+            ->push($this->metricPayload(), 200);
+    }
+
+    protected function peoplePayload($page = 1)
+    {
+        $pagination = '';
+
+        if ($page == 1) {
+            $pagination = '
+                , "links": {
+                    "next": "https://api.velocity.codeclimate.com/v1/people?page%5Bnumber%5D=2&page%5Bsize%5D=50"
+                }
+            ';
+        }
+
+        return '
+            {
+                "data": [
+                    {
+                        "id": "1702489'.$page.'",
+                        "type": "people",
+                        "links": {
+                            "self": "https://api.velocity.codeclimate.com/v1/people/1702489'.$page.'"
+                        },
+                        "attributes": {
+                            "name": "Velocity Engineer '.$page.'",
+                            "email": "velocity'.$page.'@engineer.com",
+                            "createdAt": "2023-03-02T19:02:54.773Z",
+                            "hasUser": false,
+                            "endDate": null,
+                            "startDate": null,
+                            "visible": false,
+                            "lastActiveAt": null
+                        },
+                        "relationships": {
+                            "teams": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/people/1702489'.$page.'/teams"
+                                }
+                            }
+                        }
+                    }
+                ]
+                '.$pagination.'
+            }
+        ';   
+    }
+
+    protected function teamsPayload()
+    {
+        return '
+            {
+                "data": [
+                    {
+                        "id": "175276",
+                        "type": "teams",
+                        "links": {
+                            "self": "https://api.velocity.codeclimate.com/v1/teams/175276"
+                        },
+                        "attributes": {
+                            "name": "Velocity Team",
+                            "createdAt": "2023-10-05T23:02:23Z",
+                            "sync": {
+                                "synchronizedAt": "2024-01-21T03:11:37Z",
+                                "source": {
+                                    "type": "github",
+                                    "url": "https://github.com/digitaltitransversal"
+                                }
+                            }
+                        },
+                        "relationships": {
+                            "people": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/people"
+                                }
+                            },
+                            "teams": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/teams"
+                                }
+                            },
+                            "parent": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/parent"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        ';
+    }
+
+    protected function metricPayload()
+    {
+        return '
+            {
+                "data": [
+                    {
+                        "group": {
+                            "owner_id": 17024891,
+                            "owner_name": "Velocity Engineer 1",
+                            "owner_avatar_url": "https://avatars.githubusercontent.com/u/17024891?v=4"
+                        },
+                        "values": [
+                            {
+                                "value": 100.0,
+                                "period": "2024-01-14T00:00:00.000-06:00",
+                                "formatted_value": "100%",
+                                "short_formatted_value": "100%",
+                                "links": {
+                                    "drilldown": "https://velocity.codeclimate.com/drilldown"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "group": {
+                            "owner_id": 17024892,
+                            "owner_name": "Velocity Engineer 2",
+                            "owner_avatar_url": "https://avatars.githubusercontent.com/u/17024892?v=4"
+                        },
+                        "values": [
+                            {
+                                "value": 100.0,
+                                "period": "2024-01-14T00:00:00.000-06:00",
+                                "formatted_value": "100%",
+                                "short_formatted_value": "100%",
+                                "links": {
+                                    "drilldown": "https://velocity.codeclimate.com/drilldown"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ';
+    }
+}

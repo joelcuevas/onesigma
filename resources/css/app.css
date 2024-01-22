@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .x-card {
+        @apply overflow-hidden 
+            bg-white p-6
+            text-gray-900 
+            shadow ring-1 
+            ring-gray-900/5 sm:rounded-lg sm:p-8;
+    }
+}
