@@ -36,7 +36,7 @@ class GradeEngineer implements WorkflowableJob
         $perfect = $below->count() == 0;
         $score = $perfect ? $above->sum() : $below->sum();
 
-        $this->engineer->score = $score;
+        $this->engineer->score = (int) $score;
         $this->engineer->grade = score_to_grade($score, $this->aplus);
         $this->engineer->graded_at = now();
         $this->engineer->save();

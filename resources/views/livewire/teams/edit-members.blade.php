@@ -1,5 +1,5 @@
 <div x-data>
-    <x-secondary-button x-on:click.prevent="$dispatch('open-modal', {name: '{{ $name }}'})">
+    <x-secondary-button x-on:click.prevent="$dispatch('open-modal', { name: '{{ $name }}' })">
         <x-heroicon-o-users class="mr-2 h-4 w-4" />
         {{ __('Editar') }}
     </x-secondary-button>
@@ -9,12 +9,12 @@
     <x-modal name="{{ $name }}">
         <div class="x-card">
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Editar Miembros') }}
+                {{ __('Editar Miembros del Equipo') }}
             </h2>
 
             <div class="mt-3 flex space-x-4">
                 <x-select-input wire:model="orphanId" required>
-                    <option value="" disabled selected>Agregar miembro...</option>
+                    <option value="" disabled selected>{{ __('Agregar miembro...') }}</option>
 
                     @foreach ($orphans->sortBy('name') as $o)
                         <option value="{{ $o->id }}">{{ $o->name }} {{ '<'.$o->email.'>' }}</option>

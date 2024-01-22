@@ -37,7 +37,7 @@ class GradeCluster implements WorkflowableJob
             $perfect = $below->count() == 0;
             $score = $perfect ? $above->sum() : $below->sum();
 
-            $this->team->score = $score;
+            $this->team->score = (int) $score;
             $this->team->grade = score_to_grade($score, $this->aplus);
             $this->team->graded_at = now();
             $this->team->save();
