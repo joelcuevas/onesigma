@@ -45,7 +45,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        @foreach ($team->engineers as $engineer)
+                                        @foreach ($team->engineers->unique() as $engineer)
                                             <tr>
                                                 <td class="whitespace-nowrap py-2 font-medium text-gray-900 sm:pl-0">
                                                     <a class="hover:underline" href="{{ route('engineers.show', $engineer) }}">
@@ -110,7 +110,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    @foreach ($team->users as $user)
+                                    @foreach ($team->users->unique() as $user)
                                         <tr>
                                             <td class="whitespace-nowrap py-2 font-medium text-gray-900 sm:pl-0">
                                                 <a class="hover:underline" href="#">
