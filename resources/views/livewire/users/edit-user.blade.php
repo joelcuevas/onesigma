@@ -32,6 +32,14 @@
                                 <x-input-error :messages="$errors->get('email')" />
                             </div>
 
+                            @if (! $user->exists || $user->hasPassword())
+                                <div class="md:col-span-4">
+                                <x-input-label>{{ __('Contraseña') }}</x-input-label>
+                                <x-text-input wire:model="password" />
+                                <x-input-error :messages="$errors->get('password')" />
+                                </div>
+                            @endif
+
                             <div class="md:col-span-3">
                                 <x-input-label>{{ __('Rol') }}</x-input-label>
 

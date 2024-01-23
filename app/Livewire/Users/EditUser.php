@@ -6,6 +6,8 @@ use App\Models\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 class EditUser extends Component
 {
@@ -15,6 +17,8 @@ class EditUser extends Component
 
     public $email;
 
+    public $password;
+
     public $role;
 
     public $allRoles;
@@ -23,7 +27,11 @@ class EditUser extends Component
     {
         $this->user = $user;
 
-        $this->authorizeUser();
+        if ($this->user->exists) {
+            $this->authorize('edit', $user);
+        } else {
+            $this->authorize('create', User::class);
+        }
 
         $this->fill($user->only([
             'name', 'email', 'role',
@@ -35,10 +43,11 @@ class EditUser extends Component
 
     public function save()
     {
-        $this->authorizeUser();
-
         $validated = $this->validate([
-            'name' => 'required|max:255',
+            'name' => [
+                'required', 
+                'max:255',
+            ],
             'email' => [
                 'required',
                 'email',
@@ -47,28 +56,31 @@ class EditUser extends Component
             'role' => [
                 Rule::enum(UserRole::class),
             ],
+            'password' => [
+                'sometimes',
+                'nullable',
+                'max:255',
+                'string', 
+                Password::defaults(),
+            ],
         ]);
 
-        $this->user->update($validated);
+        if (! is_null($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $this->user->fill($validated);
+        $this->user->save();
 
         $this->redirect(route('users'));
     }
 
     public function delete()
     {
-        $this->authorize('delete', $this->user);
-
         $this->user->delete();
 
         $this->redirect(route('users'));
-    }
-
-    protected function authorizeUser()
-    {
-        if ($this->user->exists) {
-            $this->authorize('edit', $this->user);
-        } else {
-            $this->authorize('create', User::class);
-        }
     }
 }
