@@ -4,10 +4,10 @@ namespace App\Livewire\Users;
 
 use App\Models\Enums\UserRole;
 use App\Models\User;
-use Illuminate\Validation\Rule;
-use Livewire\Component;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Livewire\Component;
 
 class EditUser extends Component
 {
@@ -45,7 +45,7 @@ class EditUser extends Component
     {
         $validated = $this->validate([
             'name' => [
-                'required', 
+                'required',
                 'max:255',
             ],
             'email' => [
@@ -60,7 +60,7 @@ class EditUser extends Component
                 'sometimes',
                 'nullable',
                 'max:255',
-                'string', 
+                'string',
                 Password::defaults(),
             ],
         ]);

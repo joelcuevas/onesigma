@@ -64,7 +64,7 @@ class EditTeam extends Component
                 'exists:teams,id',
             ],
             'is_cluster' => [
-                'nullable', 
+                'nullable',
                 'boolean',
             ],
         ];

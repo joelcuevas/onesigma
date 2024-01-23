@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Jobs\Velocity\SyncEngineers;
 use App\Jobs\Velocity\SyncMetrics;
+use App\Jobs\Velocity\SyncTeams;
 use App\Models\Engineer;
+use App\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
@@ -17,6 +19,20 @@ class VelocityTest extends TestCase
     public function test_velocity_engineers_and_metrics_are_synced()
     {
         $this->fakeVelocityPayloads();
+
+        SyncTeams::dispatch();
+
+        $team = Team::query()
+            ->whereIdentity('velocity', '1669301')
+            ->first();
+
+        $context = $team->identities
+            ->where('source', 'velocity')
+            ->first()
+            ->context;
+
+        $this->assertNotNull($team);
+        $this->assertEquals(['name' => 'Velocity Team 1'], $context);
 
         SyncEngineers::dispatch();
 
@@ -72,13 +88,65 @@ class VelocityTest extends TestCase
     protected function fakeVelocityPayloads()
     {
         Http::fakeSequence()
+            ->push($this->teamsPayload(1), 200)
+            ->push($this->teamsPayload(2), 200)
             ->push($this->peoplePayload(1), 200)
-            ->push($this->teamsPayload(), 200)
+            ->push($this->peopleTeamsPayload(), 200)
             ->push($this->peoplePayload(2), 200)
-            ->push($this->teamsPayload(), 200)
+            ->push($this->peopleTeamsPayload(), 200)
             ->push($this->metricPayload(), 200)
             ->push($this->metricPayload(), 200)
             ->push($this->metricPayload(), 200);
+    }
+
+    protected function teamsPayload($page = 1)
+    {
+        $pagination = '';
+
+        if ($page == 1) {
+            $pagination = '
+                , "links": {
+                    "next": "https://api.velocity.codeclimate.com/v1/teams?page%5Bnumber%5D=2&page%5Bsize%5D=50"
+                }
+            ';
+        }
+
+        return '
+            {
+                "data": [
+                    {
+                        "id": "166930'.$page.'",
+                        "type": "teams",
+                        "links": {
+                            "self": "https://api.velocity.codeclimate.com/v1/teams/166930'.$page.'"
+                        },
+                        "attributes": {
+                            "name": "Velocity Team '.$page.'",
+                            "createdAt": "2023-08-10T22:58:28Z",
+                            "sync": null
+                        },
+                        "relationships": {
+                            "people": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/166930'.$page.'/people"
+                                }
+                            },
+                            "teams": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/166930'.$page.'/teams"
+                                }
+                            },
+                            "parent": {
+                                "links": {
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/166930'.$page.'/parent"
+                                }
+                            }
+                        }
+                    }
+                ]
+                '.$pagination.'
+            }
+        ';
     }
 
     protected function peoplePayload($page = 1)
@@ -126,7 +194,7 @@ class VelocityTest extends TestCase
         ';
     }
 
-    protected function teamsPayload()
+    protected function peopleTeamsPayload()
     {
         return '
             {

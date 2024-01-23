@@ -69,7 +69,7 @@
                             @else
                                 <div class="rounded-md border p-6 text-center">
                                     <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
-                                    
+
                                     @can('edit-members', $team)
                                         <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-engineers' })">
                                             <x-heroicon-o-plus class="mr-1 h-5 w-5" />
@@ -130,7 +130,7 @@
                         @else
                             <div class="rounded-md border p-6 text-center">
                                 <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
-                                
+
                                 @can('edit-members', $team)
                                     <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-users' })">
                                         <x-heroicon-o-plus class="mr-1 h-5 w-5" />
