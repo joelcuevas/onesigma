@@ -23,7 +23,7 @@ new class extends Component
 }; ?>
 
 <div>
-    <dl class="grid grid-cols-1 divide-y divide-gray-200 overflow-hidden bg-white shadow sm:rounded-lg md:grid-cols-3 md:divide-x md:divide-y-0">
+    <dl class="grid grid-cols-1 divide-y divide-gray-200 overflow-hidden bg-white shadow sm:rounded-lg md:grid-cols-4 md:divide-x md:divide-y-0">
         @foreach ($metrics as $metric)
             <div class="px-4 py-5 sm:p-6">
                 <dt class="text-base font-normal leading-tight text-gray-900">

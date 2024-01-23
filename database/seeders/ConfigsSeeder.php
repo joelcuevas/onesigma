@@ -48,6 +48,22 @@ class ConfigsSeeder extends Seeder
             'unit' => 'Días',
         ]);
 
+        MetricConfig::create([
+            'metric' => 'rework_ratio',
+            'label' => 'Rework',
+            'target' => 8,
+            'goal' => -1,
+            'unit' => '%',
+        ]);
+
+        MetricConfig::create([
+            'metric' => 'review_influence_ratio',
+            'label' => 'Review Influence',
+            'target' => 80,
+            'goal' => 1,
+            'unit' => '%',
+        ]);
+
         $engineerSkills = [
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             2 => [1, 2, 2, 2, 1, 2, 2, 1, 1, 1],
