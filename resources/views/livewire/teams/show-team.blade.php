@@ -3,9 +3,11 @@
         <div class="sm:flex sm:items-center sm:justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipo') }}: {{ $team->name }}</h2>
             <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
-                <x-link-button href="{{ route('teams.edit', $team) }}">
-                    {{ __('Editar') }}
-                </x-link-button>
+                @can('edit', $team)
+                    <x-link-button href="{{ route('teams.edit', $team) }}">
+                        {{ __('Editar') }}
+                    </x-link-button>
+                @endcan
             </div>
         </div>
     </x-slot>
@@ -22,7 +24,9 @@
                         <p class="mt-1 leading-tight text-gray-500">{{ __('Miembros del equipo que suman a las métricas de performance.') }}</p>
                     </div>
                     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <livewire:teams.edit-members :$team relationship="engineers" name="edit-engineers" />
+                        @can('edit-members', $team)
+                            <livewire:teams.edit-members :$team relationship="engineers" name="edit-engineers" />
+                        @endcan
                     </div>
                 </div>
 
@@ -63,34 +67,40 @@
                                     </tbody>
                                 </table>
                             @else
-                                    <div class="text-center border p-6 rounded-md">
-                                    <x-heroicon-o-users class="mx-auto w-10 h-10 text-gray-400 mb-3" />
-                                    <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-engineers' })">
-                                      <x-heroicon-o-plus class="w-5 h-5 mr-1" />
-                                      {{ __('Agregar Ingenieros') }}
-                                    </x-primary-button>
-                                    </div>
+                                <div class="rounded-md border p-6 text-center">
+                                    <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
+                                    
+                                    @can('edit-members', $team)
+                                        <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-engineers' })">
+                                            <x-heroicon-o-plus class="mr-1 h-5 w-5" />
+                                            {{ __('Agregar Ingenieros') }}
+                                        </x-primary-button>
+                                    @endcan
+                                </div>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-            <div class="x-card">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-medium leading-tight text-gray-900">{{ __('Staff de Soporte') }}</h1>
-                        <p class="mt-1 leading-tight text-gray-500">{{ __('Usuarios de soporte, que pueden visualizar o gestionar al equipo.') }}</p>
-                    </div>
-                    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <livewire:teams.edit-members :$team relationship="users" name="edit-users" />
-                    </div>
-                </div>
 
-                <div class="mt-6 flow-root">
-                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                            @if ($team->users->count())
+        <div class="x-card">
+            <div class="sm:flex sm:items-center">
+                <div class="sm:flex-auto">
+                    <h1 class="text-base font-medium leading-tight text-gray-900">{{ __('Staff de Soporte') }}</h1>
+                    <p class="mt-1 leading-tight text-gray-500">{{ __('Usuarios de soporte, que pueden visualizar o gestionar al equipo.') }}</p>
+                </div>
+                <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    @can('edit-members', $team)
+                        <livewire:teams.edit-members :$team relationship="users" name="edit-users" />
+                    @endcan
+                </div>
+            </div>
+
+            <div class="mt-6 flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        @if ($team->users->count())
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
                                     <tr>
@@ -117,18 +127,21 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @else
-                                <div class="text-center border p-6 rounded-md">
-                                    <x-heroicon-o-users class="mx-auto w-10 h-10 text-gray-400 mb-3" />
+                        @else
+                            <div class="rounded-md border p-6 text-center">
+                                <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
+                                
+                                @can('edit-members', $team)
                                     <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-users' })">
-                                      <x-heroicon-o-plus class="w-5 h-5 mr-1" />
-                                      {{ __('Agregar Usuarios') }}
+                                        <x-heroicon-o-plus class="mr-1 h-5 w-5" />
+                                        {{ __('Agregar Usuarios') }}
                                     </x-primary-button>
-                                    </div>
-                            @endif
-                        </div>
+                                @endcan
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>

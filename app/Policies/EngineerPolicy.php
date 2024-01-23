@@ -12,10 +12,10 @@ class EngineerPolicy
         if ($user->isAdmin()) {
             return true;
         }
-     
+
         return null;
     }
-    
+
     public function show(User $user, Engineer $engineer)
     {
         return $user->isManagerOfEngineer($engineer);

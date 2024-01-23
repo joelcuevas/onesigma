@@ -11,6 +11,16 @@ class Position extends Model
 
     protected $attributes = [
         'type' => 'engineer',
+        's0' => 0, 's0_label' => 's0',
+        's1' => 0, 's1_label' => 's1',
+        's2' => 0, 's2_label' => 's2',
+        's3' => 0, 's3_label' => 's3',
+        's4' => 0, 's4_label' => 's4',
+        's5' => 0, 's5_label' => 's5',
+        's6' => 0, 's6_label' => 's6',
+        's7' => 0, 's7_label' => 's7',
+        's8' => 0, 's8_label' => 's8',
+        's9' => 0, 's9_label' => 's9',
     ];
 
     protected static function booted()

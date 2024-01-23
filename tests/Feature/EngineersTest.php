@@ -2,15 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Team;
-use App\Models\Engineer;
 use App\Livewire\Engineers\EditEngineer;
-use Livewire\Livewire;
+use App\Models\Team;
+use App\Models\User;
 use Database\Seeders\ConfigsSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class EngineersTest extends TestCase
 {
@@ -34,7 +32,7 @@ class EngineersTest extends TestCase
             ->call('update');
 
         $engineer->refresh();
-        
+
         $this->assertEquals('newname', $engineer->name);
         $this->assertEquals('new@email.com', $engineer->email);
         $this->assertEquals('SE7', $engineer->track);

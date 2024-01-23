@@ -3,9 +3,9 @@
 use App\Livewire\Engineers\EditEngineer;
 use App\Livewire\Engineers\ScoreEngineer;
 use App\Livewire\Engineers\ShowEngineer;
+use App\Livewire\Teams\EditTeam;
 use App\Livewire\Teams\IndexTeams;
 use App\Livewire\Teams\ShowTeam;
-use App\Livewire\Teams\EditTeam;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
 use Illuminate\Support\Facades\Route;
@@ -21,26 +21,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', fn () => redirect('login'));
 
 Route::middleware('auth')->group(function () {
     Route::get('teams', IndexTeams::class)
         ->name('teams')
         ->middleware('can:index,App\Models\Team');
 
-    Route::get('teams/{team}', ShowTeam::class)
-        ->name('teams.show')
-        ->middleware('can:show,team');
+    Route::get('teams/create', EditTeam::class)
+        ->name('teams.create')
+        ->middleware('can:create,App\Models\Team');
 
     Route::get('teams/{team}/edit', EditTeam::class)
         ->name('teams.edit')
         ->middleware('can:edit,team');
 
-    // engineers
+    Route::get('teams/{team}', ShowTeam::class)
+        ->name('teams.show')
+        ->middleware('can:show,team');
 
-    Route::get('engineers/{engineer}', ShowEngineer::class)
-        ->name('engineers.show')
-        ->middleware('can:show,engineer');
+    // engineers
 
     Route::get('engineers/{engineer}/edit', EditEngineer::class)
         ->name('engineers.edit')
@@ -48,6 +48,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('engineers/{engineer}/score', ScoreEngineer::class)
         ->name('engineers.score');
+
+    Route::get('engineers/{engineer}', ShowEngineer::class)
+        ->name('engineers.show')
+        ->middleware('can:show,engineer');
 
     // users
 

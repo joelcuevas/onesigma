@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Teams;
 
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use App\Models\Team;
 
 class IndexTeams extends Component
 {

@@ -3,7 +3,6 @@
 namespace App\Jobs\Graders\Workflows;
 
 use App\Jobs\Graders\GradeCluster;
-use App\Jobs\Graders\GradeTeam;
 use App\Models\Team;
 use Sassnowski\Venture\AbstractWorkflow;
 use Sassnowski\Venture\WorkflowDefinition;
@@ -25,7 +24,7 @@ class GradeClustersWorkflow extends AbstractWorkflow
         $teams = $this->team->children()->withoutClusters()->get();
 
         $workflow->addWorkflow(
-            new GradeTeamsWorkflow($teams), 
+            new GradeTeamsWorkflow($teams),
             id: 'subteams',
         );
 
@@ -47,12 +46,12 @@ class GradeClustersWorkflow extends AbstractWorkflow
         // grade self
         if ($this->team->isCluster()) {
             $workflow->addJob(
-                new GradeCluster($this->team), 
+                new GradeCluster($this->team),
                 dependencies: $wait,
             );
         } else {
             $workflow->addWorkflow(
-                new GradeTeamsWorkflow(collect([$this->team])), 
+                new GradeTeamsWorkflow(collect([$this->team])),
                 dependencies: $wait,
             );
         }

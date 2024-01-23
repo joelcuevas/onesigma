@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Teams\EditMembers;
 use App\Models\Engineer;
 use App\Models\Enums\TeamEngineerRole;
 use App\Models\Enums\TeamUserRole;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Livewire\Livewire;
-use App\Livewire\Teams\EditMembers;
+use Tests\TestCase;
 
 class TeamsTest extends TestCase
 {

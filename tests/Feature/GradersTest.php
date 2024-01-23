@@ -4,13 +4,13 @@ namespace Tests\Feature;
 
 use App\Jobs\Graders\GradeEngineer;
 use App\Jobs\Graders\GradeTeam;
+use App\Jobs\Graders\Workflows\GradeClustersWorkflow;
 use App\Models\Engineer;
 use App\Models\MetricConfig;
 use App\Models\Team;
 use Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Jobs\Graders\Workflows\GradeClustersWorkflow;
 
 class GradersTest extends TestCase
 {

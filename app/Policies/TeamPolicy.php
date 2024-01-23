@@ -12,7 +12,7 @@ class TeamPolicy
         if ($user->isAdmin()) {
             return true;
         }
-     
+
         return null;
     }
 
@@ -21,12 +21,22 @@ class TeamPolicy
         return $user->isManager();
     }
 
+    public function create(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    public function edit(User $user, Team $team)
+    {
+        return $user->isAdmin();
+    }
+
     public function show(User $user, Team $team)
     {
         return $user->isManagerOfTeam($team);
     }
 
-    public function edit(User $user, Team $team)
+    public function editMembers(User $user, Team $team)
     {
         return $user->isManagerOfTeam($team);
     }

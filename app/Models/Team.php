@@ -21,6 +21,7 @@ class Team extends Model
 
     protected $attributes = [
         'track' => 'ST3',
+        'is_cluster' => false,
     ];
 
     public function isCluster()
@@ -30,18 +31,30 @@ class Team extends Model
 
     public static function getForUser(User $user)
     {
-        $roots = function($query) use ($user) {
+        $roots = function ($query) use ($user) {
             $query->whereIn('id', $user->teams()->allRelatedIds());
         };
 
+        $traverse = function ($tree, $depth = 1) use (&$traverse) {
+            if (is_null($tree)) {
+                return collect();
+            }
+
+            $children = $tree->children
+                ->sortBy('name')
+                ->map(fn ($t) => $t->setAttribute('depth', $depth));
+
+            return $children->flatMap(function ($t) use ($depth, $traverse) {
+                return $traverse($t, $depth + 1)->prepend($t);
+            });
+        };
+
         return Team::treeOf($roots)
-            ->depthFirst()
             ->get()
             ->unique(fn ($i) => $i->id)
             ->toTree()
-            ->flatMap(function ($t) {
-                return $t->descendantsAndSelf()->depthFirst()->get();
-            });
+            ->sortBy('name')
+            ->flatMap(fn ($t) => $traverse($t)->prepend($t));
     }
 
     public function users()

@@ -33,8 +33,8 @@ class EditMembers extends Component
 
     public function mount(Team $team, $relationship, $name)
     {
-        $this->authorize('show', $team);
-        
+        $this->authorize('edit-members', $team);
+
         $this->team = $team;
         $this->relationship = $relationship;
         $this->name = $name;

@@ -23,6 +23,8 @@ class EditUser extends Component
     {
         $this->user = $user;
 
+        $this->authorizeUser();
+
         $this->fill($user->only([
             'name', 'email', 'role',
         ]));
@@ -33,11 +35,7 @@ class EditUser extends Component
 
     public function save()
     {
-        if ($this->user->exists) {
-            $this->authorize('edit', $this->user);
-        } else {
-            $this->authorize('create', User::class);
-        }
+        $this->authorizeUser();
 
         $validated = $this->validate([
             'name' => 'required|max:255',
@@ -63,5 +61,14 @@ class EditUser extends Component
         $this->user->delete();
 
         $this->redirect(route('users'));
+    }
+
+    protected function authorizeUser()
+    {
+        if ($this->user->exists) {
+            $this->authorize('edit', $this->user);
+        } else {
+            $this->authorize('create', User::class);
+        }
     }
 }

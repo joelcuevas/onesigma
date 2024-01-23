@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Mockery;
-use App\Models\User;
 use App\Models\Engineer;
-use Laravel\Socialite\Facades\Socialite;
-
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Tests\TestCase;
 
 class GithubTest extends TestCase
 {
@@ -27,7 +24,7 @@ class GithubTest extends TestCase
 
         $this->mockSocialiteUser($email);
 
-        $this->get('/github/callback'); 
+        $this->get('/github/callback');
 
         $user = User::where('email', $email)->first();
         $this->assertNotNull($user);
@@ -40,7 +37,7 @@ class GithubTest extends TestCase
 
         $this->mockSocialiteUser($email);
 
-        $this->get('/github/callback'); 
+        $this->get('/github/callback');
         $this->assertNotNull(User::where('email', $email)->first());
     }
 
@@ -50,7 +47,7 @@ class GithubTest extends TestCase
 
         $this->mockSocialiteUser($email);
 
-        $this->get('/github/callback'); 
+        $this->get('/github/callback');
         $this->assertNull(User::where('email', $email)->first());
     }
 

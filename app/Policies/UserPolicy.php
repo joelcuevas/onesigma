@@ -11,10 +11,10 @@ class UserPolicy
         if ($user->isAdmin()) {
             return true;
         }
-     
+
         return null;
     }
-    
+
     public function index(User $user)
     {
         return $user->isAdmin();

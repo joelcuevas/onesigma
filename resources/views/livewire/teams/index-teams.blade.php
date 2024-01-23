@@ -1,8 +1,15 @@
 <div>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Equipos') }}
-        </h2>
+        <div class="sm:flex sm:items-center sm:justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipos') }}</h2>
+            <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
+                @can('create', App\Models\Team::class)
+                    <x-link-button href="{{ route('teams.create') }}">
+                        {{ __('Nuevo Equipo') }}
+                    </x-link-button>
+                @endcan
+            </div>
+        </div>
     </x-slot>
 
     <div class="x-card">

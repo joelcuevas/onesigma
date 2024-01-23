@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Jobs\Velocity\SyncEngineers;
 use App\Jobs\Velocity\SyncMetrics;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Artisan;
 use App\Models\Engineer;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
 
 class VelocityTest extends TestCase
 {
@@ -124,7 +123,7 @@ class VelocityTest extends TestCase
                 ]
                 '.$pagination.'
             }
-        ';   
+        ';
     }
 
     protected function teamsPayload()

@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
 use App\Models\Enums\UserRole;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class UsersTest extends TestCase
 {
@@ -51,8 +50,6 @@ class UsersTest extends TestCase
 
         Livewire::actingAs($manager)
             ->test(EditUser::class, ['user' => $user])
-            ->set('name', fake()->name())
-            ->call('save')
             ->assertForbidden();
     }
 
@@ -72,8 +69,6 @@ class UsersTest extends TestCase
 
         Livewire::actingAs($manager)
             ->test(EditUser::class)
-            ->set('name', fake()->name())
-            ->call('save')
             ->assertForbidden();
     }
 
@@ -96,8 +91,6 @@ class UsersTest extends TestCase
 
         Livewire::actingAs($manager)
             ->test(EditUser::class, ['user' => $user])
-            ->assertOk()
-            ->call('delete')
             ->assertForbidden();
     }
 }

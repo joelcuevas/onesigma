@@ -5,9 +5,9 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
-use Illuminate\Support\Facades\RateLimiter;
 
 class AuthenticationTest extends TestCase
 {
