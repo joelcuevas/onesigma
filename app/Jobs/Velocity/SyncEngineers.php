@@ -33,48 +33,31 @@ class SyncEngineers implements ShouldQueue
 
     public function fetchPage($url)
     {
-        $response = $this->cachedRequest($url);
-        $people = collect([]);
+        $peopleResponse = $this->cachedRequest($url);
 
-        if ($response) {
-            $people = collect($response['data']);
+        if ($peopleResponse) {
+            $people = collect($peopleResponse['data']);
 
-            $people = $people->map(function ($p) {
+            $people->map(function ($p) {
                 // get engineer teams
                 $url = $this->baseUrl.'/people/'.$p['id'].'/teams';
-                $response = $this->cachedRequest($url);
+                $teamsResponse = $this->cachedRequest($url);
+                $team = null;
 
-                if (count($response['data'])) {
-                    $p['_team_'] = $response['data'][0];
+                if (count($teamsResponse['data'])) {
+                    $team = Team::query()
+                        ->whereIdentity('velocity', $teamsResponse['data'][0])
+                        ->first();
                 }
 
-                $teamId = $p['_team_']['id'] ?? null;
-
-                if ($teamId) {
-                    // create team if it doesn't exists
-                    $team = Team::query()
-                        ->whereIdentity('velocity', $teamId)
+                // we have a lot of idle users in velocity
+                // only import the ones who are part of a team
+                if ($team) {
+                    $engineer = Engineer::query()
+                        ->whereIdentity('velocity', $p['id'])
                         ->first();
-
-                    if (is_null($team)) {
-                        $team = Team::create([
-                            'name' => $p['_team_']['attributes']['name'],
-                            'parent_id' => 1,
-                        ]);
-
-                        $team->identities()->create([
-                            'source' => 'velocity',
-                            'source_id' => $teamId,
-                        ]);
-                    }
 
                     // create engineer if it doesn't exists
-                    $engineerId = $p['id'];
-
-                    $engineer = Engineer::query()
-                        ->whereIdentity('velocity', $engineerId)
-                        ->first();
-
                     if (is_null($engineer)) {
                         $engineer = Engineer::create([
                             'name' => $p['attributes']['name'],
@@ -83,28 +66,23 @@ class SyncEngineers implements ShouldQueue
 
                         $engineer->identities()->create([
                             'source' => 'velocity',
-                            'source_id' => $engineerId,
+                            'source_id' => $p['id'],
                             'source_email' => $p['attributes']['email'],
                         ]);
 
                         $engineer->skillsets()->create();
+                    
+                        // link engineer to team only on creation
+                        $team->engineers()->syncWithoutDetaching($engineer);
                     }
-
-                    // link engineer to team
-                    $team->engineers()->syncWithoutDetaching($engineer);
                 }
-
-                return $p;
             });
 
             // fetch next results page
-            if (isset($response['links']['next'])) {
-                $nested = $this->fetchPage($response['links']['next']);
-                $people = $people->merge($nested);
+            if (isset($peopleResponse['links']['next'])) {
+                $this->fetchPage($peopleResponse['links']['next']);
             }
         }
-
-        return $people;
     }
 
     protected function cachedRequest($url)

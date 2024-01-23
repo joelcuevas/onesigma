@@ -32,6 +32,8 @@ class MetricsTest extends TestCase
 
     public function test_latest_metrics_can_be_retrieved()
     {
+        config(['onesigma.metrics.velocity' => ['a', 'b', 'c']]);
+
         $engineer = Engineer::factory()->addMetrics(3)->create();
         $this->assertEquals(9, $engineer->metrics->count());
 

@@ -29,7 +29,7 @@ class EngineerFactory extends Factory
         $self = $this;
 
         if ($metrics === null) {
-            $metrics = config('onesigma.metrics.watching');
+            $metrics = config('onesigma.metrics.velocity');
         }
 
         foreach ($metrics as $m) {

@@ -21,7 +21,9 @@ class VelocityTest extends TestCase
         $this->fakeVelocityPayloads();
 
         Team::factory()
-            ->create()
+            ->create([
+                'name' => 'Velocity Team 1',
+            ])
             ->identities()->create([
                 'source' => 'velocity',
                 'source_id' => '1669301',
@@ -54,7 +56,7 @@ class VelocityTest extends TestCase
         $team = $engineer->teams->first();
 
         $this->assertNotNull($engineer);
-        $this->assertEquals('Velocity Team', $team->name);
+        $this->assertEquals('Velocity Team 1', $team->name);
 
         $identity = $engineer->identities->where('source', 'velocity')->first();
         $this->assertEquals($engineer->id, $identity->identifiable->id);
@@ -66,8 +68,9 @@ class VelocityTest extends TestCase
         SyncMetrics::dispatch();
 
         $metrics = $engineer->getLatestMetrics();
+        $metricsCount = count(config('onesigma.metrics.velocity'));
 
-        $this->assertEquals(3, $metrics->count());
+        $this->assertEquals($metricsCount, $metrics->count());
 
         foreach (config('onesigma.metrics.watching') as $w) {
             $this->assertDatabaseHas('metrics', [
@@ -86,7 +89,7 @@ class VelocityTest extends TestCase
         Artisan::call('velocity:sync');
 
         $this->assertDatabaseHas('engineers', ['email' => 'velocity1@engineer.com']);
-        $this->assertDatabaseHas('teams', ['name' => 'Velocity Team']);
+        $this->assertDatabaseHas('teams', ['name' => 'Velocity Team 1']);
 
         $engineer = Engineer::where('email', 'velocity1@engineer.com')->first();
         $metric = config('onesigma.metrics.watching')[0];
@@ -101,16 +104,17 @@ class VelocityTest extends TestCase
 
     protected function fakeVelocityPayloads()
     {
-        Http::fakeSequence()
+        $seq = Http::fakeSequence()
             ->push($this->teamsPayload(1), 200)
             ->push($this->teamsPayload(2), 200)
             ->push($this->peoplePayload(1), 200)
             ->push($this->peopleTeamsPayload(), 200)
             ->push($this->peoplePayload(2), 200)
-            ->push($this->peopleTeamsPayload(), 200)
-            ->push($this->metricPayload(), 200)
-            ->push($this->metricPayload(), 200)
-            ->push($this->metricPayload(), 200);
+            ->push($this->peopleTeamsPayload(), 200);
+
+        foreach (config('onesigma.metrics.velocity') as $m) {
+            $seq->push($this->metricPayload(), 200);
+        }
     }
 
     protected function teamsPayload($page = 1)
@@ -214,10 +218,10 @@ class VelocityTest extends TestCase
             {
                 "data": [
                     {
-                        "id": "175276",
+                        "id": "1669301",
                         "type": "teams",
                         "links": {
-                            "self": "https://api.velocity.codeclimate.com/v1/teams/175276"
+                            "self": "https://api.velocity.codeclimate.com/v1/teams/1669301"
                         },
                         "attributes": {
                             "name": "Velocity Team",
@@ -233,17 +237,17 @@ class VelocityTest extends TestCase
                         "relationships": {
                             "people": {
                                 "links": {
-                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/people"
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/1669301/people"
                                 }
                             },
                             "teams": {
                                 "links": {
-                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/teams"
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/1669301/teams"
                                 }
                             },
                             "parent": {
                                 "links": {
-                                    "related": "https://api.velocity.codeclimate.com/v1/teams/175276/parent"
+                                    "related": "https://api.velocity.codeclimate.com/v1/teams/1669301/parent"
                                 }
                             }
                         }

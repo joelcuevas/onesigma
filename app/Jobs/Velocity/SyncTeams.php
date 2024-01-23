@@ -46,9 +46,11 @@ class SyncTeams implements ShouldQueue
                     ->first();
 
                 if (is_null($team)) {
+                    $defaultClusterId = config('onesigma.velocity.cluster_id');
+
                     $team = Team::create([
                         'name' => $name,
-                        'parent_id' => null,
+                        'parent_id' => $defaultClusterId,
                     ]);
 
                     $team->identities()->create([

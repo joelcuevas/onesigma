@@ -28,7 +28,7 @@ class SyncMetrics implements ShouldQueue
     {
         $this->baseUrl = 'https://velocity.codeclimate.com/api/metric';
         $this->bearerToken = config('services.velocity.token');
-        $this->metrics = config('onesigma.metrics.watching');
+        $this->metrics = config('onesigma.metrics.velocity');
         $this->date = now()->toDateString();
     }
 

@@ -40,6 +40,14 @@ class ConfigsSeeder extends Seeder
             'unit' => 'Horas',
         ]);
 
+        MetricConfig::create([
+            'metric' => 'average_weekly_coding_days',
+            'label' => 'Weekly Coding Days',
+            'target' => 3.8,
+            'goal' => 1,
+            'unit' => 'Días',
+        ]);
+
         $engineerSkills = [
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             2 => [1, 2, 2, 2, 1, 2, 2, 1, 1, 1],
