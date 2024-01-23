@@ -40,20 +40,18 @@
                             <x-input-error :messages="$errors->get('parent_id')" />
                         </div>
 
-                        @if (! $this->team->exists)
-                            <div class="md:col-span-6">
-                                <div class="flex items-start items-center">
-                                    <div class="flex h-6 items-center">
-                                        <input id="is_cluster" wire:model.live="is_cluster" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                                    </div>
-                                    <div class="ml-3">
-                                        <label for="is_cluster" class="font-medium text-gray-900">{{ __('Equipo Cluster') }}</label>
-                                    </div>
+                        <div class="md:col-span-6">
+                            <div class="flex items-start items-center">
+                                <div class="flex h-6 items-center">
+                                    <input id="is_cluster" wire:model.live="is_cluster" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                                 </div>
-
-                                <x-input-error :messages="$errors->get('is_cluster')" />
+                                <div class="ml-3">
+                                    <label for="is_cluster" class="font-medium text-gray-900">{{ __('Equipo Cluster') }}</label>
+                                </div>
                             </div>
-                        @endif
+
+                            <x-input-error :messages="$errors->get('is_cluster')" />
+                        </div>
                     </div>
                 </div>
             </div>

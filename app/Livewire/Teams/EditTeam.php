@@ -63,11 +63,11 @@ class EditTeam extends Component
                 'nullable',
                 'exists:teams,id',
             ],
+            'is_cluster' => [
+                'nullable', 
+                'boolean',
+            ],
         ];
-
-        if (! $this->team->exists) {
-            $rules['is_cluster'] = ['nullable', 'boolean'];
-        }
 
         return $this->validate($rules);
     }
