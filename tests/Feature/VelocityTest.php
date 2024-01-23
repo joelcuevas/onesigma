@@ -20,19 +20,33 @@ class VelocityTest extends TestCase
     {
         $this->fakeVelocityPayloads();
 
+        Team::factory()
+            ->create()
+            ->identities()->create([
+                'source' => 'velocity',
+                'source_id' => '1669301',
+                'context' => ['name' => 'Prev'],
+            ]);
+
         SyncTeams::dispatch();
 
-        $team = Team::query()
+        $team1 = Team::query()
             ->whereIdentity('velocity', '1669301')
             ->first();
 
-        $context = $team->identities
+        $context = $team1->identities
             ->where('source', 'velocity')
             ->first()
             ->context;
 
-        $this->assertNotNull($team);
+        $this->assertNotNull($team1);
         $this->assertEquals(['name' => 'Velocity Team 1'], $context);
+
+        $team2 = Team::query()
+            ->whereIdentity('velocity', '1669302')
+            ->first();
+
+        $this->assertNotNull($team2);
 
         SyncEngineers::dispatch();
 

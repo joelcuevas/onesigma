@@ -57,10 +57,14 @@ class SyncTeams implements ShouldQueue
                         'context' => ['name' => $name],
                     ]);
                 } else {
-                    $context = $team->context ?? [];
+                    $velocity = $team->identities
+                        ->where('source', 'velocity')
+                        ->first();
+
+                    $context = $velocity->context ?? [];
                     $context['name'] = $name;
-                    $team->context = $context;
-                    $team->save();
+                    $velocity->context = $context;
+                    $velocity->save();
                 }
             });
 
