@@ -39,6 +39,15 @@ class SyncEngineers implements ShouldQueue
             $people = collect($peopleResponse['data']);
 
             $people->map(function ($p) {
+                // nothing to do if the engineer exists
+                $exists = Engineer::query()
+                        ->whereIdentity('velocity', $p['id'])
+                        ->exists();
+
+                if ($exists) {
+                    return;
+                }
+
                 // get engineer teams
                 $url = $this->baseUrl.'/people/'.$p['id'].'/teams';
                 $teamsResponse = $this->cachedRequest($url);
