@@ -37,7 +37,7 @@ class EditTeam extends Component
         
         $this->parents = Auth::user()
             ->getTeams()
-            ->reject(fn ($t) => ! $t->isCluster())
+            ->reject(fn ($t) => ! $t->isCluster() || in_array($t->id, $subtree))
             ->map(function ($t) {
                 $t->name = str_repeat('—', $t->depth).' '.$t->name;
 
