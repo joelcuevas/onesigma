@@ -34,7 +34,15 @@ class EditTeam extends Component
         ]));
 
         $subtree = $team->descendantsAndSelf()->get()->pluck('id')->all();
-        $this->parents = Team::whereNotIn('id', $subtree)->get();
+        
+        $this->parents = Auth::user()
+            ->getTeams()
+            ->reject(fn ($t) => ! $t->isCluster())
+            ->map(function ($t) {
+                $t->name = str_repeat('—', $t->depth).' '.$t->name;
+
+                return $t;
+            });
     }
 
     public function update()

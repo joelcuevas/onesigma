@@ -32,7 +32,7 @@
 
                             <x-select-input wire:model="parent_id">
                                 <option value="" selected>{{ __('Ninguno') }}</option>
-                                @foreach ($parents->sortBy('name') as $parent)
+                                @foreach ($parents as $parent)
                                     <option value="{{ $parent->id }}">{{ $parent->name }}</option>
                                 @endforeach
                             </x-select-input>
