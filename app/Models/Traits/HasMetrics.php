@@ -50,7 +50,7 @@ trait HasMetrics
         } else {
             // -1 grade for every -2 points
             $steps = max(-8, min(0, $score));
-            $grade = chr(65 - ceil($score / 2));
+            $grade = chr(65 - ceil($steps / 2));
         }
 
         $this->score = $score;
