@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Teams\EditMembers;
+use App\Livewire\Teams\EditTeam;
 use App\Models\Engineer;
 use App\Models\Enums\TeamEngineerRole;
 use App\Models\Enums\TeamUserRole;
@@ -226,6 +227,75 @@ class TeamsTest extends TestCase
         $this->assertDatabaseHas('team_engineer', [
             'team_id' => $team->id,
             'engineer_id' => $extraEngineer->id,
+        ]);
+    }
+
+    public function test_teams_can_be_edited()
+    {
+        $admin = User::factory()->admin()->create();
+        $teams = Team::factory(2)->create();
+        $admin->teams()->attach($teams);
+        $name = rand();
+
+        $this->assertNull($teams[0]->parent_id);
+
+        Livewire::actingAs($admin)
+            ->test(EditTeam::class, [
+                'team' => $teams[0],
+            ])
+            ->assertOk()
+            ->set('name', $name)
+            ->set('parent_id', $teams[1]->id)
+            ->set('is_cluster', true)
+            ->set('status', TeamStatus::Active->value)
+            ->call('update');
+
+        $teams[0]->refresh();
+        $this->assertEquals($name, $teams[0]->name);
+        $this->assertEquals($teams[1]->id, $teams[0]->parent_id);
+    }
+
+    public function test_updating_team_status_updates_its_descendants()
+    {
+        $admin = User::factory()->admin()->create();
+        $teams = Team::factory(2)->create();
+        $admin->teams()->attach($teams);
+
+        $teams[1]->parent()->associate($teams[0])->save();
+
+        $this->assertEquals(TeamStatus::Active, $teams[0]->status);
+        $this->assertEquals(TeamStatus::Active, $teams[1]->status);
+
+        Livewire::actingAs($admin)
+            ->test(EditTeam::class, [
+                'team' => $teams[0],
+            ])
+            ->assertOk()
+            ->set('status', TeamStatus::Inactive->value)
+            ->call('update');
+
+        $this->assertEquals(TeamStatus::Inactive, $teams[0]->refresh()->status);
+        $this->assertEquals(TeamStatus::Inactive, $teams[1]->refresh()->status);
+    }
+
+    public function test_teams_can_be_created()
+    {
+        $admin = User::factory()->admin()->create();
+        $teams = Team::factory(2)->cluster()->create();
+        $admin->teams()->attach($teams);
+        $name = rand();
+
+        Livewire::actingAs($admin)
+            ->test(EditTeam::class)
+            ->assertOk()
+            ->set('name', $name)
+            ->set('parent_id', null)
+            ->set('is_cluster', false)
+            ->set('status', TeamStatus::Active->value)
+            ->call('update');
+
+        $this->assertDatabaseHas('teams', [
+            'name' => $name,
         ]);
     }
 }

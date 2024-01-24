@@ -53,6 +53,12 @@ class EditTeam extends Component
         $validated = $this->validateInput();
 
         $this->team->fill($validated);
+
+        if ($this->team->isDirty('status')) {
+            $sub = $this->team->descendantsAndSelf->pluck('id')->all();
+            Team::whereIn('id', $sub)->update(['status' => $validated['status']]);
+        }
+
         $this->team->save();
 
         if ($this->team->wasRecentlyCreated) {
