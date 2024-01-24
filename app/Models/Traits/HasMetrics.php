@@ -49,7 +49,7 @@ trait HasMetrics
             $grade = 'A+';
         } else {
             // -1 grade for every -2 points
-            $steps = max(-8, min(0, $score));
+            $steps = max(-10, min(0, $score));
             $grade = chr(65 - ceil($steps / 2));
         }
 
