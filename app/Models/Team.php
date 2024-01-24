@@ -37,7 +37,7 @@ class Team extends Model
 
         // build paths and depths to sort items
         $tree = Team::treeOf($roots)
-            ->with('children')
+            ->with(['children', 'ancestorsAndSelf'])
             ->get()
             ->map(function ($t) {
                 $path = explode('.', $t->path);
@@ -48,9 +48,13 @@ class Team extends Model
                     $t->path = implode('.', $path);
                 }
 
+                foreach ($t->ancestorsAndSelf as $a) {
+                    $t->rfqn = '#'.$a->name.'#'.$a->id.$t->rfqn;
+                }
+
                 return $t;
             })
-            ->sortBy(['path', 'name'])
+            ->sortBy(['rfqn'])
             ->values();
 
         // remove duplicated branches
