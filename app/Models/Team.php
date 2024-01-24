@@ -35,26 +35,45 @@ class Team extends Model
             $query->whereIn('id', $user->teams()->allRelatedIds());
         };
 
-        $traverse = function ($tree, $depth = 1) use (&$traverse) {
-            if (is_null($tree)) {
-                return collect();
-            }
-
-            $children = $tree->children
-                ->sortBy('name')
-                ->map(fn ($t) => $t->setAttribute('depth', $depth));
-
-            return $children->flatMap(function ($t) use ($depth, $traverse) {
-                return $traverse($t, $depth + 1)->prepend($t);
-            });
-        };
-
-        return Team::treeOf($roots)
+        // build paths and depths to sort items
+        $tree = Team::treeOf($roots)
+            ->with('children')
             ->get()
-            ->unique(fn ($i) => $i->id)
-            ->toTree()
-            ->sortBy('name')
-            ->flatMap(fn ($t) => $traverse($t)->prepend($t));
+            ->map(function ($t) {
+                $path = explode('.', $t->path);
+                $t->depth = count($path) - 1;
+
+                if ($t->children->count() == 0) {
+                    $path[count($path) - 1] = 0;
+                    $t->path = implode('.', $path);
+                }
+
+                return $t;
+            })
+            ->sortBy(['path', 'name'])
+            ->values();
+
+        // remove duplicated branches
+        $duplicates = [];
+
+        for ($i = 0; $i < $tree->count(); $i++) {
+            $ti = $tree[$i];
+
+            for ($j = 0; $j < $tree->count(); $j++) {
+                if ($i == $j) {
+                    continue;
+                }
+
+                $tj = $tree[$j];
+
+                if ($ti->id == $tj->id) {
+                    $dup = $ti->depth > $tj->depth ? $j : $i;
+                    $duplicates[] = $dup;
+                }
+            }
+        }
+
+        return $tree->reject(fn ($t, $i) => in_array($i, $duplicates));
     }
 
     public function users()
