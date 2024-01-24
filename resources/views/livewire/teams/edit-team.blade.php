@@ -52,6 +52,18 @@
 
                             <x-input-error :messages="$errors->get('is_cluster')" />
                         </div>
+
+                        <div class="md:col-span-3">
+                            <x-input-label>{{ __('Estatus') }}</x-input-label>
+
+                            <x-select-input wire:model="status">
+                                @foreach (App\Models\Enums\TeamStatus::cases() as $c)
+                                    <option value="{{ $c->value }}">{{ $c->name }}</option>
+                                @endforeach
+                            </x-select-input>
+
+                            <x-input-error :messages="$errors->get('status')" />
+                        </div>
                     </div>
                 </div>
             </div>

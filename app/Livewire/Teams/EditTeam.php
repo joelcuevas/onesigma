@@ -6,6 +6,7 @@ use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Models\Enums\TeamStatus;
 
 class EditTeam extends Component
 {
@@ -16,6 +17,8 @@ class EditTeam extends Component
     public $parent_id;
 
     public $is_cluster = false;
+
+    public $status;
 
     public $parents;
 
@@ -30,7 +33,7 @@ class EditTeam extends Component
         }
 
         $this->fill($team->only([
-            'name', 'parent_id', 'is_cluster',
+            'name', 'parent_id', 'is_cluster', 'status',
         ]));
 
         $subtree = $team->descendantsAndSelf()->get()->pluck('id')->all();
@@ -74,6 +77,10 @@ class EditTeam extends Component
             'is_cluster' => [
                 'nullable',
                 'boolean',
+            ],
+            'status' => [
+                'required',
+                Rule::enum(TeamStatus::class),
             ],
         ];
 

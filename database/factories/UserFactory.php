@@ -61,4 +61,13 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    public function engineer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => UserRole::Engineer,
+            ];
+        });
+    }
 }

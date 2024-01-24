@@ -26,6 +26,10 @@ class User extends Authenticatable
         'role' => UserRole::class,
     ];
 
+    protected $attributes = [
+        'role' => UserRole::Admin,
+    ];
+
     public function hasPassword()
     {
         return ! is_null($this->password);
@@ -68,9 +72,9 @@ class User extends Authenticatable
         return ! is_null($this->engineer);
     }
 
-    public function getTeams()
+    public function getTeams($includeInactive = false)
     {
-        return Team::getForUser($this);
+        return Team::getForUser($this, $includeInactive);
     }
 
     public function teams()

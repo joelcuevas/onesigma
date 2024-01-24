@@ -38,7 +38,6 @@ class EditUser extends Component
         ]));
 
         $this->allRoles = UserRole::cases();
-        $this->role = UserRole::Admin;
     }
 
     public function save()

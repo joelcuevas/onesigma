@@ -6,6 +6,7 @@ use App\Livewire\Teams\EditMembers;
 use App\Models\Engineer;
 use App\Models\Enums\TeamEngineerRole;
 use App\Models\Enums\TeamUserRole;
+use App\Models\Enums\TeamStatus;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -81,9 +82,35 @@ class TeamsTest extends TestCase
             ->assertDontSeeText($forbidden->name);
     }
 
+    public function test_inactive_teams_are_hidden_from_team_index()
+    {
+        $user = User::factory()->admin()->create();
+
+        $teams = Team::factory(3)->create();
+
+        $user->teams()->attach($teams);
+
+        $teams[0]->status = TeamStatus::Inactive;
+        $teams[0]->save();
+
+        $this->actingAs($user);
+
+        $this->get(route('teams'))
+            ->assertOk()
+            ->assertDontSeeText($teams[0]->name)
+            ->assertSeeText($teams[1]->name)
+            ->assertSeeText($teams[2]->name);
+
+        $this->get(route('teams', ['inactive' => true]))
+            ->assertOk()
+            ->assertSeeText($teams[0]->name)
+            ->assertSeeText($teams[1]->name)
+            ->assertSeeText($teams[2]->name);
+    }
+
     public function test_regular_users_can_not_index_teams()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->engineer()->create();
 
         $this->actingAs($user);
 

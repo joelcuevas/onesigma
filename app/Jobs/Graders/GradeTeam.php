@@ -28,9 +28,9 @@ class GradeTeam implements WorkflowableJob
     public function handle(): void
     {
         if ($this->team->isCluster()) {
-            $this->children = $this->team->children;
+            $this->children = $this->team->children()->active()->get();
         } else {
-            $this->children = $this->team->engineers;
+            $this->children = $this->team->engineers()->get();
         }
 
         $this->gradeSkills();

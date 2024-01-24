@@ -10,6 +10,7 @@ use App\Models\Traits\HasSkillsets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use App\Models\Enums\TeamStatus;
 
 class Team extends Model
 {
@@ -17,11 +18,13 @@ class Team extends Model
 
     protected $casts = [
         'is_cluster' => 'boolean',
+        'status' => TeamStatus::class,
     ];
 
     protected $attributes = [
         'track' => 'ST3',
         'is_cluster' => false,
+        'status' => TeamStatus::Active,
     ];
 
     public function isCluster()
@@ -29,14 +32,18 @@ class Team extends Model
         return $this->is_cluster;
     }
 
-    public static function getForUser(User $user)
+    public static function getForUser(User $user, $includeInactive = false)
     {
-        $roots = function ($query) use ($user) {
+        $query = Team::treeOf(function ($query) use ($user) {
             $query->whereIn('id', $user->teams()->allRelatedIds());
-        };
+        });
+
+        if (! $includeInactive) {
+            $query->active();
+        }
 
         // build paths and depths to sort items
-        $tree = Team::treeOf($roots)
+        $tree = $query
             ->with(['children', 'ancestorsAndSelf'])
             ->get()
             ->map(function ($t) {
@@ -106,5 +113,10 @@ class Team extends Model
     public function scopeOnlyClusters($query)
     {
         $query->where('is_cluster', true);
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', TeamStatus::Active);
     }
 }
