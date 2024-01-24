@@ -10,16 +10,33 @@ use Illuminate\Support\Facades\Bus;
 
 class SyncVelocity extends Command
 {
-    protected $signature = 'velocity:sync';
+    protected $signature = 'velocity:sync {--R|run=*}';
 
-    protected $description = 'Sync Velocity\'s engineers and metrics';
+    protected $description = 'Sync Velocity\'s teams, engineers, and metrics';
 
     public function handle()
     {
-        Bus::chain([
-            new SyncTeams(),
-            new SyncEngineers(),
-            new SyncMetrics(),
-        ])->dispatch();
+        $runners = $this->option('run');
+        $chain = [];
+
+        if (empty($runners)) {
+            $runners = ['teams', 'engineers', 'metrics'];
+        }
+
+        if (in_array('teams', $runners)) {
+            $chain[] = new SyncTeams();
+        }
+
+        if (in_array('engineers', $runners)) {
+            $chain[] = new SyncEngineers();
+        }
+
+        if (in_array('metrics', $runners)) {
+            $chain[] = new SyncMetrics();
+        }
+        
+        if (! empty($chain)) {
+            Bus::chain($chain)->dispatch();
+        }
     }
 }
