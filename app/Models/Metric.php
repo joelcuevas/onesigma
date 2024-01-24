@@ -9,6 +9,9 @@ class Metric extends Model
 {
     use HasFactory;
 
+    const INCREASE = 1;
+    const DECREASE = -1;
+
     protected $with = ['config'];
 
     protected $casts = [
@@ -38,33 +41,51 @@ class Metric extends Model
 
     public function getProgressAttribute()
     {
-        if ($this->target == 0) {
-            if ($this->goal == 1) {
-                return $this->value > 0 ? INF : -INF;
-            } else {
-                return $this->value > 0 ? -INF : INF;
+        if ($this->goal == Metric::INCREASE) {
+            if ($this->value >= $this->target) {
+                return 100;
             }
         }
 
-        return (int) round($this->value * 100 / $this->target, 0) * $this->goal;
+        if ($this->goal == Metric::DECREASE) {
+            if ($this->value <= $this->target) {
+                return 100;
+            }
+        }
+
+        if ($this->target == 0) {
+            return INF * $this->goal;
+        }
+
+        return (int) round($this->value * 100 / $this->target, 0);
     }
 
     public function getDeviationAttribute()
     {
-        if ($this->progress == 0) {
-            return -100;
-        }
-
-        return round($this->progress - (100 * $this->goal), 0);
+        return abs(round(100 - $this->progress, 0));
     }
 
     public function getStatusAttribute()
     {
         return match (true) {
-            $this->deviation < -20 => 'danger',
-            $this->deviation < 0 => 'warning',
+            $this->deviation == INF => 'danger',
+            $this->deviation > 20 => 'danger',
+            $this->deviation > 0 => 'warning',
             default => 'success',
         };
+    }
+
+    public function getScoreForGrader()
+    {
+        if ($this->deviation == INF) {
+            // -1 point if INF deviation (i.e. target = 0)
+            return -1;
+        } elseif ($this->deviation > 0) {
+            // -1 point for each 20% deviation
+            return round(($this->deviation) / 20, 0) * -1;
+        }
+
+        return 0;
     }
 
     public function config()

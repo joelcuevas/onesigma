@@ -68,14 +68,29 @@ class MetricsTest extends TestCase
 
         $latest = $engineer->getLatestMetrics();
 
-        $this->assertEquals(-50, $latest['increase-below']->deviation);
-        $this->assertEquals(33, $latest['increase-above']->deviation);
-        $this->assertEquals(-50, $latest['decrease-below']->deviation);
-        $this->assertEquals(60, $latest['decrease-above']->deviation);
-        $this->assertEquals(-INF, $latest['inf-increase-below']->deviation);
-        $this->assertEquals(INF, $latest['inf-increase-above']->deviation);
-        $this->assertEquals(-INF, $latest['inf-decrease-below']->deviation);
-        $this->assertEquals(INF, $latest['inf-decrease-above']->deviation);
+        $this->assertEquals(50, $latest['increase-below']->progress);
+        $this->assertEquals(50, $latest['increase-below']->deviation);
+
+        $this->assertEquals(100, $latest['increase-above']->progress);
+        $this->assertEquals(0, $latest['increase-above']->deviation);
+
+        $this->assertEquals(150, $latest['decrease-below']->progress);
+        $this->assertEquals(50, $latest['decrease-below']->deviation);
+
+        $this->assertEquals(100, $latest['decrease-above']->progress);
+        $this->assertEquals(0, $latest['decrease-above']->deviation);
+
+        $this->assertEquals(INF, $latest['inf-increase-below']->progress);
+        $this->assertEquals(INF, $latest['inf-increase-below']->deviation);
+        
+        $this->assertEquals(100, $latest['inf-increase-above']->progress);
+        $this->assertEquals(0, $latest['inf-increase-above']->deviation);
+
+        $this->assertEquals(INF, $latest['inf-decrease-below']->progress);
+        $this->assertEquals(INF, $latest['inf-decrease-below']->deviation);
+
+        $this->assertEquals(100, $latest['inf-decrease-above']->progress);
+        $this->assertEquals(0, $latest['inf-decrease-above']->deviation);
     }
 
     public function test_watched_metrics_are_rendered_in_team_details()

@@ -35,7 +35,7 @@ class ConfigsSeeder extends Seeder
         MetricConfig::create([
             'metric' => 'time_to_review',
             'label' => 'Time to Review',
-            'target' => 10,
+            'target' => 0,
             'goal' => -1,
             'unit' => 'Horas',
         ]);

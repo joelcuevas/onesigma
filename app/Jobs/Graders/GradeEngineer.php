@@ -18,8 +18,6 @@ class GradeEngineer implements WorkflowableJob
 
     protected $scores = [];
 
-    protected $aplus = 0;
-
     public function __construct(Engineer $engineer)
     {
         $this->engineer = $engineer;
@@ -30,34 +28,20 @@ class GradeEngineer implements WorkflowableJob
         $this->gradeMetrics();
         $this->gradeSkills();
 
-        $scores = collect($this->scores);
-        $above = $scores->filter(fn ($g) => $g >= 0);
-        $below = $scores->filter(fn ($g) => $g < 0);
-        $perfect = $below->count() == 0;
-        $score = $perfect ? $above->sum() : $below->sum();
-
-        $this->engineer->score = (int) $score;
-        $this->engineer->grade = score_to_grade($score, $this->aplus);
-        $this->engineer->graded_at = now();
-        $this->engineer->save();
+        $this->engineer->setGrade($this->scores);
     }
 
     protected function gradeMetrics()
     {
         $metrics = $this->engineer->getWatchedMetrics();
 
-        // grant ±1 point for each 20% diff
         foreach ($metrics as $metric) {
-            $this->aplus += 1;
-            $this->scores[] = round(($metric->deviation) / 20, 0);
+            $this->scores[] = $metric->getScoreForGrader();
         }
     }
 
     protected function gradeSkills()
     {
-        // grant ±2 points for each level
-        $this->aplus += 2;
-        $skillset = $this->engineer->skillset;
-        $this->scores[] = 2 * ($skillset->score - $skillset->level);
+        $this->scores[] = $this->engineer->skillset->getScoreForGrader();
     }
 }

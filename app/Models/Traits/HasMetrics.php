@@ -40,4 +40,22 @@ trait HasMetrics
     {
         return $this->morphMany(Metric::class, 'metricable');
     }
+
+    public function setGrade(array $scores)
+    {
+        $score = (int) array_sum($scores);
+
+        if ($score >= 0) {
+            $grade = 'A+';
+        } else {
+            // -1 grade for every -2 points
+            $steps = max(-8, min(0, $score));
+            $grade = chr(65 - ceil($score / 2));
+        }
+
+        $this->score = $score;
+        $this->grade = $grade;
+        $this->graded_at = now();
+        $this->save();
+    }
 }

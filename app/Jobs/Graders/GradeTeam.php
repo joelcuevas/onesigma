@@ -18,7 +18,7 @@ class GradeTeam implements WorkflowableJob
 
     protected $scores = [];
 
-    protected $aplus = 0;
+    protected $children;
 
     public function __construct(Team $team)
     {
@@ -27,89 +27,86 @@ class GradeTeam implements WorkflowableJob
 
     public function handle(): void
     {
-        if (! $this->team->isCluster()) {
-            $this->gradeSkills();
-            $this->gradeMetrics();
-
-            $scores = collect($this->scores);
-            $above = $scores->filter(fn ($g) => $g >= 0);
-            $below = $scores->filter(fn ($g) => $g < 0);
-            $perfect = $below->count() == 0;
-            $score = $perfect ? $above->sum() : $below->sum();
-
-            $this->team->score = (int) $score;
-            $this->team->grade = score_to_grade($score, $this->aplus);
-            $this->team->graded_at = now();
-            $this->team->save();
+        if ($this->team->isCluster()) {
+            $this->children = $this->team->children;
+        } else {
+            $this->children = $this->team->engineers;
         }
+
+        $this->gradeSkills();
+        $this->gradeMetrics();
+
+        $this->team->setGrade($this->scores);
     }
 
     protected function gradeMetrics()
     {
-        // find avg scores for team
         $averages = [];
         $counts = [];
 
-        foreach ($this->team->engineers as $engineer) {
-            $metrics = $engineer->getWatchedMetrics();
+        if ($this->children->count()) {            
+            // average engineers metrics
+            foreach ($this->children as $child) {
+                $metrics = $child->getWatchedMetrics();
 
-            foreach ($metrics as $m) {
-                if (! isset($averages[$m->metric])) {
-                    $averages[$m->metric] = 0;
-                    $counts[$m->metric] = 0;
+                foreach ($metrics as $m) {
+                    if (! isset($averages[$m->metric])) {
+                        $averages[$m->metric] = 0;
+                        $counts[$m->metric] = 0;
+                    }
+
+                    $averages[$m->metric] += $m->value;
+                    $counts[$m->metric] += 1;
                 }
-
-                $averages[$m->metric] += $m->value;
-                $counts[$m->metric] += 1;
             }
-        }
 
-        $metrics = [];
+            $metrics = [];
 
-        foreach ($averages as $m => $v) {
-            $value = bcdiv($v / $counts[$m], 1, 2);
+            // create metrics for the team
+            foreach ($averages as $m => $v) {
+                $value = round($v / $counts[$m], 0);
 
-            $metrics[] = $this->team->metrics()->updateOrCreate([
-                'metric' => $m,
-                'date' => now()->toDateString(),
-            ], [
-                'value' => $value,
-                'source' => 'computed',
-            ]);
-        }
+                $metrics[] = $this->team->metrics()->updateOrCreate([
+                    'metric' => $m,
+                    'date' => now()->toDateString(),
+                ], [
+                    'value' => $value,
+                    'source' => 'computed',
+                ]);
+            }
 
-        // grant ±1 point for each 20% diff
-        foreach ($metrics as $metric) {
-            $this->aplus += 1;
-            $this->scores[] = round(($metric->deviation) / 20, 0);
+            // add scores to grader
+            foreach ($metrics as $metric) {
+                $this->scores[] = $metric->getScoreForGrader();
+            }
         }
     }
 
     protected function gradeSkills()
     {
-        // find max scores for team
         $scores = [];
-        $engineersCount = $this->team->engineers->count();
+        $count = $this->children->count();
 
-        foreach ($this->team->engineers as $engineer) {
-            foreach ($engineer->skillset->getSkills(false) as $i => $s) {
-                $scores[$i] = ($scores[$i] ?? 0) + $s;
+        if ($count) {
+            // get children average skills scores
+            foreach ($this->children as $child) {
+                foreach ($child->skillset->getSkills(keyLabels: false) as $i => $s) {
+                    $scores[$i] = ($scores[$i] ?? 0) + $s;
+                }
             }
+
+            foreach ($scores as $i => $s) {
+                $scores[$i] = round($s / $count, 0);
+            }
+
+            // create skillset for the team
+            $skillset = $this->team->skillsets()->updateOrCreate([
+                'date' => now()->toDateString(),
+                'source' => 'grader',
+            ], $scores);
+
+            // add scores to grader
+            $this->scores[] = $skillset->fresh()->getScoreForGrader();
         }
-
-        foreach ($scores as $i => $s) {
-            $scores[$i] = bcdiv($s / $engineersCount, 1, 2);
-        }
-
-        $skillset = $this->team->skillsets()->updateOrCreate([
-            'date' => now()->toDateString(),
-            'source' => 'grader',
-        ], $scores);
-
-        $skillset->refresh();
-
-        // grant ±2 points for each level
-        $this->aplus += 2;
-        $this->scores[] = 2 * ($skillset->score - $skillset->level);
     }
 }

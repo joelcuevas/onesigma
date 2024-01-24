@@ -28,7 +28,7 @@ new class extends Component
             <div class="px-4 py-5 sm:p-6">
                 <dt class="text-base font-normal leading-tight text-gray-900">
                     {{ $metric->label }}
-                    @if ($metric->goal == 1)
+                    @if ($metric->goal == Metric::INCREASE)
                         <x-heroicon-o-arrow-up class="-mt-0.5 inline size-3 self-center" />
                     @else
                         <x-heroicon-o-arrow-down class="-mt-0.5 inline size-3 self-center" />
@@ -41,24 +41,15 @@ new class extends Component
                     </div>
 
                     @if ($metric->value)
-                        <div class="{{ $this->badgeColor($metric) }} inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0">
+                        <div class="{{ $this->badgeColor($metric) }} inline-flex items-baseline rounded-full px-2 py-0.5 text-sm font-medium md:mt-2 lg:mt-0">
                             @if ($metric->status == 'success')
-                                @if ($metric->deviation == 0)
-                                    &nbsp;
-                                    <x-heroicon-o-check class="mr-1 h-4 w-4 flex-shrink-0 self-center" />
-                                @else
-                                    <x-heroicon-o-arrow-up class="-ml-1 mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
-                                @endif
+                                <x-heroicon-o-check class="h-4 w-4 -mr-0.5 flex-shrink-0 self-center" />&nbsp;
                             @else
-                                <x-heroicon-o-arrow-down class="-ml-1 mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
+                                <x-heroicon-o-arrow-down class="h-4 w-4 -mr-0.5 flex-shrink-0 self-center" />&nbsp;
                             @endif
-
-                            @if ($metric->deviation != 0)
-                                @if (abs($metric->deviation) == INF)
-                                    ∞
-                                @else
-                                    {{ abs($metric->deviation) }}%
-                                @endif
+                            
+                            @if (! in_array($metric->deviation, [0, INF]))
+                                <div class="ml-0.5">{{ $metric->deviation }}%</div>
                             @endif
                         </div>
                     @endif

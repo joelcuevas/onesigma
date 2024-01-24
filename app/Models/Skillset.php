@@ -70,6 +70,18 @@ class Skillset extends Model
         return true;
     }
 
+    public function getScoreForGrader()
+    {
+        $diff = (int) $this->score - $this->level;
+
+        if ($diff < 0) {
+            // -2 points for each level diff
+            return $diff * 2;
+        }
+
+        return 0;
+    }
+
     public function position()
     {
         return $this->belongsTo(Position::class, 'track', 'track')->withDefault();
