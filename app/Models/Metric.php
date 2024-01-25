@@ -82,8 +82,8 @@ class Metric extends Model
             // -1 point if INF deviation (i.e. target = 0)
             return -1;
         } elseif ($this->deviation > 0) {
-            // -1 point for each 20% deviation
-            return round(($this->deviation) / 20, 0) * -1;
+            // -1 point for each 33% deviation
+            return round(($this->deviation) / 33, 0) * -1;
         }
 
         return 0;

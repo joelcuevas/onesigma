@@ -52,7 +52,7 @@
                                                     </a>
                                                     <span class="text-gray-400">
                                                         (
-                                                        <x-stats.grade :grade="$team->grade" />
+                                                        <x-stats.grade :grade="$engineer->grade" />
                                                         )
                                                     </span>
                                                 </td>
