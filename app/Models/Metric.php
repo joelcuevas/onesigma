@@ -10,6 +10,7 @@ class Metric extends Model
     use HasFactory;
 
     const INCREASE = 1;
+
     const DECREASE = -1;
 
     protected $with = ['config'];

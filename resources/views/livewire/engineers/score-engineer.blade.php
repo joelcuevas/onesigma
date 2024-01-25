@@ -1,18 +1,20 @@
-<div x-data="{
-    s0: @entangle('s0'),
-    s1: @entangle('s1'),
-    s2: @entangle('s2'),
-    s3: @entangle('s3'),
-    s4: @entangle('s4'),
-    s5: @entangle('s5'),
-    s6: @entangle('s6'),
-    s7: @entangle('s7'),
-    s8: @entangle('s8'),
-    s9: @entangle('s9'),
-    focused: function (el) {
-        return el.getElementsByTagName('input')[0] === document.activeElement;
-    }
-}">
+<div
+    x-data="{
+        s0: @entangle('s0'),
+        s1: @entangle('s1'),
+        s2: @entangle('s2'),
+        s3: @entangle('s3'),
+        s4: @entangle('s4'),
+        s5: @entangle('s5'),
+        s6: @entangle('s6'),
+        s7: @entangle('s7'),
+        s8: @entangle('s8'),
+        s9: @entangle('s9'),
+        focused: function (el) {
+            return el.getElementsByTagName('input')[0] === document.activeElement
+        },
+    }"
+>
     <x-slot name="header" x-data x-on:engineer-updated.window="$refresh">
         <h2 class="text-xl leading-tight text-gray-800">
             <span class="font-semibold">{{ $engineer->name }}</span>
@@ -32,23 +34,20 @@
                         @for ($i = 0; $i < 5; $i++)
                             <div class="md:col-span-4">
                                 <x-input-label>{{ $engineer->position["s{$i}_label"] }}</x-input-label>
-                                
-                                <div class="grid gap-3 grid-cols-6">
+
+                                <div class="grid grid-cols-6 gap-3">
                                     @for ($l = 0; $l <= 5; $l++)
                                         <label
                                             x-data="{ selected: false }"
                                             x-bind:class="{
-                                                'bg-indigo-600 text-white hover:bg-indigo-500' : s{{$i}} == '{{$l}}',
-                                                'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50' : s{{$i}} != '{{$l}}',
+                                                'bg-indigo-600 text-white hover:bg-indigo-500': s{{ $i }} == '{{ $l }}',
+                                                'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50':
+                                                    s{{ $i }} != '{{ $l }}',
                                                 'ring-2 ring-indigo-600 ring-offset-2': selected,
                                             }"
-
-                                            class="flex items-center justify-center rounded-md py-3 px-3 text-sm font-semibold uppercase sm:flex-1 cursor-pointer focus:outline-none"
+                                            class="flex cursor-pointer items-center justify-center rounded-md px-3 py-3 text-sm font-semibold uppercase focus:outline-none sm:flex-1"
                                         >
-                                            <input 
-                                                x-on:focusin="selected = true"
-                                                x-on:focusout="selected = false"
-                                                wire:model="s{{ $i }}" type="radio" name="s{{$i}}" value="{{$l}}" class="sr-only">
+                                            <input x-on:focusin="selected = true" x-on:focusout="selected = false" wire:model="s{{ $i }}" type="radio" name="s{{ $i }}" value="{{ $l }}" class="sr-only" />
                                             <span>{{ $l }}</span>
                                         </label>
                                     @endfor
@@ -70,23 +69,20 @@
                         @for ($i = 5; $i < 10; $i++)
                             <div class="md:col-span-4">
                                 <x-input-label>{{ $engineer->position["s{$i}_label"] }}</x-input-label>
-                                
-                                <div class="grid gap-3 grid-cols-6">
+
+                                <div class="grid grid-cols-6 gap-3">
                                     @for ($l = 0; $l <= 5; $l++)
                                         <label
                                             x-data="{ selected: false }"
                                             x-bind:class="{
-                                                'bg-indigo-600 text-white hover:bg-indigo-500' : s{{$i}} == '{{$l}}',
-                                                'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50' : s{{$i}} != '{{$l}}',
+                                                'bg-indigo-600 text-white hover:bg-indigo-500': s{{ $i }} == '{{ $l }}',
+                                                'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50':
+                                                    s{{ $i }} != '{{ $l }}',
                                                 'ring-2 ring-indigo-600 ring-offset-2': selected,
                                             }"
-
-                                            class="flex items-center justify-center rounded-md py-3 px-3 text-sm font-semibold uppercase sm:flex-1 cursor-pointer focus:outline-none"
+                                            class="flex cursor-pointer items-center justify-center rounded-md px-3 py-3 text-sm font-semibold uppercase focus:outline-none sm:flex-1"
                                         >
-                                            <input 
-                                                x-on:focusin="selected = true"
-                                                x-on:focusout="selected = false"
-                                                wire:model="s{{ $i }}" type="radio" name="s{{$i}}" value="{{$l}}" class="sr-only">
+                                            <input x-on:focusin="selected = true" x-on:focusout="selected = false" wire:model="s{{ $i }}" type="radio" name="s{{ $i }}" value="{{ $l }}" class="sr-only" />
                                             <span>{{ $l }}</span>
                                         </label>
                                     @endfor

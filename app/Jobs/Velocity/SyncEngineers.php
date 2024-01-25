@@ -41,8 +41,8 @@ class SyncEngineers implements ShouldQueue
             $people->map(function ($p) {
                 // nothing to do if the engineer exists
                 $exists = Engineer::query()
-                        ->whereIdentity('velocity', $p['id'])
-                        ->exists();
+                    ->whereIdentity('velocity', $p['id'])
+                    ->exists();
 
                 if ($exists) {
                     return;
@@ -80,7 +80,7 @@ class SyncEngineers implements ShouldQueue
                         ]);
 
                         $engineer->skillsets()->create();
-                    
+
                         // link engineer to team only on creation
                         $team->engineers()->syncWithoutDetaching($engineer);
                     }

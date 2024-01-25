@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Teams;
 
+use App\Models\Enums\TeamStatus;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use App\Models\Enums\TeamStatus;
 
 class EditTeam extends Component
 {
@@ -37,7 +37,7 @@ class EditTeam extends Component
         ]));
 
         $subtree = $team->descendantsAndSelf()->get()->pluck('id')->all();
-        
+
         $this->parents = Auth::user()
             ->getTeams()
             ->reject(fn ($t) => ! $t->isCluster() || in_array($t->id, $subtree))

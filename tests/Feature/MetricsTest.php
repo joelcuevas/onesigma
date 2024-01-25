@@ -82,7 +82,7 @@ class MetricsTest extends TestCase
 
         $this->assertEquals(INF, $latest['inf-increase-below']->progress);
         $this->assertEquals(INF, $latest['inf-increase-below']->deviation);
-        
+
         $this->assertEquals(100, $latest['inf-increase-above']->progress);
         $this->assertEquals(0, $latest['inf-increase-above']->deviation);
 

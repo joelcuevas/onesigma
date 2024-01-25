@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\TeamStatus;
 use App\Models\Pivots\TeamEngineer;
 use App\Models\Pivots\TeamUser;
 use App\Models\Traits\HasIdentities;
@@ -10,7 +11,6 @@ use App\Models\Traits\HasSkillsets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-use App\Models\Enums\TeamStatus;
 
 class Team extends Model
 {

@@ -4,8 +4,8 @@ namespace App\Livewire\Teams;
 
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class IndexTeams extends Component
 {

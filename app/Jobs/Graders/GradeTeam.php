@@ -44,7 +44,7 @@ class GradeTeam implements WorkflowableJob
         $averages = [];
         $counts = [];
 
-        if ($this->children->count()) {            
+        if ($this->children->count()) {
             // average engineers metrics
             foreach ($this->children as $child) {
                 $metrics = $child->getWatchedMetrics();

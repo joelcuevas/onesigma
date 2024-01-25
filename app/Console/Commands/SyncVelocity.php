@@ -34,7 +34,7 @@ class SyncVelocity extends Command
         if (in_array('metrics', $runners)) {
             $chain[] = new SyncMetrics();
         }
-        
+
         if (! empty($chain)) {
             Bus::chain($chain)->dispatch();
         }
