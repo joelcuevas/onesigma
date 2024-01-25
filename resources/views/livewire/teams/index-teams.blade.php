@@ -1,4 +1,13 @@
-<div>
+@php
+
+$subtree = 'root';
+$prevDepth = -1;
+
+@endphp
+
+<div x-data="{
+    subtrees: {root : true}
+}">
     <x-slot name="header">
         <div class="sm:flex sm:items-center sm:justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipos') }}</h2>
@@ -13,27 +22,68 @@
     </x-slot>
 
     <div class="x-card">
-        <div class="divide-y divide-gray-200">
-            @foreach ($teams as $team)
-                <div class="grid grid-cols-12 py-2">
-                    <div class="col-span-6" style="padding-left: {{ $team->depth * 1.5 }}rem">
+        @foreach ($teams as $team)
+            @php
+                if ($team->depth < $prevDepth) {
+                    for ($i = 0; $i < $prevDepth - $team->depth; $i++) {
+                        echo '</div>';
+                    }
+                }
+
+                if ($team->depth > $prevDepth) {
+
+                    echo '<div 
+                        x-show="subtrees[\''.$subtree.'\'] ?? true" 
+                        x-collapse 
+                        data-subtree 
+                        x-ref="subtree'.$subtree.'"
+                        class="divide-y divide-gray-200"
+                    >';
+                }
+
+                $subtree = $team->path;
+                $prevDepth = $team->depth;
+            @endphp
+
+            <div class="grid grid-cols-12 py-2">
+                <div class="col-span-6 flex items-center">
+                    <div 
+                        class="inline-block w-7" 
+                        style="margin-right: {{ $team->depth * 1.5 }}rem"
+                    >
+                        @if ($team->isCluster())
+                            <button
+                                class="flex items-center"
+                                x-on:click="function() {
+                                    subtrees['{{$team->path}}'] = ! (subtrees['{{$team->path}}'] ?? true);
+                                }"
+                            >
+                                <x-heroicon-s-chevron-right 
+                                    class="w-4 h-4 text-gray-500 mr-3" 
+                                    x-bind:class="{ 'rotate-90': subtrees['{{$team->path}}'] ?? true }"
+                                />
+                            </button>
+                        @endif
+
+                    </div>
+
+                    <div class="">
                         <a href="{{ route('teams.show', $team) }}" class="font-medium hover:underline">
                             {{ $team->name }}
-                            <span class="text-gray-400">
-                                (
-                                <x-stats.grade :grade="$team->grade" />
-                                )
-                            </span>
                         </a>
-                    </div>
-                    <div class="col-span-2"></div>
-                    <div class="col-span-2">
-                        @if (! $team->isCluster())
-                            {{ $team->engineers->count() }} {{ __('ingenieros') }}
-                        @endif
+
+                        <span class="text-gray-400">
+                            ( <x-stats.grade :grade="$team->grade" />) 
+                        </span>
                     </div>
                 </div>
-            @endforeach
-        </div>
+                <div class="col-span-2"></div>
+                <div class="col-span-2 text-gray-500">
+                    @if (! $team->isCluster())
+                        {{ $team->engineers->count() }} {{ __('ingenieros') }}
+                    @endif
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>

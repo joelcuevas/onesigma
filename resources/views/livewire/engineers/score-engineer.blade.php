@@ -32,6 +32,7 @@
 
                     <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 md:col-span-2 md:grid-cols-6">
                         @for ($i = 0; $i < 5; $i++)
+                            
                             <div class="md:col-span-4">
                                 <x-input-label>{{ $engineer->position["s{$i}_label"] }}</x-input-label>
 
