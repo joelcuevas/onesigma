@@ -46,7 +46,7 @@ new class extends Component
                                 <x-heroicon-o-check class="-mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
                                 &nbsp;
                             @else
-                                <x-heroicon-o-arrow-down class="-mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
+                                <x-heroicon-o-play class="-rotate-90 -mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
                                 &nbsp;
                             @endif
 
