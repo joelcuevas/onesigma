@@ -64,7 +64,7 @@ class GradeTeam implements WorkflowableJob
 
             // create metrics for the team
             foreach ($averages as $m => $v) {
-                $value = round($v / $counts[$m], 0);
+                $value = bcdiv($v, $counts[$m], 2);
 
                 $metrics[] = $this->team->metrics()->updateOrCreate([
                     'metric' => $m,
@@ -96,7 +96,7 @@ class GradeTeam implements WorkflowableJob
             }
 
             foreach ($scores as $i => $s) {
-                $scores[$i] = round($s / $count, 0);
+                $scores[$i] = bcdiv($s, $count, 2);
             }
 
             // create skillset for the team
