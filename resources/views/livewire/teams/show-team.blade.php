@@ -39,7 +39,6 @@
                                         <tr>
                                             <th class="py-2 text-left text-sm font-medium uppercase tracking-wide text-gray-500 sm:pl-0">Nombre</th>
                                             <th class="py-2 text-left text-sm font-medium uppercase tracking-wide text-gray-500">Posición</th>
-                                            <th class="py-2 text-left text-sm font-medium uppercase tracking-wide text-gray-500">Stats</th>
                                             <th class="py-2 text-left text-sm font-medium uppercase tracking-wide text-gray-500">Rol</th>
                                             <th class="relative py-2"></th>
                                         </tr>
@@ -51,11 +50,15 @@
                                                     <a class="hover:underline" href="{{ route('engineers.show', $engineer) }}">
                                                         {{ $engineer->name }}
                                                     </a>
+                                                    <span class="text-gray-400">
+                                                        (
+                                                        <x-stats.grade :grade="$team->grade" />
+                                                        )
+                                                    </span>
                                                 </td>
                                                 <td class="whitespace-nowrap py-2 text-gray-500">
                                                     {{ $engineer->title }}
                                                 </td>
-                                                <td class="whitespace-nowrap py-2 text-gray-500">Nivel: {{ $engineer->grade }}</td>
                                                 <td class="whitespace-nowrap py-2 text-gray-500">
                                                     {{ $engineer->team->role->name }}
                                                 </td>
@@ -120,9 +123,7 @@
                                             <td class="whitespace-nowrap py-2 text-gray-500">
                                                 {{ $user->team->role->name }}
                                             </td>
-                                            <td class="relative whitespace-nowrap py-2 text-right font-medium sm:pr-0">
-                                                
-                                            </td>
+                                            <td class="relative whitespace-nowrap py-2 text-right font-medium sm:pr-0"></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

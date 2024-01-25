@@ -15,10 +15,23 @@
     <div class="x-card">
         <div class="divide-y divide-gray-200">
             @foreach ($teams as $team)
-                <div class="py-2" style="padding-left: {{ $team->depth * 1.5 }}rem">
-                    <a href="{{ route('teams.show', $team) }}" class="font-medium hover:underline">
-                        {{ $team->name }}
-                    </a>
+                <div class="grid grid-cols-12 py-2">
+                    <div class="col-span-6" style="padding-left: {{ $team->depth * 1.5 }}rem">
+                        <a href="{{ route('teams.show', $team) }}" class="font-medium hover:underline">
+                            {{ $team->name }}
+                            <span class="text-gray-400">
+                                (
+                                <x-stats.grade :grade="$team->grade" />
+                                )
+                            </span>
+                        </a>
+                    </div>
+                    <div class="col-span-2"></div>
+                    <div class="col-span-2">
+                        @if (! $team->isCluster())
+                            {{ $team->engineers->count() }} {{ __('ingenieros') }}
+                        @endif
+                    </div>
                 </div>
             @endforeach
         </div>

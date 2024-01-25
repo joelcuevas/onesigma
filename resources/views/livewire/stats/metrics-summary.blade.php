@@ -34,6 +34,7 @@ new class extends Component
                         <x-heroicon-o-arrow-down class="-mt-0.5 inline size-3 self-center" />
                     @endif
                 </dt>
+
                 <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
                     <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
                         {{ $metric->value ?? 'NULL' }}
@@ -46,7 +47,7 @@ new class extends Component
                                 <x-heroicon-o-check class="-mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
                                 &nbsp;
                             @else
-                                <x-heroicon-o-play class="-rotate-90 -mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
+                                <x-heroicon-o-play class="-mr-0.5 h-4 w-4 flex-shrink-0 -rotate-90 self-center" />
                                 &nbsp;
                             @endif
 

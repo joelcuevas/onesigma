@@ -44,7 +44,7 @@ class Team extends Model
 
         // build paths and depths to sort items
         $tree = $query
-            ->with(['children', 'ancestorsAndSelf'])
+            ->with(['engineers', 'children', 'ancestorsAndSelf'])
             ->get()
             ->map(function ($t) {
                 $path = explode('.', $t->path);
