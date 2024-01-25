@@ -56,7 +56,8 @@ class Team extends Model
                 }
 
                 foreach ($t->ancestorsAndSelf as $a) {
-                    $t->rfqn = '#'.$a->name.'#'.$a->id.$t->rfqn;
+                    $c = $a->isCluster() ? 0 : 1;
+                    $t->rfqn = '#'.$c.'-'.$a->name.'#'.$a->id.$t->rfqn;
                 }
 
                 return $t;
