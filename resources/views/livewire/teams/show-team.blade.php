@@ -121,7 +121,7 @@
                                                 {{ $user->team->role->name }}
                                             </td>
                                             <td class="relative whitespace-nowrap py-2 text-right font-medium sm:pr-0">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Perfil</a>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
