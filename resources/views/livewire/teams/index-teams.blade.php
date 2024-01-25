@@ -63,7 +63,7 @@ $prevDepth = -1;
                         @endif
 
                         <div>
-                            <a href="{{ route('teams.show', $team) }}" class="{{ $team->isCluster() ? 'font-medium' : '' }} hover:underline">
+                            <a href="{{ route('teams.show', $team) }}" class="{{ $team->isCluster() ? 'font-semibold' : '' }} hover:underline">
                                 {{ $team->name }}
                             </a>
 
