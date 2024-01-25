@@ -46,11 +46,8 @@ $prevDepth = -1;
             @endphp
 
             <div class="grid grid-cols-12 py-2">
-                <div class="col-span-6 flex items-center">
-                    <div 
-                        class="inline-block w-7" 
-                        style="margin-right: {{ $team->depth * 1.5 }}rem"
-                    >
+                <div class="col-span-6" >
+                    <div class="flex items-center" style="padding-left: {{ $team->depth * 1.8 }}rem">
                         @if ($team->isCluster())
                             <button
                                 class="flex items-center"
@@ -65,16 +62,15 @@ $prevDepth = -1;
                             </button>
                         @endif
 
-                    </div>
+                        <div>
+                            <a href="{{ route('teams.show', $team) }}" class="{{ $team->isCluster() ? 'font-medium' : '' }} hover:underline">
+                                {{ $team->name }}
+                            </a>
 
-                    <div class="">
-                        <a href="{{ route('teams.show', $team) }}" class="font-medium hover:underline">
-                            {{ $team->name }}
-                        </a>
-
-                        <span class="text-gray-400">
-                            ( <x-stats.grade :grade="$team->grade" />) 
-                        </span>
+                            <span class="text-gray-400">
+                                ( <x-stats.grade :grade="$team->grade" />) 
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-span-2"></div>
