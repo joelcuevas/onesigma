@@ -47,4 +47,9 @@ class Position extends Model
             $keyLabels ? $this->s9_label : 's9' => $this->s9,
         ];
     }
+
+    public function levels()
+    {
+        return $this->hasMany(PositionLevel::class, 'track', 'track');
+    }
 }

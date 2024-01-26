@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Enums\UserRole;
 use App\Models\MetricConfig;
 use App\Models\Position;
+use App\Models\PositionLevel;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -66,11 +67,11 @@ class ConfigsSeeder extends Seeder
 
         $engineerSkills = [
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            2 => [1, 2, 2, 2, 1, 2, 2, 1, 1, 1],
-            3 => [2, 2, 2, 3, 2, 3, 3, 2, 2, 2],
-            4 => [3, 3, 3, 3, 2, 4, 4, 3, 3, 3],
-            5 => [4, 4, 3, 4, 3, 5, 5, 4, 4, 4],
-            6 => [5, 5, 3, 4, 4, 5, 5, 5, 4, 5],
+            2 => [1, 2, 2, 2, 1, 2, 1, 1, 1, 2],
+            3 => [2, 2, 2, 3, 2, 3, 2, 2, 2, 3],
+            4 => [3, 3, 3, 3, 2, 4, 3, 3, 3, 4],
+            5 => [4, 4, 3, 4, 3, 5, 4, 4, 4, 5],
+            6 => [5, 5, 3, 4, 4, 5, 5, 4, 5, 5],
             7 => [5, 5, 3, 4, 5, 5, 5, 5, 5, 5],
         ];
 
@@ -92,15 +93,28 @@ class ConfigsSeeder extends Seeder
                 's4' => $scores[4],
                 's5_label' => 'Coding',
                 's5' => $scores[5],
-                's6_label' => 'Databases',
+                's6_label' => 'DevOps',
                 's6' => $scores[6],
-                's7_label' => 'DevOps',
+                's7_label' => 'Testing',
                 's7' => $scores[7],
-                's8_label' => 'Testing',
+                's8_label' => 'SysDesign',
                 's8' => $scores[8],
-                's9_label' => 'SysDesign',
+                's9_label' => 'Culture',
                 's9' => $scores[9],
             ]);
+
+            for ($i = 0; $i <= 9; $i++) {
+                PositionLevel::create([
+                    'track' => 'SE'.$level,
+                    'skill' => $i,
+                    'l0_description' => fake()->paragraph(),
+                    'l1_description' => fake()->paragraph(),
+                    'l2_description' => fake()->paragraph(),
+                    'l3_description' => fake()->paragraph(),
+                    'l4_description' => fake()->paragraph(),
+                    'l5_description' => fake()->paragraph(),
+                ]);
+            }
         }
 
         $teamSkills = [
@@ -127,13 +141,13 @@ class ConfigsSeeder extends Seeder
                 's4' => $scores[4],
                 's5_label' => 'Coding',
                 's5' => $scores[5],
-                's6_label' => 'Databases',
+                's6_label' => 'DevOps',
                 's6' => $scores[6],
-                's7_label' => 'DevOps',
+                's7_label' => 'Testing',
                 's7' => $scores[7],
-                's8_label' => 'Testing',
+                's8_label' => 'SysDesign',
                 's8' => $scores[8],
-                's9_label' => 'SysDesign',
+                's9_label' => 'Culture',
                 's9' => $scores[9],
             ]);
         }
