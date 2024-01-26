@@ -7,46 +7,66 @@
 
     <div class="x-card">
         <form wire:submit="update">
-            <div class="space-y-12">
-                <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+            <div class="space-y-12 pb-9">
+                <div class="space-y-6 border-b border-gray-900/10">
                     <div>
-                        <h2 class="font-medium text-gray-900">Perfil Profesional</h2>
-                        <p class="mt-2 leading-6 text-gray-600">Datos oficiales de la organización. Los ingenieros no pueden modificarlos en su perfil personal.</p>
+                        <h2 class="font-bold text-lg text-gray-900">Perfil Profesional</h2>    
                     </div>
 
-                    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 md:col-span-2 md:grid-cols-6">
-                        <div class="md:col-span-4">
-                            <x-input-label>{{ __('Nombre') }}</x-input-label>
-                            <x-text-input wire:model="name" />
-                            <x-input-error :messages="$errors->get('name')" />
+                    <div>
+                        <x-input-label>{{ __('Nombre') }}</x-input-label>
+                        <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
+                            <div class="lg:col-span-5">
+                                <x-text-input wire:model="name" />
+                                <x-input-error :messages="$errors->get('name')" />
+                            </div>
+                            <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                                <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
+                                {{ __('Nombre oficial en la organización. El ingeniero no puede modificarlo.') }}
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="md:col-span-4">
-                            <x-input-label>{{ __('Email') }}</x-input-label>
-                            <x-text-input wire:model="email" />
-                            <x-input-error :messages="$errors->get('email')" />
+                    <div>
+                        <x-input-label>{{ __('Email') }}</x-input-label>
+                        <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
+                            <div class="lg:col-span-5">
+                                <x-text-input wire:model="email" />
+                                <x-input-error :messages="$errors->get('email')" />
+                            </div>
+                            <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                                <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
+                                {{ __('Email oficial en la organización. El ingeniero no puede modificarlo.') }}
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="md:col-span-3">
-                            <x-input-label>{{ __('Track') }}</x-input-label>
+                    <div>
+                        <x-input-label>{{ __('Track') }}</x-input-label>
+                        <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
+                            <div class="lg:col-span-5">
+                                <x-select-input wire:model="track">
+                                    @foreach ($tracks as $track => $title)
+                                        <option value="{{ $track }}">{{ $title }}</option>
+                                    @endforeach
+                                </x-select-input>
 
-                            <x-select-input wire:model="track">
-                                @foreach ($tracks as $track => $title)
-                                    <option value="{{ $track }}">{{ $title }}</option>
-                                @endforeach
-                            </x-select-input>
-
-                            <x-input-error :messages="$errors->get('track')" />
+                                <x-input-error :messages="$errors->get('track')" />
+                            </div>
+                            <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                                <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
+                                {{ __('Track de desarrollo de carrera. Debe coincidir con el registrado en RR.HH.') }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-6 flex items-center justify-end gap-x-6">
+            <div class="mt-9 flex items-center gap-x-6">
+                <x-primary-button type="submit">Guardar</x-primary-button>
                 <a href="{{ route('engineers.show', $engineer) }}" class="hover:underline">
                     {{ __('Cancelar') }}
                 </a>
-                <x-primary-button type="submit">Guardar</x-primary-button>
             </div>
         </form>
     </div>

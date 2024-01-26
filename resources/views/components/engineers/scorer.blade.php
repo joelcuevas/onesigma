@@ -1,9 +1,10 @@
 @props(['engineer', 'start'])
-<div>
+<div class="space-y-3">
     @for ($i = $start; $i < $start + 5; $i++)
+    <div>
         <x-input-label>{{ $engineer->position["s{$i}_label"] }}</x-input-label>
 
-        <div class="mb-4 grid grid-cols-1 gap-x-12 gap-y-3 md:grid-cols-12">
+        <div class="grid grid-cols-1 gap-x-12 gap-y-3 md:grid-cols-12">
             <div class="md:col-span-5">
                 <div class="grid grid-cols-6 gap-3">
                     @for ($l = 0; $l <= 5; $l++)
@@ -35,5 +36,6 @@
                 @endif
             </div>
         </div>
+    </div>
     @endfor
 </div>
