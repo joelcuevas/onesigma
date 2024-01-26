@@ -1,12 +1,10 @@
 @php
-
-$subtree = 'root';
-$prevDepth = -1;
-
+    $subtree = 'root';
+    $prevDepth = -1;
 @endphp
 
 <div x-data="{
-    subtrees: {root : true}
+    subtrees: { root: true },
 }">
     <x-slot name="header">
         <div class="sm:flex sm:items-center sm:justify-between">
@@ -23,42 +21,37 @@ $prevDepth = -1;
 
     <div class="x-card">
         @foreach ($teams as $team)
+            @if ($team->depth < $prevDepth)
+                @for ($i = 0; $i < $prevDepth - $team->depth; $i++)
+                    {!! '</div>' !!}
+                @endfor
+            @endif
+
+            @if ($team->depth > $prevDepth)
+                {!!
+                    '<div 
+                    x-show="subtrees[\''.$subtree.'\'] ?? true" 
+                    x-collapse 
+                    data-subtree 
+                    x-ref="subtree'.$subtree.'"
+                    class="divide-y divide-gray-200"
+                    >'
+                !!}
+            @endif
+
             @php
-                if ($team->depth < $prevDepth) {
-                    for ($i = 0; $i < $prevDepth - $team->depth; $i++) {
-                        echo '</div>';
-                    }
-                }
-
-                if ($team->depth > $prevDepth) {
-
-                    echo '<div 
-                        x-show="subtrees[\''.$subtree.'\'] ?? true" 
-                        x-collapse 
-                        data-subtree 
-                        x-ref="subtree'.$subtree.'"
-                        class="divide-y divide-gray-200"
-                    >';
-                }
-
                 $subtree = $team->path;
                 $prevDepth = $team->depth;
             @endphp
 
             <div class="grid grid-cols-12 py-2">
-                <div class="col-span-6" >
+                <div class="col-span-6">
                     <div class="flex items-center" style="padding-left: {{ $team->depth * 1.8 }}rem">
                         @if ($team->isCluster())
-                            <button
-                                class="flex items-center"
-                                x-on:click="function() {
+                            <button class="flex items-center" x-on:click="function() {
                                     subtrees['{{$team->path}}'] = ! (subtrees['{{$team->path}}'] ?? true);
-                                }"
-                            >
-                                <x-heroicon-s-chevron-right 
-                                    class="w-4 h-4 text-gray-500 mr-3" 
-                                    x-bind:class="{ 'rotate-90': subtrees['{{$team->path}}'] ?? true }"
-                                />
+                                }">
+                                <x-heroicon-s-chevron-right class="mr-3 h-4 w-4 text-gray-500" x-bind:class="{ 'rotate-90': subtrees['{{$team->path}}'] ?? true }" />
                             </button>
                         @endif
 
@@ -68,7 +61,9 @@ $prevDepth = -1;
                             </a>
 
                             <span class="text-gray-400">
-                                ( <x-stats.grade :grade="$team->grade" />) 
+                                (
+                                <x-stats.grade :grade="$team->grade" />
+                                )
                             </span>
                         </div>
                     </div>
