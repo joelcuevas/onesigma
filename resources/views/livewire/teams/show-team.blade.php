@@ -5,7 +5,7 @@
             <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
                 @can('edit', $team)
                     <x-link-button href="{{ route('teams.edit', $team) }}">
-                        {{ __('Editar') }}
+                        {{ __('Editar Equipo') }}
                     </x-link-button>
                 @endcan
             </div>
