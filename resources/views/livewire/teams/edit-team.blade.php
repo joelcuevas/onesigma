@@ -11,10 +11,8 @@
 
     <div class="x-card">
         <form wire:submit="update">
-            <div class="space-y-6 border-b border-gray-900/10 pb-9">
-                <div>
-                    <h2 class="text-lg font-bold text-gray-900">{{ __('Datos del Equipo') }}</h2>
-                </div>
+            <div class="space-y-6 border-b border-gray-900/10 pb-8">
+                <h2 class="text-lg font-bold text-gray-900">{{ __('Datos del Equipo') }}</h2>
 
                 <div>
                     <x-input-label>{{ __('Nombre') }}</x-input-label>

@@ -107,12 +107,12 @@ class ConfigsSeeder extends Seeder
                 PositionLevel::create([
                     'track' => 'SE'.$level,
                     'skill' => $i,
-                    'l0_description' => fake()->paragraph(),
-                    'l1_description' => fake()->paragraph(),
-                    'l2_description' => fake()->paragraph(),
-                    'l3_description' => fake()->paragraph(),
-                    'l4_description' => fake()->paragraph(),
-                    'l5_description' => fake()->paragraph(),
+                    'l0_description' => fake()->paragraph(2),
+                    'l1_description' => fake()->paragraph(2),
+                    'l2_description' => fake()->paragraph(2),
+                    'l3_description' => fake()->paragraph(2),
+                    'l4_description' => fake()->paragraph(2),
+                    'l5_description' => fake()->paragraph(2),
                 ]);
             }
         }

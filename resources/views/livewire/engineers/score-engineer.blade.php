@@ -23,18 +23,18 @@
 
     <div class="x-card">
         <form wire:submit="score">
-            <div class="space-y-6">
-                <div class="border-b border-gray-900/10 pb-9 space-y-6">
+            <div class="">
+                <div class="border-b border-gray-900/10 space-y-6 pb-8">
                     <h2 class="font-bold text-lg text-gray-900">{{ __('Capacidades') }}</h2>
                     <x-engineers.scorer :$engineer start="0" />
                 </div>
-                <div class="border-b border-gray-900/10 pb-9 space-y-6">
+                <div class="border-b border-gray-900/10 space-y-6 pb-8 mt-8">
                     <h2 class="font-bold text-lg text-gray-900">{{ __('Competencias') }}</h2>
                     <x-engineers.scorer :$engineer start="5" />
                 </div>
             </div>
 
-            <div class="mt-9 flex items-center gap-x-6">
+            <div class="mt-8 flex items-center gap-x-6">
                 <x-primary-button type="submit">{{ __('Guardar') }}</x-primary-button>
                 <a href="{{ route('engineers.show', $engineer) }}" class="hover:underline">
                     {{ __('Cancelar') }}
