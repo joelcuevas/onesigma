@@ -36,7 +36,26 @@ class GradeTeam implements WorkflowableJob
         $this->gradeSkills();
         $this->gradeMetrics();
 
-        $this->team->setGrade($this->scores);
+        $this->averageGrade();
+    }
+
+    protected function averageGrade()
+    {
+        $count = count($this->children);
+        $score = null;
+
+        if ($count) {
+            $scores = 0;
+
+            foreach ($this->children as $children)
+            {
+                $scores += $children->score;
+            }
+
+            $score = [bcdiv($scores, $count, 0)];   
+        }
+
+        $this->team->updateGrade($score);
     }
 
     protected function gradeMetrics()
@@ -74,11 +93,6 @@ class GradeTeam implements WorkflowableJob
                     'source' => 'computed',
                 ]);
             }
-
-            // add scores to grader
-            foreach ($metrics as $metric) {
-                $this->scores[] = $metric->getScoreForGrader();
-            }
         }
     }
 
@@ -104,9 +118,6 @@ class GradeTeam implements WorkflowableJob
                 'date' => now()->toDateString(),
                 'source' => 'grader',
             ], $scores);
-
-            // add scores to grader
-            $this->scores[] = $skillset->fresh()->getScoreForGrader();
         }
     }
 }

@@ -41,16 +41,25 @@ trait HasMetrics
         return $this->morphMany(Metric::class, 'metricable');
     }
 
-    public function setGrade(array $scores)
+    public function updateGrade($scores)
     {
-        $score = (int) array_sum($scores);
+        $score = null;
+        $grade = '--';
 
-        if ($score >= 0) {
-            $grade = 'A+';
-        } else {
-            // -1 grade/letter for every -2 points
-            $steps = max(-10, min(0, $score));
-            $grade = chr(65 - ceil($steps / 2));
+        if (! is_null($scores)) {
+            if (! is_array($scores)) {
+                $scores = [$scores];
+            }
+
+            $score = (int) array_sum($scores);
+
+            if ($score >= 0) {
+                $grade = 'A+';
+            } else {
+                // -1 grade/letter for every -2 points
+                $steps = max(-10, min(0, $score));
+                $grade = chr(65 - ceil($steps / 2));
+            }
         }
 
         $this->score = $score;

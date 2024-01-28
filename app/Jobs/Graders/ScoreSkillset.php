@@ -28,8 +28,9 @@ class ScoreSkillset implements ShouldQueue
         $scores = $this->skillset->getSkills();
         $diffs = [];
 
+        // find the closest skillset
         foreach ($positions as $p) {
-            $diffs[$p->level] = $this->compare($p->getExpectedSkills(), $scores);
+            $diffs[$p->level] = $this->diff($p->getExpectedSkills(), $scores);
         }
 
         asort($diffs);
@@ -39,7 +40,7 @@ class ScoreSkillset implements ShouldQueue
         $this->skillset->save();
     }
 
-    protected function compare($position, $scores)
+    protected function diff($position, $scores)
     {
         $diffs = [];
 

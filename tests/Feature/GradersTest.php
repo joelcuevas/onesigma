@@ -41,13 +41,17 @@ class GradersTest extends TestCase
         MetricConfig::factory()->set('merges', 1, -1)->create();
 
         $team = Team::factory()
-            ->has(Engineer::factory()->addMetrics(3))
+            ->has(Engineer::factory(3)->addMetrics(3))
             ->create();
+
+        $team->engineers[0]->updateGrade(-1);
+        $team->engineers[1]->updateGrade(-3);
+        $team->engineers[2]->updateGrade(-5);
 
         GradeTeam::dispatch($team);
 
-        $this->assertNotNull($team->fresh()->score);
-        $this->assertNotNull($team->fresh()->grade);
+        $this->assertEquals(-3, $team->fresh()->score);
+        $this->assertEquals('B', $team->fresh()->grade);
         $this->assertNotNull($team->fresh()->graded_at);
     }
 

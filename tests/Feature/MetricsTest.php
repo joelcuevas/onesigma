@@ -170,19 +170,19 @@ class MetricsTest extends TestCase
     {
         $engineer = Engineer::factory()->create();
 
-        $engineer->setGrade([0]);
+        $engineer->updateGrade([0]);
         $this->assertEquals('A+', $engineer->fresh()->grade);
 
-        $engineer->setGrade([-1]);
+        $engineer->updateGrade([-1]);
         $this->assertEquals('A', $engineer->fresh()->grade);
 
-        $engineer->setGrade([-2]);
+        $engineer->updateGrade([-2]);
         $this->assertEquals('B', $engineer->fresh()->grade);
 
-        $engineer->setGrade([-7]);
+        $engineer->updateGrade([-7]);
         $this->assertEquals('D', $engineer->fresh()->grade);
 
-        $engineer->setGrade([-25]);
+        $engineer->updateGrade([-25]);
         $this->assertEquals('F', $engineer->fresh()->grade);
     }
 }

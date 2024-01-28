@@ -28,7 +28,7 @@ class GradeEngineer implements WorkflowableJob
         $this->gradeMetrics();
         $this->gradeSkills();
 
-        $this->engineer->setGrade($this->scores);
+        $this->engineer->updateGrade($this->scores);
     }
 
     protected function gradeMetrics()
