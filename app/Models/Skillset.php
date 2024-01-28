@@ -75,8 +75,8 @@ class Skillset extends Model
         $diff = (int) $this->score - $this->level;
 
         if ($diff < 0) {
-            // -2 points for each level diff
-            return $diff * 2;
+            // -1 points for each level diff
+            return $diff;
         }
 
         return 0;
