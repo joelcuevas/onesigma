@@ -7,10 +7,10 @@
 
     <div class="x-card">
         <form wire:submit="update">
-            <div class="border-b border-gray-900/10 space-y-6 pb-8">
-                <h2 class="font-bold text-lg text-gray-900">
+            <div class="space-y-6 border-b border-gray-900/10 pb-8">
+                <h2 class="text-lg font-bold text-gray-900">
                     {{ __('Perfil Profesional') }}
-                </h2>    
+                </h2>
 
                 <div>
                     <x-input-label>{{ __('Nombre') }}</x-input-label>
@@ -19,7 +19,7 @@
                             <x-text-input wire:model="name" />
                             <x-input-error :messages="$errors->get('name')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Nombre oficial en la organización. El ingeniero no puede modificarlo.') }}
                         </div>
@@ -33,7 +33,7 @@
                             <x-text-input wire:model="email" />
                             <x-input-error :messages="$errors->get('email')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Email oficial en la organización. El ingeniero no puede modificarlo.') }}
                         </div>
@@ -52,7 +52,7 @@
 
                             <x-input-error :messages="$errors->get('track')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Track de desarrollo de carrera. Debe coincidir con el registrado en RR.HH.') }}
                         </div>

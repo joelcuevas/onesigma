@@ -1,11 +1,21 @@
 @php
-    $subtree = 'root';
-    $prevDepth = -1;
+    $node = 'root';
+    $depth = -1;
 @endphp
 
-<div x-data="{
-    subtrees: { root: true },
-}">
+<div
+    x-data="{
+        expanded: @entangle('expanded').live,
+
+        isExpanded: function (node) {
+            return this.expanded[node] ?? true
+        },
+
+        toggleExpanded: function (node) {
+            return (this.expanded[node] = ! (this.expanded[node] ?? true))
+        },
+    }"
+>
     <x-slot name="header">
         <div class="sm:flex sm:items-center sm:justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Equipos') }}</h2>
@@ -21,37 +31,33 @@
 
     <div class="x-card">
         @foreach ($teams as $team)
-            @if ($team->depth < $prevDepth)
-                @for ($i = 0; $i < $prevDepth - $team->depth; $i++)
+            @if ($team->depth < $depth)
+                @for ($i = 0; $i < $depth - $team->depth; $i++)
                     {!! '</div>' !!}
                 @endfor
             @endif
 
-            @if ($team->depth > $prevDepth)
+            @if ($team->depth > $depth)
                 {!!
                     '<div 
-                    x-show="subtrees[\''.$subtree.'\'] ?? true" 
-                    x-collapse 
-                    data-subtree 
-                    x-ref="subtree'.$subtree.'"
+                    x-show="isExpanded(\''.$node.'\')" 
+                    x-collapse  
                     class="divide-y divide-gray-200"
                     >'
                 !!}
             @endif
 
             @php
-                $subtree = $team->path;
-                $prevDepth = $team->depth;
+                $node = $team->path;
+                $depth = $team->depth;
             @endphp
 
             <div class="grid grid-cols-12 py-2">
                 <div class="col-span-6">
                     <div class="flex items-center" style="padding-left: {{ $team->depth * 1.8 }}rem">
                         @if ($team->isCluster())
-                            <button class="flex items-center" x-on:click="function() {
-                                    subtrees['{{$team->path}}'] = ! (subtrees['{{$team->path}}'] ?? true);
-                                }">
-                                <x-heroicon-s-chevron-right class="mr-3 h-4 w-4 text-gray-500" x-bind:class="{ 'rotate-90': subtrees['{{$team->path}}'] ?? true }" />
+                            <button class="flex items-center" x-on:click="toggleExpanded('{{ $team->path }}')">
+                                <x-heroicon-s-chevron-right class="mr-3 h-4 w-4 text-gray-500" x-bind:class="{ 'rotate-90': isExpanded('{{$team->path}}') }" />
                             </button>
                         @endif
 

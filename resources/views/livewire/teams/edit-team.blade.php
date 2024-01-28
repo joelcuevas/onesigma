@@ -21,7 +21,7 @@
                             <x-text-input wire:model="name" />
                             <x-input-error :messages="$errors->get('name')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('El nombre del equipo debe de ser único en todo el portal.') }}
                         </div>
@@ -41,7 +41,7 @@
                             </div>
                             <x-input-error :messages="$errors->get('is_cluster')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Un equipo clúster puede contener a otros equipos, pero no ingenieros.') }}
                         </div>
@@ -60,7 +60,7 @@
                             </x-select-input>
                             <x-input-error :messages="$errors->get('parent_id')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:items-start">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Solo es posible seleccionar como padre a un equipo clúster.') }}
                         </div>
@@ -78,7 +78,7 @@
                             </x-select-input>
                             <x-input-error :messages="$errors->get('status')" />
                         </div>
-                        <div class="flex text-gray-500 lg:col-span-7 pt-2 lg:col-start-6 lg:items-center">
+                        <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:col-start-6 lg:items-center">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
                             {{ __('Un equipo inactivo no se considera en el cálculo de métricas.') }}
                         </div>
