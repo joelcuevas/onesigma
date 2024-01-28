@@ -21,7 +21,7 @@
                         </div>
                         <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
-                            {{ __('Nombre oficial en la organización. El ingeniero no puede modificarlo.') }}
+                            {{ __('Nombre oficial para mostrar. El ingeniero no puede modificarlo desde su perfil.') }}
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
-                            {{ __('Email oficial en la organización. El ingeniero no puede modificarlo.') }}
+                            {{ __('Debe coincidir con su email en Github para que pueda iniciar sesión.') }}
                         </div>
                     </div>
                 </div>

@@ -30,7 +30,7 @@
                     @if (isset($engineer->position->levels[$i]))
                         @for ($l = 0; $l <= 5; $l++)
                             <div x-show="s{{ $i }} == {{ $l }}" style="display: none">
-                                <p>{{ $engineer->position->levels[$i]["l{$l}_description"] }}</p>
+                                <p class="leading-tight">{{ $engineer->position->levels[$i]["l{$l}_description"] }}</p>
                             </div>
                         @endfor
                     @endif
