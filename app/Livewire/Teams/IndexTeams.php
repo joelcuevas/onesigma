@@ -10,13 +10,14 @@ use Livewire\Component;
 class IndexTeams extends Component
 {
     #[Url]
-    public $inactive = false;
+    public $show = '';
 
     public function render()
     {
         $this->authorize('index', Team::class);
 
-        $teams = Auth::user()->getTeams($this->inactive);
+        $inactive = $this->show == 'inactive';
+        $teams = Auth::user()->getTeams($inactive);
 
         return view('livewire.teams.index-teams')->with([
             'teams' => $teams,

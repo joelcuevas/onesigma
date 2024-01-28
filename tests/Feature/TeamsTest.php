@@ -102,7 +102,7 @@ class TeamsTest extends TestCase
             ->assertSeeText($teams[1]->name)
             ->assertSeeText($teams[2]->name);
 
-        $this->get(route('teams', ['inactive' => true]))
+        $this->get(route('teams', ['show' => 'inactive']))
             ->assertOk()
             ->assertSeeText($teams[0]->name)
             ->assertSeeText($teams[1]->name)
