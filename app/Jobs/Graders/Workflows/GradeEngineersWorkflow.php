@@ -23,7 +23,6 @@ class GradeEngineersWorkflow extends AbstractWorkflow
         foreach ($this->engineers as $engineer) {
             $workflow->addJob(
                 new GradeEngineer($engineer),
-                dependencies: [],
                 id: 'eng-'.$engineer->id,
             );
         }

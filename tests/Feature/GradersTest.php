@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Jobs\Graders\GradeEngineer;
 use App\Jobs\Graders\GradeTeam;
-use App\Jobs\Graders\Workflows\GradeClustersWorkflow;
+use App\Jobs\Graders\Workflows\GradeTeamWorkflow;
 use App\Models\Engineer;
 use App\Models\MetricConfig;
 use App\Models\Team;
@@ -70,7 +70,7 @@ class GradersTest extends TestCase
             ->hasAttached($engineer)
             ->create();
 
-        GradeClustersWorkflow::start($team);
+        GradeTeamWorkflow::start($team);
 
         $this->assertNotNull($engineer->fresh()->score);
         $this->assertNotNull($engineer->fresh()->grade);
@@ -102,7 +102,7 @@ class GradersTest extends TestCase
                 'parent_id' => $nestedCluster->id,
             ]);
 
-        Artisan::call('grade:clusters');
+        Artisan::call('grade:teams');
 
         $this->assertNotNull($engineer->fresh()->graded_at);
         $this->assertNotNull($team->fresh()->graded_at);
