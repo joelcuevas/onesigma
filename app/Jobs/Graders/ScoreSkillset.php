@@ -25,7 +25,7 @@ class ScoreSkillset implements ShouldQueue
     {
         $positions = Position::where('group', $this->skillset->group)->get();
 
-        $scores = $this->skillset->getSkills();
+        $scores = $this->skillset->getCurrentSkills();
         $diffs = [];
 
         // find the closest skillset

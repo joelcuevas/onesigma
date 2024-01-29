@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             'metric' => 'App\Models\Metric',
             'skillset' => 'App\Models\Skillset',
             'user' => 'App\Models\User',
+            'position' => 'App\Models\Position',
             'position_level' => 'App\Models\PositionLevel',
         ]);
     }

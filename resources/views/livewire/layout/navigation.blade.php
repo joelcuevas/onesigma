@@ -30,12 +30,19 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-8 sm:flex">
-                    <x-nav-link :href="route('teams')" wire:navigate>
-                        {{ __('Equipos') }}
-                    </x-nav-link>
+                    @can('index', 'App\Models\Team')
+                        <x-nav-link :href="route('teams')" wire:navigate>
+                            {{ __('Equipos') }}
+                        </x-nav-link>
+                    @endcan
                     @can('index', 'App\Models\User')
                         <x-nav-link :href="route('users')" wire:navigate>
                             {{ __('Usuarios') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('index', 'App\Models\Position')
+                        <x-nav-link :href="route('positions')" wire:navigate>
+                            {{ __('Posiciones') }}
                         </x-nav-link>
                     @endcan
                 </div>
@@ -89,12 +96,19 @@ new class extends Component
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="space-y-1 pb-3 pt-2">
-            <x-responsive-nav-link :href="route('teams')" wire:navigate>
-                {{ __('Equipos') }}
-            </x-responsive-nav-link>
+            @can('index', 'App\Models\Team')
+                <x-responsive-nav-link :href="route('teams')" wire:navigate>
+                    {{ __('Equipos') }}
+                </x-responsive-nav-link>
+            @endcan
             @can('index', 'App\Models\User')
                 <x-responsive-nav-link :href="route('users')" wire:navigate>
                     {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('index', 'App\Models\Position')
+                <x-responsive-nav-link :href="route('positions')" wire:navigate>
+                    {{ __('Posiciones') }}
                 </x-responsive-nav-link>
             @endcan
         </div>

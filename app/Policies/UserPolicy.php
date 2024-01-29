@@ -6,15 +6,6 @@ use App\Models\User;
 
 class UserPolicy
 {
-    public function before(User $user)
-    {
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        return null;
-    }
-
     public function index(User $user)
     {
         return $user->isAdmin();

@@ -8,6 +8,8 @@ use App\Livewire\Teams\IndexTeams;
 use App\Livewire\Teams\ShowTeam;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
+use App\Livewire\Positions\IndexPositions;
+use App\Livewire\Positions\ShowPosition;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +68,16 @@ Route::middleware('auth')->group(function () {
     Route::get('users/{user}/edit', EditUser::class)
         ->name('users.edit')
         ->middleware('can:edit,user');
+
+    // positions
+
+    Route::get('positions', IndexPositions::class)
+        ->name('positions')
+        ->middleware('can:index,App\Models\Position');
+
+    Route::get('positions/{position}', ShowPosition::class)
+        ->name('positions.show')
+        ->middleware('can:show,position');
 });
 
 Route::get('dashboard', fn () => redirect('/teams'))

@@ -11,16 +11,8 @@ class Position extends Model
 
     protected $attributes = [
         'type' => 'engineer',
-        's0' => 0, 's0_label' => 's0',
-        's1' => 0, 's1_label' => 's1',
-        's2' => 0, 's2_label' => 's2',
-        's3' => 0, 's3_label' => 's3',
-        's4' => 0, 's4_label' => 's4',
-        's5' => 0, 's5_label' => 's5',
-        's6' => 0, 's6_label' => 's6',
-        's7' => 0, 's7_label' => 's7',
-        's8' => 0, 's8_label' => 's8',
-        's9' => 0, 's9_label' => 's9',
+        's0' => 0, 's1' => 0, 's2' => 0, 's3' => 0, 's4' => 0, 
+        's5' => 0, 's6' => 0, 's7' => 0, 's8' => 0, 's9' => 0,
     ];
 
     protected static function booted()
@@ -32,20 +24,27 @@ class Position extends Model
         });
     }
 
-    public function getExpectedSkills($keyLabels = true)
+    public function getExpectedSkills()
     {
+        $labels = $this->levels->pluck('skill_label', 'skill');
+
         return [
-            $keyLabels ? $this->s0_label : 's0' => $this->s0,
-            $keyLabels ? $this->s1_label : 's1' => $this->s1,
-            $keyLabels ? $this->s2_label : 's2' => $this->s2,
-            $keyLabels ? $this->s3_label : 's3' => $this->s3,
-            $keyLabels ? $this->s4_label : 's4' => $this->s4,
-            $keyLabels ? $this->s5_label : 's5' => $this->s5,
-            $keyLabels ? $this->s6_label : 's6' => $this->s6,
-            $keyLabels ? $this->s7_label : 's7' => $this->s7,
-            $keyLabels ? $this->s8_label : 's8' => $this->s8,
-            $keyLabels ? $this->s9_label : 's9' => $this->s9,
+            $labels[0] ?? 0 => $this->s0,
+            $labels[1] ?? 1 => $this->s1,
+            $labels[2] ?? 2 => $this->s2,
+            $labels[3] ?? 3 => $this->s3,
+            $labels[4] ?? 4 => $this->s4,
+            $labels[5] ?? 5 => $this->s5,
+            $labels[6] ?? 6 => $this->s6,
+            $labels[7] ?? 7 => $this->s7,
+            $labels[8] ?? 8 => $this->s8,
+            $labels[9] ?? 9 => $this->s9,
         ];
+    }
+
+    public function getSkillLabel($skill)
+    {
+        return $this->levels->firstWhere('skill', $skill)->skill_label;
     }
 
     public function levels()

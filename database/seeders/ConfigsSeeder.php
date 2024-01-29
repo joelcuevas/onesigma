@@ -66,6 +66,7 @@ class ConfigsSeeder extends Seeder
         ]);
 
         $engineerSkills = [
+            0 => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             2 => [1, 2, 2, 2, 1, 2, 1, 1, 1, 2],
             3 => [2, 2, 2, 3, 2, 3, 2, 2, 2, 3],
@@ -77,43 +78,20 @@ class ConfigsSeeder extends Seeder
 
         foreach ($engineerSkills as $level => $scores) {
             Position::create([
-                'type' => 'engineer',
+                'type' => $level == 0 ? 'group' : 'engineer',
                 'track' => 'SE'.$level,
                 'title' => 'Software Engineer '.$level,
                 'level' => $level,
-                's0_label' => 'Technology',
                 's0' => $scores[0],
-                's1_label' => 'System',
                 's1' => $scores[1],
-                's2_label' => 'People',
                 's2' => $scores[2],
-                's3_label' => 'Process',
                 's3' => $scores[3],
-                's4_label' => 'Influence',
                 's4' => $scores[4],
-                's5_label' => 'Coding',
                 's5' => $scores[5],
-                's6_label' => 'DevOps',
                 's6' => $scores[6],
-                's7_label' => 'Testing',
                 's7' => $scores[7],
-                's8_label' => 'SysDesign',
                 's8' => $scores[8],
-                's9_label' => 'Culture',
                 's9' => $scores[9],
-            ]);
-        }
-
-        for ($i = 0; $i <= 9; $i++) {
-            PositionLevel::create([
-                'track' => 'SE',
-                'skill' => $i,
-                'l0_description' => fake()->paragraph(2),
-                'l1_description' => fake()->paragraph(2),
-                'l2_description' => fake()->paragraph(2),
-                'l3_description' => fake()->paragraph(2),
-                'l4_description' => fake()->paragraph(2),
-                'l5_description' => fake()->paragraph(2),
             ]);
         }
 
@@ -129,27 +107,46 @@ class ConfigsSeeder extends Seeder
                 'track' => 'ST'.$level,
                 'title' => 'Software Team '.$level,
                 'level' => $level,
-                's0_label' => 'Technology',
                 's0' => $scores[0],
-                's1_label' => 'System',
                 's1' => $scores[1],
-                's2_label' => 'People',
                 's2' => $scores[2],
-                's3_label' => 'Process',
                 's3' => $scores[3],
-                's4_label' => 'Influence',
                 's4' => $scores[4],
-                's5_label' => 'Coding',
                 's5' => $scores[5],
-                's6_label' => 'DevOps',
                 's6' => $scores[6],
-                's7_label' => 'Testing',
                 's7' => $scores[7],
-                's8_label' => 'SysDesign',
                 's8' => $scores[8],
-                's9_label' => 'Culture',
                 's9' => $scores[9],
             ]);
+        }
+
+        $skillLabels = [
+            0 => 'Technology',
+            1 => 'System',
+            2 => 'People',
+            3 => 'Process',
+            4 => 'Influence',
+            5 => 'Coding',
+            6 => 'DevOps',
+            7 => 'Testing',
+            8 => 'SysDesign',
+            9 => 'Culture',
+        ];
+
+        for ($i = 0; $i <= 9; $i++) {
+            foreach (['SE', 'ST'] as $group) {
+                PositionLevel::create([
+                    'track' => $group,
+                    'skill' => $i,
+                    'skill_label' => $skillLabels[$i],
+                    'l0_description' => fake()->paragraph(2),
+                    'l1_description' => fake()->paragraph(2),
+                    'l2_description' => fake()->paragraph(2),
+                    'l3_description' => fake()->paragraph(2),
+                    'l4_description' => fake()->paragraph(2),
+                    'l5_description' => fake()->paragraph(2),
+                ]);
+            }
         }
 
         $root = Team::create(['name' => 'Technology', 'is_cluster' => true]);

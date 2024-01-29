@@ -36,27 +36,27 @@ class Skillset extends Model
         });
     }
 
-    public function getSkills($keyLabels = true)
+    public function getCurrentSkills()
     {
-        $p = $this->position;
+        $labels = $this->position->levels->pluck('skill_label', 'skill');
 
         return [
-            $keyLabels ? $p->s0_label : 's0' => $this->s0,
-            $keyLabels ? $p->s1_label : 's1' => $this->s1,
-            $keyLabels ? $p->s2_label : 's2' => $this->s2,
-            $keyLabels ? $p->s3_label : 's3' => $this->s3,
-            $keyLabels ? $p->s4_label : 's4' => $this->s4,
-            $keyLabels ? $p->s5_label : 's5' => $this->s5,
-            $keyLabels ? $p->s6_label : 's6' => $this->s6,
-            $keyLabels ? $p->s7_label : 's7' => $this->s7,
-            $keyLabels ? $p->s8_label : 's8' => $this->s8,
-            $keyLabels ? $p->s9_label : 's9' => $this->s9,
+            $labels[0] ?? 0 => $this->s0,
+            $labels[1] ?? 1 => $this->s1,
+            $labels[2] ?? 2 => $this->s2,
+            $labels[3] ?? 3 => $this->s3,
+            $labels[4] ?? 4 => $this->s4,
+            $labels[5] ?? 5 => $this->s5,
+            $labels[6] ?? 6 => $this->s6,
+            $labels[7] ?? 7 => $this->s7,
+            $labels[8] ?? 8 => $this->s8,
+            $labels[9] ?? 9 => $this->s9,
         ];
     }
 
-    public function getExpectedSkills($keyLabels = true)
+    public function getPositionSkills()
     {
-        return $this->position->getExpectedSkills($keyLabels);
+        return $this->position->getExpectedSkills();
     }
 
     public function equals(Skillset $compare)

@@ -104,7 +104,12 @@ class GradeTeam implements WorkflowableJob
         if ($count) {
             // get children average skills scores
             foreach ($this->children as $child) {
-                foreach ($child->skillset->getSkills(keyLabels: false) as $i => $s) {
+                $skills = $child->skillset->only([
+                    's0', 's1', 's2', 's3', 's4', 
+                    's5', 's6', 's7', 's8', 's9', 
+                ]);
+
+                foreach ($skills as $i => $s) {
                     $scores[$i] = ($scores[$i] ?? 0) + $s;
                 }
             }

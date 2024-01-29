@@ -62,7 +62,7 @@ class EngineersTest extends TestCase
             ->call('score');
 
         $engineer->refresh();
-        $skills = array_values($engineer->skillset->getSkills());
+        $skills = array_values($engineer->skillset->getCurrentSkills());
 
         $this->assertEquals([5, 5, 5, 5, 5, 5, 5, 5, 5, 5], $skills);
     }
