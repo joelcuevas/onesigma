@@ -50,6 +50,6 @@ class Position extends Model
 
     public function levels()
     {
-        return $this->hasMany(PositionLevel::class, 'track', 'track');
+        return $this->hasMany(PositionLevel::class, 'track', 'group');
     }
 }

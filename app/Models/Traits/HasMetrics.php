@@ -66,5 +66,7 @@ trait HasMetrics
         $this->grade = $grade;
         $this->graded_at = now();
         $this->save();
+
+        return $grade;
     }
 }

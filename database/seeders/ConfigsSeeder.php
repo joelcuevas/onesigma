@@ -102,19 +102,19 @@ class ConfigsSeeder extends Seeder
                 's9_label' => 'Culture',
                 's9' => $scores[9],
             ]);
+        }
 
-            for ($i = 0; $i <= 9; $i++) {
-                PositionLevel::create([
-                    'track' => 'SE'.$level,
-                    'skill' => $i,
-                    'l0_description' => fake()->paragraph(2),
-                    'l1_description' => fake()->paragraph(2),
-                    'l2_description' => fake()->paragraph(2),
-                    'l3_description' => fake()->paragraph(2),
-                    'l4_description' => fake()->paragraph(2),
-                    'l5_description' => fake()->paragraph(2),
-                ]);
-            }
+        for ($i = 0; $i <= 9; $i++) {
+            PositionLevel::create([
+                'track' => 'SE',
+                'skill' => $i,
+                'l0_description' => fake()->paragraph(2),
+                'l1_description' => fake()->paragraph(2),
+                'l2_description' => fake()->paragraph(2),
+                'l3_description' => fake()->paragraph(2),
+                'l4_description' => fake()->paragraph(2),
+                'l5_description' => fake()->paragraph(2),
+            ]);
         }
 
         $teamSkills = [
