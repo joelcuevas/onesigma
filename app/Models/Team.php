@@ -8,13 +8,15 @@ use App\Models\Pivots\TeamUser;
 use App\Models\Traits\HasIdentities;
 use App\Models\Traits\HasMetrics;
 use App\Models\Traits\HasSkillsets;
+use App\Models\Traits\HasPosition;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Team extends Model
 {
-    use HasFactory, HasIdentities, HasMetrics, HasRecursiveRelationships, HasSkillsets;
+    use HasPosition, HasFactory, HasIdentities, HasMetrics, 
+        HasRecursiveRelationships, HasSkillsets;
 
     protected $casts = [
         'is_cluster' => 'boolean',
@@ -22,7 +24,6 @@ class Team extends Model
     ];
 
     protected $attributes = [
-        'track' => 'ST3',
         'is_cluster' => false,
         'status' => TeamStatus::Active,
     ];

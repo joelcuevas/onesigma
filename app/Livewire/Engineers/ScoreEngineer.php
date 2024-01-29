@@ -17,9 +17,7 @@ class ScoreEngineer extends Component
     {
         $this->engineer = $engineer;
 
-        $this->fill($engineer->skillset->only([
-            's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9',
-        ]));
+        $this->fill($engineer->skillset->onlySkills());
     }
 
     public function score()
@@ -41,7 +39,6 @@ class ScoreEngineer extends Component
 
         if (! $this->engineer->skillset->equals($skillset)) {
             $this->engineer->skillsets()->save($skillset);
-
             GradeEngineer::dispatch($this->engineer);
         }
 

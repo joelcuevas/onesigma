@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Jobs\Graders\ScoreSkillset;
+use App\Models\Traits\HasPosition;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Skillset extends Model
 {
-    use HasFactory;
+    use HasPosition, HasFactory;
 
     protected $casts = [
         'date' => 'date',
@@ -22,18 +23,18 @@ class Skillset extends Model
     protected static function booted()
     {
         static::creating(function (Skillset $skillset) {
-            $skillset->track = $skillset->skillable->track;
-
-            $tokens = explode_track($skillset->track);
-            $skillset->group = $tokens['group'];
-            $skillset->level = $tokens['level'];
-
+            $skillset->position_id = $skillset->skillable->position_id;
             $skillset->date = now();
         });
 
         static::created(function (Skillset $skillset) {
             ScoreSkillset::dispatchSync($skillset);
         });
+    }
+
+    public function getLevelAttribute()
+    {
+        return $this->position->level;
     }
 
     public function getCurrentSkills()
@@ -59,6 +60,13 @@ class Skillset extends Model
         return $this->position->getExpectedSkills();
     }
 
+    public function onlySkills()
+    {
+        return $this->only([
+            's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9',
+        ]);
+    }
+
     public function equals(Skillset $compare)
     {
         for ($i = 0; $i < 10; $i++) {
@@ -80,11 +88,6 @@ class Skillset extends Model
         }
 
         return 0;
-    }
-
-    public function position()
-    {
-        return $this->belongsTo(Position::class, 'track', 'track')->withDefault();
     }
 
     public function skillable()

@@ -41,20 +41,20 @@
                 </div>
 
                 <div>
-                    <x-input-label>{{ __('Track') }}</x-input-label>
+                    <x-input-label>{{ __('Posición') }}</x-input-label>
                     <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
                         <div class="lg:col-span-5">
-                            <x-select-input wire:model="track">
-                                @foreach ($tracks as $track => $title)
-                                    <option value="{{ $track }}">{{ $title }}</option>
+                            <x-select-input wire:model="position_id">
+                                @foreach ($positions as $id => $title)
+                                    <option value="{{ $id }}">{{ $title }}</option>
                                 @endforeach
                             </x-select-input>
 
-                            <x-input-error :messages="$errors->get('track')" />
+                            <x-input-error :messages="$errors->get('position_id')" />
                         </div>
                         <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                             <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
-                            {{ __('Track de desarrollo de carrera. Debe coincidir con el registrado en RR.HH.') }}
+                            {{ __('Posición del ingeniero. Debe coincidir con el registrado en RR.HH.') }}
                         </div>
                     </div>
                 </div>

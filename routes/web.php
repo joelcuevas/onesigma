@@ -10,6 +10,7 @@ use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
 use App\Livewire\Positions\IndexPositions;
 use App\Livewire\Positions\ShowPosition;
+use App\Livewire\Positions\ConfigPosition;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,6 +79,10 @@ Route::middleware('auth')->group(function () {
     Route::get('positions/{position}', ShowPosition::class)
         ->name('positions.show')
         ->middleware('can:show,position');
+
+    Route::get('positions/{position}/config', ConfigPosition::class)
+        ->name('positions.config')
+        ->middleware('can:edit,position');
 });
 
 Route::get('dashboard', fn () => redirect('/teams'))

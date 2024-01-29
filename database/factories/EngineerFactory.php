@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Metric;
+use App\Models\Position;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,8 +21,22 @@ class EngineerFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'track' => 'SE'.rand(1, 5),
+            'position_id' => Position::factory(),
         ];
+    }
+
+    public function se1()
+    {
+        return $this->state(fn (array $attributes) => [
+           'position_id' => Position::firstWhere('track', 'SE1')->id,
+        ]);
+    }
+
+    public function se7()
+    {
+        return $this->state(fn (array $attributes) => [
+           'position_id' => Position::firstWhere('track', 'SE7')->id,
+        ]);
     }
 
     public function addMetrics($count = 1, $metrics = null)

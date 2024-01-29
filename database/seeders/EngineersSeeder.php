@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Engineer;
 use App\Models\Team;
+use App\Models\Position;
 use Illuminate\Database\Seeder;
 
 class EngineersSeeder extends Seeder
@@ -13,8 +14,16 @@ class EngineersSeeder extends Seeder
      */
     public function run(): void
     {
+        $engineerPositions = Position::where('type', 'engineer')->get();
+        $teamPositions = Position::where('type', 'team')->get();
+
         $tech = Team::find(1);
-        $clusters = Team::factory(5)->hasSkillset()->create(['is_cluster' => true]);
+        
+        $clusters = Team::factory(5)
+            ->st3()
+            ->cluster()
+            ->hasSkillset()
+            ->create();
 
         $clusters[0]->parent()->associate($tech)->save();
         $clusters[0]->children()->save($clusters[1]);
@@ -23,9 +32,15 @@ class EngineersSeeder extends Seeder
         $clusters[3]->parent()->associate($tech)->save();
         $clusters[3]->children()->save($clusters[4]);
 
-        $branch2 = Team::factory(10)
+        $engineers = Engineer::factory(5)
+            ->recycle($engineerPositions)
             ->hasSkillset()
-            ->has(Engineer::factory(5)->hasSkillset()->addMetrics())
+            ->addMetrics();
+
+        $branch2 = Team::factory(10)
+            ->st3() 
+            ->hasSkillset()
+            ->has($engineers)
             ->create();
 
         $branch4 = $branch2->splice(5);

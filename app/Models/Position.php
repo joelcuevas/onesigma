@@ -24,6 +24,11 @@ class Position extends Model
         });
     }
 
+    public function isGroup()
+    {
+        return $this->type == 'group';
+    }
+
     public function getExpectedSkills()
     {
         $labels = $this->skills->pluck('skill_label', 'skill');

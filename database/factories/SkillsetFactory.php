@@ -33,6 +33,24 @@ class SkillsetFactory extends Factory
         ];
     }
 
+    public function se1()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                's0' => 1,
+                's1' => 1,
+                's2' => 1,
+                's3' => 1,
+                's4' => 1,
+                's5' => 1,
+                's6' => 1,
+                's7' => 1,
+                's8' => 1,
+                's9' => 1,
+            ];
+        });
+    }
+
     public function se7()
     {
         return $this->state(function (array $attributes) {

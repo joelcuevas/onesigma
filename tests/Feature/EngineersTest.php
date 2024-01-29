@@ -6,6 +6,7 @@ use App\Livewire\Engineers\EditEngineer;
 use App\Livewire\Engineers\ScoreEngineer;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Position;
 use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -29,7 +30,7 @@ class EngineersTest extends TestCase
             ->assertOk()
             ->set('name', 'newname')
             ->set('email', 'new@email.com')
-            ->set('track', 'SE7')
+            ->set('position_id', Position::firstWhere('track', 'SE7')->id)
             ->call('update');
 
         $engineer->refresh();

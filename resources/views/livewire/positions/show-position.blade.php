@@ -5,8 +5,8 @@
                 <span class="font-semibold">{{ $position->title }}</span>
             </h2>
             <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
-                <x-link-button href="{{ route('positions.show', $position) }}">
-                    {{ __('Editar') }}
+                <x-link-button href="{{ route('positions.config', $position) }}">
+                    {{ __('Configurar') }}
                 </x-link-button>
             </div>
         </div>

@@ -50,27 +50,7 @@ class EditTeam extends Component
 
     public function update()
     {
-        $validated = $this->validateInput();
-
-        $this->team->fill($validated);
-
-        if ($this->team->isDirty('status')) {
-            $sub = $this->team->descendantsAndSelf->pluck('id')->all();
-            Team::whereIn('id', $sub)->update(['status' => $validated['status']]);
-        }
-
-        $this->team->save();
-
-        if ($this->team->wasRecentlyCreated) {
-            Auth::user()->teams()->attach($this->team);
-        }
-
-        $this->redirect(route('teams.show', $this->team));
-    }
-
-    protected function validateInput()
-    {
-        $rules = [
+        $validated = $this->validate([
             'name' => [
                 'required',
                 'max:255',
@@ -88,8 +68,21 @@ class EditTeam extends Component
                 'required',
                 Rule::enum(TeamStatus::class),
             ],
-        ];
+        ]);
 
-        return $this->validate($rules);
+        $this->team->fill($validated);
+
+        if ($this->team->isDirty('status')) {
+            $sub = $this->team->descendantsAndSelf->pluck('id')->all();
+            Team::whereIn('id', $sub)->update(['status' => $validated['status']]);
+        }
+
+        $this->team->save();
+
+        if ($this->team->wasRecentlyCreated) {
+            Auth::user()->teams()->attach($this->team);
+        }
+
+        $this->redirect(route('teams.show', $this->team));
     }
 }

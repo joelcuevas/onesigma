@@ -6,6 +6,7 @@ use App\Models\Engineer;
 use App\Models\Skillset;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Position;
 use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,7 +20,7 @@ class SkillsetsTest extends TestCase
         $engineer = Engineer::factory()->hasSkillsets(1)->create();
 
         $this->assertEquals(1, $engineer->skillsets->count());
-        $this->assertEquals($engineer->track, $engineer->skillset->track);
+        $this->assertEquals($engineer->position_id, $engineer->skillset->position_id);
     }
 
     public function test_skillsets_are_scored_on_creation(): void
@@ -27,13 +28,17 @@ class SkillsetsTest extends TestCase
         $this->seed(ConfigsSeeder::class);
 
         $engineer = Engineer::factory()
-            ->has(Skillset::factory()->se7())
+            ->se7()
+            ->has(Skillset::factory()->se1())
             ->create();
 
         $skillset = $engineer->skillset;
+        $se7 = Position::firstWhere('track', 'SE7');
 
-        $this->assertEquals($skillset->track, $skillset->track);
-        $this->assertEquals(7, $skillset->score);
+        $this->assertEquals($se7->id, $skillset->position_id);
+        $this->assertEquals(7, $skillset->level);
+        $this->assertEquals(1, $skillset->score);
+        $this->assertEquals(-6, $skillset->getScoreForGrader());
     }
 
     public function test_skill_charts_are_rendered_in_team_details()

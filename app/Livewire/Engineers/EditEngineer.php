@@ -16,9 +16,9 @@ class EditEngineer extends Component
 
     public $email;
 
-    public $track;
+    public $position_id;
 
-    public $tracks;
+    public $positions;
 
     public function mount(Engineer $engineer)
     {
@@ -27,12 +27,12 @@ class EditEngineer extends Component
         $this->engineer = $engineer;
 
         $this->fill(
-            $engineer->only('name', 'email', 'track'),
+            $engineer->only('name', 'email', 'position_id'),
         );
 
-        $this->tracks = Position::where('type', 'engineer')
-            ->orderBy('track')
-            ->pluck('title', 'track');
+        $this->positions = Position::where('type', 'engineer')
+            ->orderBy('title')
+            ->pluck('title', 'id');
     }
 
     public function update()
@@ -40,24 +40,29 @@ class EditEngineer extends Component
         $this->authorize('update', $this->engineer);
 
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'track' => [
+            'name' => [
+                'required', 
+                'string', 
+                'max:255',
+            ],
+            'email' => [
+                'required', 
+                'email', 
+                'max:255',
+            ],
+            'position_id' => [
                 'required',
-                Rule::in($this->tracks->keys()),
+                'exists:positions,id',
             ],
         ]);
 
         $this->engineer->fill($validated);
-        $rescore = $this->engineer->isDirty('track');
+        $rescore = $this->engineer->isDirty('position_id');
 
         $this->engineer->save();
 
         if ($rescore) {
-            $skills = $this->engineer->skillset->only([
-                's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9',
-            ]);
-
+            $skills = $this->engineer->skillset->onlySkills();
             $this->engineer->refresh()->skillsets()->create($skills);
 
             GradeEngineer::dispatch($this->engineer);
