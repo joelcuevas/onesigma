@@ -11,32 +11,11 @@ class ScoreEngineer extends Component
 {
     public Engineer $engineer;
 
-    public $s0;
-
-    public $s1;
-
-    public $s2;
-
-    public $s3;
-
-    public $s4;
-
-    public $s5;
-
-    public $s6;
-
-    public $s7;
-
-    public $s8;
-
-    public $s9;
-
-    public $levels;
+    public $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $s8, $s9;
 
     public function mount(Engineer $engineer)
     {
         $this->engineer = $engineer;
-        $this->levels = $engineer->position->levels->keyBy('skill');
 
         $this->fill($engineer->skillset->only([
             's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9',

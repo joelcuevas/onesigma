@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Enums\UserRole;
 use App\Models\MetricConfig;
 use App\Models\Position;
-use App\Models\PositionLevel;
+use App\Models\PositionSkill;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -135,7 +135,7 @@ class ConfigsSeeder extends Seeder
 
         for ($i = 0; $i <= 9; $i++) {
             foreach (['SE', 'ST'] as $group) {
-                PositionLevel::create([
+                PositionSkill::create([
                     'track' => $group,
                     'skill' => $i,
                     'skill_label' => $skillLabels[$i],

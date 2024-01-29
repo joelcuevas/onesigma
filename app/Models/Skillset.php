@@ -38,7 +38,7 @@ class Skillset extends Model
 
     public function getCurrentSkills()
     {
-        $labels = $this->position->levels->pluck('skill_label', 'skill');
+        $labels = $this->position->skills->pluck('skill_label', 'skill');
 
         return [
             $labels[0] ?? 0 => $this->s0,

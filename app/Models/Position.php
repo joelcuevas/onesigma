@@ -26,7 +26,7 @@ class Position extends Model
 
     public function getExpectedSkills()
     {
-        $labels = $this->levels->pluck('skill_label', 'skill');
+        $labels = $this->skills->pluck('skill_label', 'skill');
 
         return [
             $labels[0] ?? 0 => $this->s0,
@@ -44,11 +44,11 @@ class Position extends Model
 
     public function getSkillLabel($skill)
     {
-        return $this->levels->firstWhere('skill', $skill)->skill_label;
+        return $this->skills->firstWhere('skill', $skill)?->skill_label;
     }
 
-    public function levels()
+    public function skills()
     {
-        return $this->hasMany(PositionLevel::class, 'track', 'group');
+        return $this->hasMany(PositionSkill::class, 'track', 'group');
     }
 }

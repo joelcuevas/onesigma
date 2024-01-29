@@ -1,4 +1,5 @@
 @props(['engineer', 'start'])
+
 <div class="space-y-3">
     @for ($i = $start; $i < $start + 5; $i++)
         <div>
@@ -27,10 +28,10 @@
                     <x-input-error :messages="$errors->get('s'.$i)" />
                 </div>
                 <div class="text-gray-500 md:col-span-7">
-                    @if (isset($engineer->position->levels[$i]))
+                    @if (isset($engineer->position->skills[$i]))
                         @for ($l = 0; $l <= 5; $l++)
                             <div x-show="s{{ $i }} == {{ $l }}" style="display: none">
-                                <p class="leading-tight">{{ $engineer->position->levels[$i]["l{$l}_description"] }}</p>
+                                <p class="leading-tight">{{ $engineer->position->skills[$i]["l{$l}_description"] }}</p>
                             </div>
                         @endfor
                     @endif

@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             'skillset' => 'App\Models\Skillset',
             'user' => 'App\Models\User',
             'position' => 'App\Models\Position',
-            'position_level' => 'App\Models\PositionLevel',
+            'position_skill' => 'App\Models\PositionSkill',
         ]);
     }
 }
