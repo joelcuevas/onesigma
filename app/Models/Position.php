@@ -15,15 +15,6 @@ class Position extends Model
         's5' => 0, 's6' => 0, 's7' => 0, 's8' => 0, 's9' => 0,
     ];
 
-    protected static function booted()
-    {
-        static::creating(function (Position $position) {
-            //$tokens = explode_track($position->track);
-            //$position->group = $tokens['group'];
-            //$position->level = $tokens['level'];
-        });
-    }
-
     public function isGroup()
     {
         return $this->type == 'group';
