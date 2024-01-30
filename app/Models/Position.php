@@ -54,6 +54,6 @@ class Position extends Model
 
     public function skills()
     {
-        return $this->hasMany(PositionSkill::class, 'track', 'group');
+        return $this->hasMany(PositionSkill::class, 'track', 'track');
     }
 }
