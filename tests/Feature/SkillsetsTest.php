@@ -33,7 +33,7 @@ class SkillsetsTest extends TestCase
             ->create();
 
         $skillset = $engineer->skillset;
-        $se7 = Position::firstWhere('track', 'SE7');
+        $se7 = Position::firstWhere('code', 'SE7');
 
         $this->assertEquals($se7->id, $skillset->position_id);
         $this->assertEquals(7, $skillset->level);

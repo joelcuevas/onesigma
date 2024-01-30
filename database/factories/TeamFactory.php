@@ -26,7 +26,7 @@ class TeamFactory extends Factory
     public function st3(): static
     {
         return $this->state(fn (array $attributes) => [
-           'position_id' => Position::firstWhere('track', 'ST3')->id,
+           'position_id' => Position::firstWhere('code', 'ST3')->id,
         ]);
     }
 

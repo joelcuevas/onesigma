@@ -12,14 +12,14 @@ class ConfigPosition extends Component
 
     public $title;
 
-    public $group;
+    public $track;
 
     public function mount(Position $position)
     {
         $this->position = $position;
 
         $this->fill($position->only([
-            'title', 'group',
+            'title', 'track',
         ]));
     }
 
@@ -40,7 +40,7 @@ class ConfigPosition extends Component
                     ->where(fn ($q) => $q->where('type', 'group'))
                     ->ignore($this->position->id),
             ],
-            'group' => [
+            'track' => [
                 'required',
                 'max:3',
                 Rule::unique('positions')

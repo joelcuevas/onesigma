@@ -11,11 +11,6 @@ trait HasPosition
         return $this->position->title;
     }
 
-    public function getTrackAttribute()
-    {
-        return $this->position->track;
-    }
-
     public function position()
     {
         return $this->belongsTo(Position::class)->withDefault();

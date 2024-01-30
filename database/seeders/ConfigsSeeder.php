@@ -79,9 +79,10 @@ class ConfigsSeeder extends Seeder
         foreach ($engineerSkills as $level => $scores) {
             Position::create([
                 'type' => $level == 0 ? 'group' : 'engineer',
-                'track' => 'SE'.$level,
-                'title' => 'Software Engineer '.$level,
+                'code' => 'SE'.$level,
+                'track' => 'SE',
                 'level' => $level,
+                'title' => 'Software Engineer '.$level,
                 's0' => $scores[0],
                 's1' => $scores[1],
                 's2' => $scores[2],
@@ -104,9 +105,10 @@ class ConfigsSeeder extends Seeder
         foreach ($teamSkills as $level => $scores) {
             Position::create([
                 'type' => 'team',
-                'track' => 'ST'.$level,
-                'title' => 'Software Team '.$level,
+                'code' => 'ST'.$level,
+                'track' => 'ST',
                 'level' => $level,
+                'title' => 'Software Team '.$level,
                 's0' => $scores[0],
                 's1' => $scores[1],
                 's2' => $scores[2],
@@ -134,9 +136,9 @@ class ConfigsSeeder extends Seeder
         ];
 
         for ($i = 0; $i <= 9; $i++) {
-            foreach (['SE', 'ST'] as $group) {
+            foreach (['SE', 'ST'] as $track) {
                 PositionSkill::create([
-                    'track' => $group,
+                    'track' => $track,
                     'skill' => $i,
                     'skill_label' => $skillLabels[$i],
                     'l0_description' => fake()->paragraph(2),

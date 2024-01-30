@@ -30,14 +30,14 @@ class EngineersTest extends TestCase
             ->assertOk()
             ->set('name', 'newname')
             ->set('email', 'new@email.com')
-            ->set('position_id', Position::firstWhere('track', 'SE7')->id)
+            ->set('position_id', Position::firstWhere('code', 'SE7')->id)
             ->call('update');
 
         $engineer->refresh();
 
         $this->assertEquals('newname', $engineer->name);
         $this->assertEquals('new@email.com', $engineer->email);
-        $this->assertEquals('SE7', $engineer->track);
+        $this->assertEquals('SE7', $engineer->position->code);
     }
 
     public function test_engineers_can_be_scored(): void

@@ -28,14 +28,14 @@ class EngineerFactory extends Factory
     public function se1()
     {
         return $this->state(fn (array $attributes) => [
-           'position_id' => Position::firstWhere('track', 'SE1')->id,
+           'position_id' => Position::firstWhere('code', 'SE1')->id,
         ]);
     }
 
     public function se7()
     {
         return $this->state(fn (array $attributes) => [
-           'position_id' => Position::firstWhere('track', 'SE7')->id,
+           'position_id' => Position::firstWhere('code', 'SE7')->id,
         ]);
     }
 

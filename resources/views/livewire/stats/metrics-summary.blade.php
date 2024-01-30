@@ -44,15 +44,15 @@ new class extends Component
                     @if ($metric->value)
                         <div class="{{ $this->badgeColor($metric) }} inline-flex items-baseline rounded-full px-2 py-0.5 text-sm font-medium md:mt-2 lg:mt-0">
                             @if ($metric->status == 'success')
-                                <x-heroicon-o-check class="-mr-0.5 h-4 w-4 flex-shrink-0 self-center" />
+                                <x-heroicon-o-check class="-mr-1 h-4 w-4 flex-shrink-0 self-center" />
                                 &nbsp;
                             @else
-                                <x-heroicon-o-play class="-mr-0.5 h-4 w-4 flex-shrink-0 -rotate-90 self-center" />
+                                <x-heroicon-o-play class="-mr-1 h-4 w-4 flex-shrink-0 -rotate-90 self-center" />
                                 &nbsp;
                             @endif
 
                             @if (! in_array($metric->deviation, [0, INF]))
-                                <div class="ml-0.5">{{ $metric->deviation }}%</div>
+                                <div class="ml-1">{{ $metric->deviation }}%</div>
                             @endif
                         </div>
                     @endif

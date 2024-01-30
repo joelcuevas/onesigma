@@ -20,8 +20,8 @@ class PositionFactory extends Factory
 
         return [
             'type' => 'engineer',
-            'track' => 'SE'.$level,
-            'group' => 'SE',
+            'code' => 'SE'.$level,
+            'track' => 'SE',
             'level' => $level,
             'title' => 'Software Engineer '.$level,
             's0' => rand(1, 5),

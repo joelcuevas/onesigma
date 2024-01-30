@@ -23,8 +23,8 @@ class ScoreSkillset implements ShouldQueue
 
     public function handle(): void
     {
-        $group = $this->skillset->position->group;
-        $positions = Position::where('group', $group)->get();
+        $track = $this->skillset->position->track;
+        $positions = Position::where('track', $track)->get();
 
         $scores = $this->skillset->getCurrentSkills();
         $diffs = [];

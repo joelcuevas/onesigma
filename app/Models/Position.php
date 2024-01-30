@@ -18,9 +18,9 @@ class Position extends Model
     protected static function booted()
     {
         static::creating(function (Position $position) {
-            $tokens = explode_track($position->track);
-            $position->group = $tokens['group'];
-            $position->level = $tokens['level'];
+            //$tokens = explode_track($position->track);
+            //$position->group = $tokens['group'];
+            //$position->level = $tokens['level'];
         });
     }
 
