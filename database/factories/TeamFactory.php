@@ -18,7 +18,7 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->colorName(),
+            'name' => ucfirst(fake()->unique()->domainWord().rand(1, 9)),
             'position_id' => Position::factory(),
         ];
     }
