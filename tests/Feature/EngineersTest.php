@@ -11,6 +11,8 @@ use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\Graders\GradeEngineer;
 
 class EngineersTest extends TestCase
 {
@@ -47,6 +49,8 @@ class EngineersTest extends TestCase
         $manager->teams()->attach($team);
         $engineer = $team->engineers->first();
 
+        Queue::fake();
+
         Livewire::actingAs($manager)
             ->test(ScoreEngineer::class, ['engineer' => $engineer])
             ->assertOk()
@@ -62,9 +66,29 @@ class EngineersTest extends TestCase
             ->set('s9', 5)
             ->call('score');
 
+        Queue::assertPushed(GradeEngineer::class, 1);
+
         $engineer->refresh();
         $skills = array_values($engineer->skillset->getCurrentSkills());
 
         $this->assertEquals([5, 5, 5, 5, 5, 5, 5, 5, 5, 5], $skills);
+
+        // re-submit same values to validate engineer is not re-scored
+        Livewire::actingAs($manager)
+            ->test(ScoreEngineer::class, ['engineer' => $engineer])
+            ->assertOk()
+            ->set('s0', 5)
+            ->set('s1', 5)
+            ->set('s2', 5)
+            ->set('s3', 5)
+            ->set('s4', 5)
+            ->set('s5', 5)
+            ->set('s6', 5)
+            ->set('s7', 5)
+            ->set('s8', 5)
+            ->set('s9', 5)
+            ->call('score');
+
+        Queue::assertPushed(GradeEngineer::class, 1);
     }
 }

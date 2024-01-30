@@ -118,6 +118,17 @@ class TeamsTest extends TestCase
         $this->get(route('teams'))->assertStatus(403);
     }
 
+    public function test_teams_can_be_shown()
+    {
+        $manager = User::factory()->manager()->create();
+        $team = Team::factory()->hasEngineers(1)->create();
+        $manager->teams()->attach($team);
+
+        $this->actingAs($manager);
+
+        $this->get(route('teams.show', $team))->assertStatus(200);
+    }
+
     public function test_user_is_manager_of_team_and_engineer()
     {
         $team1 = Team::factory()->hasEngineers(1)->create();
@@ -135,10 +146,11 @@ class TeamsTest extends TestCase
 
     public function test_team_members_can_be_edited()
     {
-        $admin = User::factory()->admin()->create();
+        $manager = User::factory()->manager()->create();
         $team = Team::factory()->hasEngineers(1)->create();
-        $engineer = $team->engineers->first();
+        $manager->teams()->attach($team);
 
+        $engineer = $team->engineers->first();
         $engineer->team->role = TeamEngineerRole::Engineer;
         $engineer->team->save();
 
@@ -148,7 +160,7 @@ class TeamsTest extends TestCase
             'role' => TeamEngineerRole::Engineer->value,
         ]);
 
-        Livewire::actingAs($admin)
+        Livewire::actingAs($manager)
             ->test(EditMembers::class, [
                 'team' => $team,
                 'relationship' => 'engineers',
@@ -167,8 +179,10 @@ class TeamsTest extends TestCase
 
     public function test_team_members_can_be_removed()
     {
-        $admin = User::factory()->admin()->create();
+        $manager = User::factory()->manager()->create();
         $team = Team::factory()->hasEngineers(5)->create();
+        $manager->teams()->attach($team);
+
         $engineer = $team->engineers->first();
 
         $this->assertEquals(5, $team->engineers()->count());
@@ -178,7 +192,7 @@ class TeamsTest extends TestCase
             'engineer_id' => $engineer->id,
         ]);
 
-        Livewire::actingAs($admin)
+        Livewire::actingAs($manager)
             ->test(EditMembers::class, [
                 'team' => $team,
                 'relationship' => 'engineers',
@@ -198,8 +212,9 @@ class TeamsTest extends TestCase
 
     public function test_team_members_can_be_added()
     {
-        $admin = User::factory()->admin()->create();
+        $manager = User::factory()->manager()->create();
         $team = Team::factory()->hasEngineers(5)->create();
+        $manager->teams()->attach($team);
         $engineer = $team->engineers->first();
 
         $extraEngineer = Engineer::factory()->create();
@@ -211,7 +226,7 @@ class TeamsTest extends TestCase
             'engineer_id' => $extraEngineer->id,
         ]);
 
-        Livewire::actingAs($admin)
+        Livewire::actingAs($manager)
             ->test(EditMembers::class, [
                 'team' => $team,
                 'relationship' => 'engineers',

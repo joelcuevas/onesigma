@@ -37,8 +37,7 @@ class ScoreEngineer extends Component
 
         $skillset = new Skillset($validated);
 
-        if (! $this->engineer->skillset->equals($skillset)) {
-            $this->engineer->skillsets()->save($skillset);
+        if ($this->engineer->addSkillset($skillset)) {
             GradeEngineer::dispatch($this->engineer);
         }
 

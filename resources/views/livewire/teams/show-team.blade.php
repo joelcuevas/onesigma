@@ -24,7 +24,7 @@
                         <p class="mt-1 leading-tight text-gray-500">{{ __('Miembros del equipo que suman a las métricas de performance.') }}</p>
                     </div>
                     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        @can('edit-members', $team)
+                        @can('editMembers', $team)
                             <livewire:teams.edit-members :$team relationship="engineers" name="edit-engineers" />
                         @endcan
                     </div>
@@ -73,7 +73,7 @@
                                 <div class="rounded-md border p-6 text-center">
                                     <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
 
-                                    @can('edit-members', $team)
+                                    @can('editMembers', $team)
                                         <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-engineers' })">
                                             <x-heroicon-o-plus class="mr-1 h-5 w-5" />
                                             {{ __('Agregar Ingenieros') }}
@@ -94,7 +94,7 @@
                     <p class="mt-1 leading-tight text-gray-500">{{ __('Usuarios de soporte, que pueden visualizar o gestionar al equipo.') }}</p>
                 </div>
                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                    @can('edit-members', $team)
+                    @can('editMembers', $team)
                         <livewire:teams.edit-members :$team relationship="users" name="edit-users" />
                     @endcan
                 </div>
@@ -132,7 +132,7 @@
                             <div class="rounded-md border p-6 text-center">
                                 <x-heroicon-o-users class="mx-auto mb-3 h-10 w-10 text-gray-400" />
 
-                                @can('edit-members', $team)
+                                @can('editMembers', $team)
                                     <x-primary-button x-on:click.prevent="$dispatch('open-modal', { name: 'edit-users' })">
                                         <x-heroicon-o-plus class="mr-1 h-5 w-5" />
                                         {{ __('Agregar Usuarios') }}

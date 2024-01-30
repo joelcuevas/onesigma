@@ -109,4 +109,22 @@ class GradersTest extends TestCase
         $this->assertNotNull($rootCluster->fresh()->graded_at);
         $this->assertNotNull($nestedCluster->fresh()->graded_at);
     }
+
+    public function test_engineer_grades_are_computed_on_skillset_creation(): void
+    {
+        MetricConfig::factory()->set('commits', 2, 1)->create();
+        MetricConfig::factory()->set('work', 2, 1)->create();
+        MetricConfig::factory()->set('merges', 1, -1)->create();
+
+        $engineer = Engineer::factory()
+            ->hasSkillsets(1)
+            ->addMetrics()
+            ->create();
+
+        GradeEngineer::dispatch($engineer);
+
+        $this->assertNotNull($engineer->fresh()->score);
+        $this->assertNotNull($engineer->fresh()->grade);
+        $this->assertNotNull($engineer->fresh()->graded_at);
+    }
 }

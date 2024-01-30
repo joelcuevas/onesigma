@@ -90,41 +90,43 @@
             </form>
         </div>
 
-        @if ($this->user->exists)
-            <div class="x-card">
-                <div class="space-y-5">
-                    <h2 class="font-bold text-lg text-red-800">{{ __('Eliminar Usuario') }}</h2>
-                    <p class="text-red-800 max-w-2xl font-medium">
-                        {{ __('Una vez que la cuenta sea borrada, se eliminará permanentemente toda la información y recursos del usuario. Esta acción no se puede deshacer.') }}
-                    </p>
-                    
-                    <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
-                        {{ __('Eliminar Usuario') }}
-                    </x-danger-button>
+        @if ($user->exists)
+            @can('delete', $user)
+                <div class="x-card">
+                    <div class="space-y-5">
+                        <h2 class="font-bold text-lg text-red-800">{{ __('Eliminar Usuario') }}</h2>
+                        <p class="text-red-800 max-w-2xl font-medium">
+                            {{ __('Una vez que la cuenta sea borrada, se eliminará permanentemente toda la información y recursos del usuario. Esta acción no se puede deshacer.') }}
+                        </p>
+                        
+                        <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
+                            {{ __('Eliminar Usuario') }}
+                        </x-danger-button>
 
-                    <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
-                        <form wire:submit="delete" class="p-6">
-                            <h2 class="text-lg font-medium text-gray-900 mb-4">
-                                {{ __('¿Confirmas que deseas eliminar al usuario?') }}
-                            </h2>
+                        <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
+                            <form wire:submit="delete" class="p-6">
+                                <h2 class="text-lg font-medium text-gray-900 mb-4">
+                                    {{ __('¿Confirmas que deseas eliminar al usuario?') }}
+                                </h2>
 
-                            <p class="mt-1 text-gray-600">
-                                {{ __('Una vez que la cuenta sea borrada, se eliminará permanentemente toda la información y recursos del usuario. Esta acción no se puede deshacer.') }}
-                            </p>
+                                <p class="mt-1 text-gray-600">
+                                    {{ __('Una vez que la cuenta sea borrada, se eliminará permanentemente toda la información y recursos del usuario. Esta acción no se puede deshacer.') }}
+                                </p>
 
-                            <div class="mt-6 flex justify-end">
-                                <x-secondary-button x-on:click="$dispatch('close')">
-                                    {{ __('Cancelar') }}
-                                </x-secondary-button>
+                                <div class="mt-6 flex justify-end">
+                                    <x-secondary-button x-on:click="$dispatch('close')">
+                                        {{ __('Cancelar') }}
+                                    </x-secondary-button>
 
-                                <x-danger-button class="ms-3">
-                                    {{ __('Eliminar Usuario') }}
-                                </x-danger-button>
-                            </div>
-                        </form>
-                    </x-modal>
+                                    <x-danger-button class="ms-3">
+                                        {{ __('Eliminar Usuario') }}
+                                    </x-danger-button>
+                                </div>
+                            </form>
+                        </x-modal>
+                    </div>
                 </div>
-            </div>
+            @endcan
         @endif
     </div>
 </div>

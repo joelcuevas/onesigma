@@ -32,11 +32,6 @@ class Skillset extends Model
         });
     }
 
-    public function getLevelAttribute()
-    {
-        return $this->position->level;
-    }
-
     public function getCurrentSkills()
     {
         $labels = $this->position->skills->pluck('skill_label', 'skill');
@@ -53,11 +48,6 @@ class Skillset extends Model
             $labels[8] ?? 8 => $this->s8,
             $labels[9] ?? 9 => $this->s9,
         ];
-    }
-
-    public function getPositionSkills()
-    {
-        return $this->position->getExpectedSkills();
     }
 
     public function onlySkills()

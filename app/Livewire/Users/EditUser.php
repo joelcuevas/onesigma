@@ -78,6 +78,8 @@ class EditUser extends Component
 
     public function delete()
     {
+        $this->authorize('delete', $this->user);
+
         $this->user->delete();
 
         $this->redirect(route('users'));

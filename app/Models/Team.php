@@ -107,16 +107,6 @@ class Team extends Model
             ->orderBy('name');
     }
 
-    public function scopeWithoutClusters($query)
-    {
-        $query->where('is_cluster', false);
-    }
-
-    public function scopeOnlyClusters($query)
-    {
-        $query->where('is_cluster', true);
-    }
-
     public function scopeActive($query)
     {
         $query->where('status', TeamStatus::Active);

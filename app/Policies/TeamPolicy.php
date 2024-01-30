@@ -12,8 +12,6 @@ class TeamPolicy
         if ($user->isAdmin()) {
             return true;
         }
-
-        return null;
     }
 
     public function index(User $user)

@@ -12,8 +12,8 @@ new class extends Component
 
     public function mount($skillable)
     {
-        $skills = collect($skillable->skillset->getCurrentSkills())->chunk(5);
-        $expected = collect($skillable->skillset->getPositionSkills())->chunk(5);
+        $skills = collect($skillable->getCurrentSkills())->chunk(5);
+        $expected = collect($skillable->getPositionSkills())->chunk(5);
 
         $careerSkills = $skills[0];
         $careerExpected = $expected[0];
