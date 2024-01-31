@@ -23,7 +23,7 @@
 
     <div class="x-card">
         <form wire:submit="score">
-            <div class="">
+            <div>
                 <div class="space-y-6 border-b border-gray-900/10 pb-8">
                     <h2 class="text-lg font-bold text-gray-900">{{ __('Capacidades') }}</h2>
                     <x-engineers.scorer :$engineer start="0" />

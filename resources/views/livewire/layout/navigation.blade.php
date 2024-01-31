@@ -41,7 +41,7 @@ new class extends Component
                         </x-nav-link>
                     @endcan
                     @can('index', 'App\Models\Position')
-                        <x-nav-link :href="route('positions')" wire:navigate>
+                        <x-nav-link :href="route('tracks')" wire:navigate>
                             {{ __('Posiciones') }}
                         </x-nav-link>
                     @endcan
@@ -107,7 +107,7 @@ new class extends Component
                 </x-responsive-nav-link>
             @endcan
             @can('index', 'App\Models\Position')
-                <x-responsive-nav-link :href="route('positions')" wire:navigate>
+                <x-responsive-nav-link :href="route('tracks')" wire:navigate>
                     {{ __('Posiciones') }}
                 </x-responsive-nav-link>
             @endcan

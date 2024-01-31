@@ -15,9 +15,9 @@ class Position extends Model
         's5' => 0, 's6' => 0, 's7' => 0, 's8' => 0, 's9' => 0,
     ];
 
-    public function isGroup()
+    public function isTrack()
     {
-        return $this->type == 'group';
+        return $this->type == 'track';
     }
 
     public function getExpectedSkills()
@@ -46,5 +46,10 @@ class Position extends Model
     public function skills()
     {
         return $this->hasMany(PositionSkill::class, 'track', 'track');
+    }
+
+    public function trackPositions()
+    {
+        return $this->hasMany(Position::class, 'parent_id', 'id');
     }
 }

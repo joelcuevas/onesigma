@@ -8,9 +8,9 @@ use App\Livewire\Teams\IndexTeams;
 use App\Livewire\Teams\ShowTeam;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
-use App\Livewire\Positions\IndexPositions;
-use App\Livewire\Positions\ShowPosition;
-use App\Livewire\Positions\ConfigPosition;
+use App\Livewire\Positions\IndexTracks;
+use App\Livewire\Positions\ShowTrack;
+use App\Livewire\Positions\ConfigTrack;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,16 +72,16 @@ Route::middleware('auth')->group(function () {
 
     // positions
 
-    Route::get('positions', IndexPositions::class)
-        ->name('positions')
+    Route::get('tracks', IndexTracks::class)
+        ->name('tracks')
         ->middleware('can:index,App\Models\Position');
 
-    Route::get('positions/{position}', ShowPosition::class)
-        ->name('positions.show')
+    Route::get('tracks/{position}', ShowTrack::class)
+        ->name('tracks.show')
         ->middleware('can:show,position');
 
-    Route::get('positions/{position}/config', ConfigPosition::class)
-        ->name('positions.config')
+    Route::get('tracks/{position}/config', ConfigTrack::class)
+        ->name('tracks.config')
         ->middleware('can:edit,position');
 });
 

@@ -78,7 +78,7 @@ class ConfigsSeeder extends Seeder
 
         foreach ($engineerSkills as $level => $scores) {
             Position::create([
-                'type' => $level == 0 ? 'group' : 'engineer',
+                'type' => $level == 0 ? 'track' : 'engineer',
                 'code' => 'SE'.$level,
                 'track' => 'SE',
                 'level' => $level,

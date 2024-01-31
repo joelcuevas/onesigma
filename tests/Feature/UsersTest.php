@@ -19,8 +19,6 @@ class UsersTest extends TestCase
         $admin = User::factory()->admin()->create();
         $users = User::factory(5)->create();
 
-        $this->actingAs($admin);
-
         Livewire::actingAs($admin)
             ->test(IndexUsers::class)
             ->assertSee($users[0]->name)

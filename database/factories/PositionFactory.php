@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\PositionSkill;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Position>
@@ -35,5 +36,16 @@ class PositionFactory extends Factory
             's8' => rand(1, 5),
             's9' => rand(1, 5),
         ];
+    }
+
+    public function track()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'track',
+                'code' => 'SE',
+                'level' => 0,
+            ];
+        });
     }
 }
