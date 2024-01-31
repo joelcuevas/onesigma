@@ -4,14 +4,14 @@ namespace App\Models;
 
 use App\Models\Traits\HasIdentities;
 use App\Models\Traits\HasMetrics;
-use App\Models\Traits\HasSkillsets;
 use App\Models\Traits\HasPosition;
+use App\Models\Traits\HasSkillsets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Engineer extends Model
 {
-    use HasPosition, HasFactory, HasIdentities, HasMetrics, HasSkillsets;
+    use HasFactory, HasIdentities, HasMetrics, HasPosition, HasSkillsets;
 
     protected $with = [
         'position',

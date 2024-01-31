@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\Graders\GradeEngineer;
 use App\Livewire\Engineers\EditEngineer;
 use App\Livewire\Engineers\ScoreEngineer;
+use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\Position;
 use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Queue;
-use App\Jobs\Graders\GradeEngineer;
 
 class EngineersTest extends TestCase
 {

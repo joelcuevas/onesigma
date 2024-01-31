@@ -13,7 +13,7 @@ trait HasSkillsets
 
     public function addSkillset(Skillset $skillset)
     {
-        if ($this->skillset->equals($skillset)) {        
+        if ($this->skillset->equals($skillset)) {
             return false;
         }
 

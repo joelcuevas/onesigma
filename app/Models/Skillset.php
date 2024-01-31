@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skillset extends Model
 {
-    use HasPosition, HasFactory;
+    use HasFactory, HasPosition;
 
     protected $casts = [
         'date' => 'date',

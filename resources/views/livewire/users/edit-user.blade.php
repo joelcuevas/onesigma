@@ -94,18 +94,18 @@
             @can('delete', $user)
                 <div class="x-card">
                     <div class="space-y-5">
-                        <h2 class="font-bold text-lg text-red-800">{{ __('Eliminar Usuario') }}</h2>
-                        <p class="text-red-800 max-w-2xl font-medium">
+                        <h2 class="text-lg font-bold text-red-800">{{ __('Eliminar Usuario') }}</h2>
+                        <p class="max-w-2xl font-medium text-red-800">
                             {{ __('Una vez que la cuenta sea borrada, se eliminará permanentemente toda la información y recursos del usuario. Esta acción no se puede deshacer.') }}
                         </p>
-                        
+
                         <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
                             {{ __('Eliminar Usuario') }}
                         </x-danger-button>
 
                         <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
                             <form wire:submit="delete" class="p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">
+                                <h2 class="mb-4 text-lg font-medium text-gray-900">
                                     {{ __('¿Confirmas que deseas eliminar al usuario?') }}
                                 </h2>
 

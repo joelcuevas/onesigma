@@ -45,7 +45,7 @@ class Metric extends Model
         if ($this->value == null) {
             return null;
         }
-        
+
         if ($this->goal == Metric::INCREASE) {
             if ($this->value >= $this->target) {
                 return 100;

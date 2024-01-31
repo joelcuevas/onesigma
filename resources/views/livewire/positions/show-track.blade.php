@@ -34,8 +34,7 @@
                             <td class="whitespace-nowrap py-2 text-gray-500">
                                 {{ $position->code }}
                             </td>
-                            <td>
-                            </td>
+                            <td></td>
                         </tr>
                     @endforeach
                 </tbody>

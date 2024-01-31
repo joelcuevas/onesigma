@@ -46,12 +46,11 @@ class GradeTeam implements WorkflowableJob
         if ($count) {
             $scores = 0;
 
-            foreach ($this->children as $children)
-            {
+            foreach ($this->children as $children) {
                 $scores += $children->score;
             }
 
-            $score = [bcdiv($scores, $count, 0)];   
+            $score = [bcdiv($scores, $count, 0)];
         }
 
         $this->team->updateGrade($score);

@@ -3,14 +3,14 @@
 use App\Livewire\Engineers\EditEngineer;
 use App\Livewire\Engineers\ScoreEngineer;
 use App\Livewire\Engineers\ShowEngineer;
+use App\Livewire\Positions\ConfigTrack;
+use App\Livewire\Positions\IndexTracks;
+use App\Livewire\Positions\ShowTrack;
 use App\Livewire\Teams\EditTeam;
 use App\Livewire\Teams\IndexTeams;
 use App\Livewire\Teams\ShowTeam;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Users\IndexUsers;
-use App\Livewire\Positions\IndexTracks;
-use App\Livewire\Positions\ShowTrack;
-use App\Livewire\Positions\ConfigTrack;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Engineer;
-use App\Models\Team;
 use App\Models\Position;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class EngineersSeeder extends Seeder
@@ -18,7 +18,7 @@ class EngineersSeeder extends Seeder
         $teamPositions = Position::where('type', 'team')->get();
 
         $tech = Team::find(1);
-        
+
         $clusters = Team::factory(5)
             ->st3()
             ->cluster()
@@ -38,7 +38,7 @@ class EngineersSeeder extends Seeder
             ->addMetrics();
 
         $branch2 = Team::factory(10)
-            ->st3() 
+            ->st3()
             ->hasSkillset()
             ->has($engineers)
             ->create();

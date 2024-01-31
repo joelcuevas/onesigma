@@ -2,16 +2,15 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
-use App\Models\Position;
+use App\Livewire\Positions\ConfigTrack;
 use App\Livewire\Positions\IndexTracks;
 use App\Livewire\Positions\ShowTrack;
-use App\Livewire\Positions\ConfigTrack;
+use App\Models\Position;
 use App\Models\PositionSkill;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class PositionsTest extends TestCase
 {

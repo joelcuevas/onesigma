@@ -60,8 +60,8 @@
 
                             @for ($i = $group[1]; $i < $group[1]+5; $i++)
                                 <div>
-                                    <x-input-label>{{ __($group[0]) }} - {{ __('Habilidad') }} #{{ $i+1-$group[1] }}</x-input-label>
-                                    <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12 mb-4">
+                                    <x-input-label>{{ __($group[0]) }} - {{ __('Habilidad') }} #{{ $i + 1 - $group[1] }}</x-input-label>
+                                    <div class="mb-4 grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
                                         <div class="lg:col-span-5">
                                             <x-text-input wire:model="labels.{{ $i }}" maxlength="12" />
                                             <x-input-error :messages="$errors->get('labels.'.$i)" />
@@ -72,7 +72,7 @@
                                                     <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
                                                         <div class="lg:col-span-12">
                                                             <div class="flex items-center">
-                                                                <div class="w-24 text-gray-600 font-medium">{{ __('Nivel') }} {{ $j }}:</div>
+                                                                <div class="w-24 font-medium text-gray-600">{{ __('Nivel') }} {{ $j }}:</div>
                                                                 <x-text-input wire:model="levels.{{ $i }}.{{ $j }}" maxlength="255" />
                                                             </div>
                                                             <x-input-error :messages="$errors->get('levels.'.$i.'.'.$j)" />

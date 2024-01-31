@@ -7,15 +7,15 @@ use App\Models\Pivots\TeamEngineer;
 use App\Models\Pivots\TeamUser;
 use App\Models\Traits\HasIdentities;
 use App\Models\Traits\HasMetrics;
-use App\Models\Traits\HasSkillsets;
 use App\Models\Traits\HasPosition;
+use App\Models\Traits\HasSkillsets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Team extends Model
 {
-    use HasPosition, HasFactory, HasIdentities, HasMetrics, 
+    use HasFactory, HasIdentities, HasMetrics, HasPosition,
         HasRecursiveRelationships, HasSkillsets;
 
     protected $casts = [

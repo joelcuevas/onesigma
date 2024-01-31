@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Position;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -26,7 +26,7 @@ class TeamFactory extends Factory
     public function st3(): static
     {
         return $this->state(fn (array $attributes) => [
-           'position_id' => Position::firstWhere('code', 'ST3')->id,
+            'position_id' => Position::firstWhere('code', 'ST3')->id,
         ]);
     }
 

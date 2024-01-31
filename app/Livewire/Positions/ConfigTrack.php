@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Positions;
 
-use Livewire\Component;
 use App\Models\Position;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class ConfigTrack extends Component
 {
@@ -51,7 +51,7 @@ class ConfigTrack extends Component
     {
         $positionValidated = $this->validate([
             'title' => [
-                'required', 
+                'required',
                 'max:255',
                 Rule::unique('positions')
                     ->where(fn ($q) => $q->where('type', 'track'))

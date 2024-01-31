@@ -3,10 +3,9 @@
 namespace App\Jobs\Graders\Workflows;
 
 use App\Jobs\Graders\GradeTeam;
-use Illuminate\Support\Collection;
+use App\Models\Team;
 use Sassnowski\Venture\AbstractWorkflow;
 use Sassnowski\Venture\WorkflowDefinition;
-use App\Models\Team;
 
 class GradeTeamWorkflow extends AbstractWorkflow
 {

@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Engineer;
+use App\Models\Position;
 use App\Models\Skillset;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\Position;
 use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

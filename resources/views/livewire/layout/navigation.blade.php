@@ -35,11 +35,13 @@ new class extends Component
                             {{ __('Equipos') }}
                         </x-nav-link>
                     @endcan
+
                     @can('index', 'App\Models\User')
                         <x-nav-link :href="route('users')" wire:navigate>
                             {{ __('Usuarios') }}
                         </x-nav-link>
                     @endcan
+
                     @can('index', 'App\Models\Position')
                         <x-nav-link :href="route('tracks')" wire:navigate>
                             {{ __('Posiciones') }}
@@ -101,11 +103,13 @@ new class extends Component
                     {{ __('Equipos') }}
                 </x-responsive-nav-link>
             @endcan
+
             @can('index', 'App\Models\User')
                 <x-responsive-nav-link :href="route('users')" wire:navigate>
                     {{ __('Usuarios') }}
                 </x-responsive-nav-link>
             @endcan
+
             @can('index', 'App\Models\Position')
                 <x-responsive-nav-link :href="route('tracks')" wire:navigate>
                     {{ __('Posiciones') }}

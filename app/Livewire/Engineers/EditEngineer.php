@@ -5,7 +5,6 @@ namespace App\Livewire\Engineers;
 use App\Jobs\Graders\GradeEngineer;
 use App\Models\Engineer;
 use App\Models\Position;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class EditEngineer extends Component
@@ -41,13 +40,13 @@ class EditEngineer extends Component
 
         $validated = $this->validate([
             'name' => [
-                'required', 
-                'string', 
+                'required',
+                'string',
                 'max:255',
             ],
             'email' => [
-                'required', 
-                'email', 
+                'required',
+                'email',
                 'max:255',
             ],
             'position_id' => [
