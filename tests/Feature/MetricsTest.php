@@ -44,7 +44,7 @@ class MetricsTest extends TestCase
         $this->assertTrue($latest->shift()->metricable->is($engineer));
     }
 
-    public function test_metric_deviation_is_computed()
+    public function test_metric_deviation_and_scores_are_computed()
     {
         MetricConfig::factory()->set('increase-below', 4, 1)->create();
         MetricConfig::factory()->set('increase-above', 3, 1)->create();
@@ -70,27 +70,35 @@ class MetricsTest extends TestCase
 
         $this->assertEquals(50, $latest['increase-below']->progress);
         $this->assertEquals(50, $latest['increase-below']->deviation);
+        $this->assertEquals(-3, $latest['increase-below']->getScoreForGrader());
 
         $this->assertEquals(100, $latest['increase-above']->progress);
         $this->assertEquals(0, $latest['increase-above']->deviation);
+        $this->assertEquals(0, $latest['increase-above']->getScoreForGrader());
 
         $this->assertEquals(150, $latest['decrease-below']->progress);
         $this->assertEquals(50, $latest['decrease-below']->deviation);
+        $this->assertEquals(-3, $latest['decrease-below']->getScoreForGrader());
 
         $this->assertEquals(100, $latest['decrease-above']->progress);
         $this->assertEquals(0, $latest['decrease-above']->deviation);
+        $this->assertEquals(0, $latest['decrease-above']->getScoreForGrader());
 
         $this->assertEquals(INF, $latest['inf-increase-below']->progress);
         $this->assertEquals(INF, $latest['inf-increase-below']->deviation);
+        $this->assertEquals(-1, $latest['inf-increase-below']->getScoreForGrader());
 
         $this->assertEquals(100, $latest['inf-increase-above']->progress);
         $this->assertEquals(0, $latest['inf-increase-above']->deviation);
+        $this->assertEquals(0, $latest['inf-increase-above']->getScoreForGrader());
 
         $this->assertEquals(INF, $latest['inf-decrease-below']->progress);
         $this->assertEquals(INF, $latest['inf-decrease-below']->deviation);
+        $this->assertEquals(-1, $latest['inf-decrease-below']->getScoreForGrader());
 
         $this->assertEquals(100, $latest['inf-decrease-above']->progress);
         $this->assertEquals(0, $latest['inf-decrease-above']->deviation);
+        $this->assertEquals(0, $latest['inf-decrease-above']->getScoreForGrader());
     }
 
     public function test_watched_metrics_are_rendered_in_team_details()
