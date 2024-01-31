@@ -35,14 +35,18 @@ class UsersTest extends TestCase
     {
         $admin = User::factory()->admin()->create();
         $user = User::factory()->create();
+        $name = fake()->name();
 
         Livewire::actingAs($admin)
             ->test(EditUser::class, ['user' => $user])
             ->assertOk()
-            ->set('name', fake()->name())
+            ->set('name', $name)
             ->set('email', fake()->email())
+            ->set('password', 'holamundo')
             ->set('role', UserRole::Manager->value)
             ->call('save');
+
+        $this->assertEquals($name, $user->fresh()->name);
 
         $manager = User::factory()->manager()->create();
 
