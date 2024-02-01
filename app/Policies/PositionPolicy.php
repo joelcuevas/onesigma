@@ -16,6 +16,11 @@ class PositionPolicy
         return $user->isAdmin();
     }
 
+    public function create(User $user)
+    {
+        return $user->isAdmin();
+    }
+
     public function edit(User $user)
     {
         return $user->isAdmin();

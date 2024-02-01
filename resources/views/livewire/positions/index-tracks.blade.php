@@ -4,7 +4,7 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Posiciones') }}
             </h2>
-            <x-link-button href="{{ route('tracks') }}">
+            <x-link-button href="{{ route('tracks.create') }}">
                 {{ __('Nuevo Track') }}
             </x-link-button>
         </div>

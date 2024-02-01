@@ -20,9 +20,14 @@ class ConfigTrack extends Component
 
     public function mount(Position $position)
     {
-        $this->authorize('edit', $position);
-
         $this->position = $position;
+
+        if ($position->exists) {
+            abort_unless($position->isTrack(), 404);
+            $this->authorize('edit', $position);
+        } else {
+            $this->authorize('create', Position::class);
+        }
 
         $this->fill($position->only([
             'title', 'code',
@@ -40,16 +45,9 @@ class ConfigTrack extends Component
         }
     }
 
-    public function render()
-    {
-        abort_unless($this->position->isTrack(), 404);
-
-        return view('livewire.positions.config-track');
-    }
-
     public function save()
     {
-        $positionValidated = $this->validate([
+        $positionData = $this->validate([
             'title' => [
                 'required',
                 'max:255',
@@ -66,7 +64,7 @@ class ConfigTrack extends Component
             ],
         ]);
 
-        $skillsValidated = $this->validate([
+        $skillsData = $this->validate([
             'labels.*' => [
                 'required',
                 'string',
@@ -79,11 +77,15 @@ class ConfigTrack extends Component
             ],
         ]);
 
-        $this->position->fill($positionValidated);
+        $positionData['type'] = 'track';
+        $positionData['track'] = $positionData['code'];
+        $positionData['level'] = 0;
+
+        $this->position->fill($positionData);
         $this->position->save();
 
-        foreach ($skillsValidated['labels'] as $i => $label) {
-            $levels = $skillsValidated['levels'][$i];
+        foreach ($skillsData['labels'] as $i => $label) {
+            $levels = $skillsData['levels'][$i];
 
             $this->position->skills()->updateOrCreate([
                 'skill' => $i,

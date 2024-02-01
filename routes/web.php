@@ -76,13 +76,17 @@ Route::middleware('auth')->group(function () {
         ->name('tracks')
         ->middleware('can:index,App\Models\Position');
 
-    Route::get('tracks/{position}', ShowTrack::class)
-        ->name('tracks.show')
-        ->middleware('can:show,position');
+    Route::get('tracks/create', ConfigTrack::class)
+        ->name('tracks.create')
+        ->middleware('can:create,App\Models\Position');
 
     Route::get('tracks/{position}/config', ConfigTrack::class)
         ->name('tracks.config')
         ->middleware('can:edit,position');
+
+    Route::get('tracks/{position}', ShowTrack::class)
+        ->name('tracks.show')
+        ->middleware('can:show,position');
 });
 
 Route::get('dashboard', fn () => redirect('/teams'))

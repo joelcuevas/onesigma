@@ -90,7 +90,7 @@
 
                 <div class="mt-8 flex items-center gap-x-6">
                     <x-primary-button type="submit">Guardar</x-primary-button>
-                    <a href="{{ route('tracks.show', $position) }}" class="hover:underline">
+                    <a href="{{ $position->exists ? route('tracks.show', $position) : route('tracks') }}" class="hover:underline">
                         {{ __('Cancelar') }}
                     </a>
                 </div>
