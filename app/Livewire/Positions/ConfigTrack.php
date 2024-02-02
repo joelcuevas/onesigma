@@ -5,6 +5,7 @@ namespace App\Livewire\Positions;
 use App\Models\Position;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Models\Enums\PositionType;
 
 class ConfigTrack extends Component
 {
@@ -13,6 +14,8 @@ class ConfigTrack extends Component
     public $title;
 
     public $code;
+
+    public $type;
 
     public $labels;
 
@@ -29,8 +32,10 @@ class ConfigTrack extends Component
             $this->authorize('create', Position::class);
         }
 
+        $this->type = PositionType::Engineer;
+
         $this->fill($position->only([
-            'title', 'code',
+            'title', 'code', 'type',
         ]));
 
         $skills = $position->skills->keyBy('skill');

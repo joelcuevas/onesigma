@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:items-start">
                                     <x-heroicon-o-information-circle class="mr-2 h-5 w-5 min-w-5" />
-                                    {{ __('Título de la posición. El nivel se agrega automáticamente.') }}
+                                    {{ __('Título de las posiciones asociadas a este track. El nivel se agrega automáticamente.') }}
                                 </div>
                             </div>
                         </div>
@@ -40,10 +40,30 @@
                                 </div>
                                 <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:col-start-6 lg:items-start">
                                     <x-heroicon-o-information-circle class="mr-2 h-5 w-5 min-w-5" />
-                                    {{ __('Prefijo para la clave de la posición. El nivel se agrega automáticamente.') }}
+                                    {{ __('Prefijo de la clave de las posiciones asociadas a este track.') }}
                                 </div>
                             </div>
                         </div>
+
+                        @if (! $position->exists)
+                            <div>
+                                <x-input-label>{{ __('Tipo') }}</x-input-label>
+                                <div class="grid grid-cols-1 gap-x-12 gap-y-3 lg:grid-cols-12">
+                                    <div class="lg:col-span-3">
+                                        <x-select-input wire:model="type">
+                                            @foreach (\App\Models\Enums\PositionType::cases() as $type)
+                                                <option value="{{ $type->value }}">{{ $type->name }}</option>
+                                            @endforeach
+                                        </x-select-input>
+                                        <x-input-error :messages="$errors->get('type')" />
+                                    </div>
+                                    <div class="flex pt-2 text-gray-500 lg:col-span-7 lg:col-start-6 lg:items-start">
+                                        <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5 min-w-5" />
+                                        {{ __('Importante: El tipo de un track no puede ser editado después de crearse.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     @foreach ([['Capacidades', 0], ['Competencias', 5]] as $group)

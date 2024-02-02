@@ -65,8 +65,17 @@ class ConfigsSeeder extends Seeder
             'unit' => '%',
         ]);
 
+        $trackEngineer = new Position([
+            'type' => 'engineer',
+            'code' => 'SE',
+            'track' => 'SE',
+            'level' => 0,
+            'title' => 'Software Engineer',
+        ]);
+
+        $trackEngineer->save();
+
         $engineerSkills = [
-            0 => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             2 => [1, 2, 2, 2, 1, 2, 1, 1, 1, 2],
             3 => [2, 2, 2, 3, 2, 3, 2, 2, 2, 3],
@@ -78,7 +87,8 @@ class ConfigsSeeder extends Seeder
 
         foreach ($engineerSkills as $level => $scores) {
             Position::create([
-                'type' => $level == 0 ? 'track' : 'engineer',
+                'type' => 'engineer',
+                'parent_id' => $trackEngineer->id,
                 'code' => 'SE'.$level,
                 'track' => 'SE',
                 'level' => $level,
@@ -96,6 +106,16 @@ class ConfigsSeeder extends Seeder
             ]);
         }
 
+        $trackTeam = new Position([
+            'type' => 'team',
+            'code' => 'ST',
+            'track' => 'ST',
+            'level' => 0,
+            'title' => 'Software Team',
+        ]);
+
+        $trackTeam->save();
+
         $teamSkills = [
             1 => [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             2 => [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -105,6 +125,7 @@ class ConfigsSeeder extends Seeder
         foreach ($teamSkills as $level => $scores) {
             Position::create([
                 'type' => 'team',
+                'parent_id' => $trackTeam->id,
                 'code' => 'ST'.$level,
                 'track' => 'ST',
                 'level' => $level,

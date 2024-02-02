@@ -4,7 +4,9 @@ namespace App\Livewire\Positions;
 
 use App\Models\Position;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
+#[On('position-created')]
 class ShowTrack extends Component
 {
     public Position $position;

@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Enums\PositionType;
 
 class Position extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'type' => PositionType::class,
+    ];
 
     protected $attributes = [
         'type' => 'engineer',
@@ -17,7 +22,7 @@ class Position extends Model
 
     public function isTrack()
     {
-        return $this->type == 'track';
+        return is_null($this->parent_id);
     }
 
     public function getExpectedSkills()
@@ -51,5 +56,25 @@ class Position extends Model
     public function trackPositions()
     {
         return $this->hasMany(Position::class, 'parent_id', 'id');
+    }
+
+    public static function scopeTracks($query)
+    {
+        $query->whereNull('parent_id');
+    }
+
+    public function createLevel(int $level)
+    {
+        if ($this->isTrack()) {
+            $position = new Position([
+                'type' => $this->type,
+                'code' => $this->code.$level,
+                'track' => $this->track,
+                'level' => $level,
+                'title' => $this->title.' '.$level,
+            ]);
+
+            $this->trackPositions()->save($position);
+        }
     }
 }

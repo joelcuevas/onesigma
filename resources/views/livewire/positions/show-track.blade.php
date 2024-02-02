@@ -7,6 +7,7 @@
             </h2>
             <div class="mt-3 space-x-4 sm:ml-4 sm:mt-0">
                 <x-link-button href="{{ route('tracks.config', $position) }}">
+                    <x-heroicon-o-cog class="mr-2 h-5 w-5" />
                     {{ __('Configurar Track') }}
                 </x-link-button>
             </div>
@@ -21,10 +22,7 @@
                         <p class="mt-1 leading-tight text-gray-500">{{ __('Escala de posiciones dentro del track de carrera.') }}</p>
                     </div>
                     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <x-secondary-button>
-                            <x-heroicon-o-briefcase class="mr-2 h-4 w-4" />
-                            {{ __('Nueva Posición') }}
-                        </x-secondary-button>
+                        <livewire:positions.create-position :$position />
                     </div>
                 </div>
             <table class="min-w-full divide-y divide-gray-300">

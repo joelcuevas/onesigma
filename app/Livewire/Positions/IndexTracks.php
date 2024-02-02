@@ -12,7 +12,7 @@ class IndexTracks extends Component
         $this->authorize('index', Position::class);
 
         return view('livewire.positions.index-tracks')->with([
-            'tracks' => Position::where('type', 'track')->get(),
+            'tracks' => Position::tracks()->get(),
         ]);
     }
 }
