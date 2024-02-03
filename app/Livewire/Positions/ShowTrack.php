@@ -3,8 +3,8 @@
 namespace App\Livewire\Positions;
 
 use App\Models\Position;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 #[On('position-created')]
 class ShowTrack extends Component

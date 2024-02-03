@@ -4,7 +4,6 @@ namespace App\Metrics\Ingestors\Velocity;
 
 use App\Models\Engineer;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -14,7 +13,7 @@ use Sassnowski\Venture\WorkflowStep;
 
 class VelocityMetrics implements WorkflowableJob
 {
-    use WorkflowStep, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WorkflowStep;
 
     protected $baseUrl;
 
@@ -36,8 +35,10 @@ class VelocityMetrics implements WorkflowableJob
 
     public function handle(): void
     {
-        foreach ($this->metrics as $metric) {
-            $this->fetchMetric($metric);
+        if ($this->bearerToken) {
+            foreach ($this->metrics as $metric) {
+                $this->fetchMetric($metric);
+            }
         }
     }
 

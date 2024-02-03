@@ -4,7 +4,6 @@ namespace App\Metrics\Ingestors\Velocity;
 
 use App\Models\Team;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +14,7 @@ use Sassnowski\Venture\WorkflowStep;
 
 class VelocityTeams implements WorkflowableJob
 {
-    use WorkflowStep, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WorkflowStep;
 
     protected $baseUrl;
 
@@ -29,7 +28,9 @@ class VelocityTeams implements WorkflowableJob
 
     public function handle(): void
     {
-        $this->fetchPage($this->baseUrl.'/teams');
+        if ($this->bearerToken) {
+            $this->fetchPage($this->baseUrl.'/teams');
+        }
     }
 
     public function fetchPage($url)

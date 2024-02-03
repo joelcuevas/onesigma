@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Positions;
 
-use Livewire\Component;
 use App\Models\Position;
+use Livewire\Component;
 
 class CreatePosition extends Component
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\Graders\GradeEngineer;
-use App\Jobs\Graders\GradeTeam;
-use App\Jobs\Graders\Workflows\GradeTeamWorkflow;
+use App\Metrics\Graders\Engineers\GradeEngineer;
+use App\Metrics\Graders\GradersWorkflow;
+use App\Metrics\Graders\Teams\GradeTeam;
+use App\Metrics\Graders\Teams\GradeTeamWorkflow;
 use App\Models\Engineer;
 use App\Models\MetricConfig;
 use App\Models\Team;
-use Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -102,7 +102,7 @@ class GradersTest extends TestCase
                 'parent_id' => $nestedCluster->id,
             ]);
 
-        Artisan::call('grade:teams');
+        GradersWorkflow::start();
 
         $this->assertNotNull($engineer->fresh()->graded_at);
         $this->assertNotNull($team->fresh()->graded_at);

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Metrics\MetricsWorkflow;
 use Illuminate\Console\Command;
-use App\Metrics\Ingestors\IngestorsWorkflow;
 
 class GenerateMetrics extends Command
 {
@@ -13,6 +13,6 @@ class GenerateMetrics extends Command
 
     public function handle()
     {
-        IngestorsWorkflow::start();
+        MetricsWorkflow::start();
     }
 }

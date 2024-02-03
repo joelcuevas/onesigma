@@ -13,9 +13,9 @@
             </h2>
 
             <p class="mt-1 text-gray-600">
-                {{ __('Se creará una nueva posición con el siguiente nivel disponible en el track. Puedes ajustar el objetivo de sus métricas una vez creada.') }} 
+                {{ __('Se creará una nueva posición con el siguiente nivel disponible en el track. Puedes ajustar el objetivo de sus métricas una vez creada.') }}
             </p>
-            
+
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
                     {{ __('Cancelar') }}

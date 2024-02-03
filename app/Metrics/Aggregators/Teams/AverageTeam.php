@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Graders;
+namespace App\Metrics\Aggregators\Teams;
 
 use App\Models\Team;
 use Illuminate\Bus\Queueable;
@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Sassnowski\Venture\WorkflowableJob;
 use Sassnowski\Venture\WorkflowStep;
 
-class GradeTeam implements WorkflowableJob
+class AverageTeam implements WorkflowableJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WorkflowStep;
 
@@ -33,36 +33,17 @@ class GradeTeam implements WorkflowableJob
             $this->children = $this->team->engineers()->get();
         }
 
-        $this->gradeSkills();
-        $this->gradeMetrics();
-        $this->averageGrade();
+        $this->averageMetrics();
+        $this->averageSkillsets();
     }
 
-    protected function averageGrade()
-    {
-        $count = count($this->children);
-        $score = null;
-
-        if ($count) {
-            $scores = 0;
-
-            foreach ($this->children as $children) {
-                $scores += $children->score;
-            }
-
-            $score = [bcdiv($scores, $count, 0)];
-        }
-
-        $this->team->updateGrade($score);
-    }
-
-    protected function gradeMetrics()
+    protected function averageMetrics()
     {
         $averages = [];
         $counts = [];
 
         if ($this->children->count()) {
-            // average engineers metrics
+            // average children metrics
             foreach ($this->children as $child) {
                 $metrics = $child->getWatchedMetrics();
 
@@ -94,13 +75,13 @@ class GradeTeam implements WorkflowableJob
         }
     }
 
-    protected function gradeSkills()
+    protected function averageSkillsets()
     {
         $scores = [];
         $count = $this->children->count();
 
         if ($count) {
-            // get children average skills scores
+            // average children skillsets
             foreach ($this->children as $child) {
                 $skills = $child->skillset->onlySkills();
 

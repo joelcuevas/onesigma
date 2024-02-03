@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Graders;
+namespace App\Metrics\Graders\Engineers;
 
 use App\Models\Engineer;
 use Illuminate\Bus\Queueable;
@@ -25,23 +25,14 @@ class GradeEngineer implements WorkflowableJob
 
     public function handle(): void
     {
-        $this->gradeMetrics();
-        $this->gradeSkills();
-
-        $this->engineer->updateGrade($this->scores);
-    }
-
-    protected function gradeMetrics()
-    {
         $metrics = $this->engineer->getWatchedMetrics();
 
         foreach ($metrics as $metric) {
             $this->scores[] = $metric->getScoreForGrader();
         }
-    }
 
-    protected function gradeSkills()
-    {
         $this->scores[] = $this->engineer->skillset->getScoreForGrader();
+
+        $this->engineer->updateGrade($this->scores);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Teams;
 
-use App\Jobs\Graders\GradeTeam;
+use App\Metrics\Graders\Teams\GradeTeam;
 use App\Models\Engineer;
 use App\Models\Enums\TeamEngineerRole;
 use App\Models\Enums\TeamUserRole;

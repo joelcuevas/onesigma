@@ -3,9 +3,9 @@
 namespace App\Metrics\Ingestors\Velocity;
 
 use App\Models\Engineer;
+use App\Models\Position;
 use App\Models\Team;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -13,11 +13,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Sassnowski\Venture\WorkflowableJob;
 use Sassnowski\Venture\WorkflowStep;
-use App\Models\Position;
 
 class VelocityEngineers implements WorkflowableJob
 {
-    use WorkflowStep, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WorkflowStep;
 
     protected $baseUrl;
 
@@ -34,7 +33,9 @@ class VelocityEngineers implements WorkflowableJob
 
     public function handle(): void
     {
-        $this->fetchPage($this->baseUrl.'/people');
+        if ($this->bearerToken) {
+            $this->fetchPage($this->baseUrl.'/people');
+        }
     }
 
     public function fetchPage($url)

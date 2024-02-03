@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Enums\PositionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Enums\PositionType;
 
 class Position extends Model
 {
@@ -76,5 +76,10 @@ class Position extends Model
 
             $this->trackPositions()->save($position);
         }
+    }
+
+    public static function scopeType($query, $type)
+    {
+        $query->where('type', $type)->whereNotNull('parent_id');
     }
 }

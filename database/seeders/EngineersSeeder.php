@@ -14,8 +14,8 @@ class EngineersSeeder extends Seeder
      */
     public function run(): void
     {
-        $engineerPositions = Position::where('type', 'engineer')->get();
-        $teamPositions = Position::where('type', 'team')->get();
+        $engineerPositions = Position::type('engineer')->get();
+        $teamPositions = Position::type('team')->get();
 
         $tech = Team::find(1);
 

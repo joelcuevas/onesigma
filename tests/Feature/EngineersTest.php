@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\Graders\GradeEngineer;
 use App\Livewire\Engineers\EditEngineer;
 use App\Livewire\Engineers\ScoreEngineer;
+use App\Metrics\Graders\Engineers\GradeEngineer;
 use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;

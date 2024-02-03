@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Positions;
 
+use App\Models\Enums\PositionType;
 use App\Models\Position;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use App\Models\Enums\PositionType;
 
 class ConfigTrack extends Component
 {

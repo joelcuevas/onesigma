@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs\Graders\Workflows;
+namespace App\Metrics\Graders\Teams;
 
-use App\Jobs\Graders\GradeTeam;
+use App\Metrics\Graders\Engineers\GradeEngineersWorkflow;
 use App\Models\Team;
 use Sassnowski\Venture\AbstractWorkflow;
 use Sassnowski\Venture\WorkflowDefinition;

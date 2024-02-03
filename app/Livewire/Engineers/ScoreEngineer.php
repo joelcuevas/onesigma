@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Engineers;
 
-use App\Jobs\Graders\GradeEngineer;
+use App\Metrics\Graders\Engineers\GradeEngineer;
 use App\Models\Engineer;
 use App\Models\Skillset;
 use Livewire\Component;

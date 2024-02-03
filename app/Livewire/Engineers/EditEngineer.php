@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Engineers;
 
-use App\Jobs\Graders\GradeEngineer;
+use App\Metrics\Graders\Engineers\GradeEngineer;
 use App\Models\Engineer;
 use App\Models\Position;
 use Livewire\Component;
@@ -25,13 +25,16 @@ class EditEngineer extends Component
 
         $this->engineer = $engineer;
 
+        $this->positions = Position::type('engineer')
+            ->orderBy('title')
+            ->pluck('title', 'id')
+            ->all();
+
+        $this->position_id = array_keys($this->positions)[0] ?? null;
+
         $this->fill(
             $engineer->only('name', 'email', 'position_id'),
         );
-
-        $this->positions = Position::where('type', 'engineer')
-            ->orderBy('title')
-            ->pluck('title', 'id');
     }
 
     public function update()

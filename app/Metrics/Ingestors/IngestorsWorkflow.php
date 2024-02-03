@@ -2,10 +2,9 @@
 
 namespace App\Metrics\Ingestors;
 
-use App\Metrics\Ingestors\Velocity\VelocityTeams;
 use App\Metrics\Ingestors\Velocity\VelocityEngineers;
 use App\Metrics\Ingestors\Velocity\VelocityMetrics;
-use Illuminate\Support\Collection;
+use App\Metrics\Ingestors\Velocity\VelocityTeams;
 use Sassnowski\Venture\AbstractWorkflow;
 use Sassnowski\Venture\WorkflowDefinition;
 
@@ -18,8 +17,8 @@ class IngestorsWorkflow extends AbstractWorkflow
         // ingest velocity metrics
 
         $workflow->addJob(
-                new VelocityTeams(),
-            )
+            new VelocityTeams(),
+        )
             ->addJob(
                 new VelocityEngineers(),
                 dependencies: [VelocityTeams::class],

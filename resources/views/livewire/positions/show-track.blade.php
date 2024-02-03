@@ -16,15 +16,15 @@
 
     <div class="flex flex-col space-y-6">
         <div class="x-card">
-            <div class="sm:flex sm:items-center mb-6">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-medium leading-tight text-gray-900">{{ __('Posiciones') }}</h1>
-                        <p class="mt-1 leading-tight text-gray-500">{{ __('Escala de posiciones dentro del track de carrera.') }}</p>
-                    </div>
-                    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <livewire:positions.create-position :$position />
-                    </div>
+            <div class="mb-6 sm:flex sm:items-center">
+                <div class="sm:flex-auto">
+                    <h1 class="text-base font-medium leading-tight text-gray-900">{{ __('Posiciones') }}</h1>
+                    <p class="mt-1 leading-tight text-gray-500">{{ __('Escala de posiciones dentro del track de carrera.') }}</p>
                 </div>
+                <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <livewire:positions.create-position :$position />
+                </div>
+            </div>
             <table class="min-w-full divide-y divide-gray-300">
                 <thead>
                     <tr>
