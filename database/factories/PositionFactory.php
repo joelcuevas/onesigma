@@ -41,7 +41,7 @@ class PositionFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => 'track',
+                'type' => 'engineer',
                 'code' => 'SE',
                 'level' => 0,
             ];

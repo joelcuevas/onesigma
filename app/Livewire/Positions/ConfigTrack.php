@@ -82,7 +82,6 @@ class ConfigTrack extends Component
             ],
         ]);
 
-        $positionData['type'] = 'track';
         $positionData['track'] = $positionData['code'];
         $positionData['level'] = 0;
 

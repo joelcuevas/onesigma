@@ -19,7 +19,7 @@ class PositionsTest extends TestCase
     public function test_tracks_can_be_listed()
     {
         $admin = User::factory()->admin()->create();
-        $position = Position::factory()->track()->create();
+        $position = Position::factory()->create();
 
         Livewire::actingAs($admin)
             ->test(IndexTracks::class)
@@ -32,7 +32,6 @@ class PositionsTest extends TestCase
         $admin = User::factory()->admin()->create();
 
         $position = Position::factory()
-            ->track()
             ->has(Position::factory(5), 'trackPositions')
             ->create();
 
@@ -46,7 +45,7 @@ class PositionsTest extends TestCase
     public function test_tracks_can_be_configured()
     {
         $admin = User::factory()->admin()->create();
-        $position = Position::factory()->track()->create();
+        $position = Position::factory()->create(['code' => 'SE']);
         PositionSkill::factory(10)->create();
 
         $skills = $position->skills->keyBy('skill');
