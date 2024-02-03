@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\Velocity\SyncEngineers;
-use App\Jobs\Velocity\SyncMetrics;
-use App\Jobs\Velocity\SyncTeams;
+use App\Metrics\Ingestors\Velocity\VelocityEngineers;
+use App\Metrics\Ingestors\Velocity\VelocityMetrics;
+use App\Metrics\Ingestors\Velocity\VelocityTeams;
 use App\Models\Engineer;
 use App\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,7 +30,7 @@ class VelocityTest extends TestCase
                 'context' => ['name' => 'Prev'],
             ]);
 
-        SyncTeams::dispatch();
+        VelocityTeams::dispatch();
 
         $team1 = Team::query()
             ->whereIdentity('velocity', '1669301')
@@ -50,7 +50,7 @@ class VelocityTest extends TestCase
 
         $this->assertNotNull($team2);
 
-        SyncEngineers::dispatch();
+        VelocityEngineers::dispatch();
 
         $engineer = Engineer::where('email', 'velocity1@engineer.com')->first();
         $team = $engineer->teams->first();
@@ -65,7 +65,7 @@ class VelocityTest extends TestCase
 
         $this->assertEquals(0, $engineer->getLatestMetrics()->count());
 
-        SyncMetrics::dispatch();
+        VelocityMetrics::dispatch();
 
         $metrics = $engineer->getLatestMetrics();
         $metricsCount = count(config('onesigma.metrics.velocity'));
@@ -86,7 +86,7 @@ class VelocityTest extends TestCase
     {
         $this->fakeVelocityPayloads();
 
-        Artisan::call('velocity:sync');
+        Artisan::call('metrics:generate');
 
         $this->assertDatabaseHas('engineers', ['email' => 'velocity1@engineer.com']);
         $this->assertDatabaseHas('teams', ['name' => 'Velocity Team 1']);

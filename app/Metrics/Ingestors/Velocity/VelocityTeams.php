@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Velocity;
+namespace App\Metrics\Ingestors\Velocity;
 
 use App\Models\Team;
 use Illuminate\Bus\Queueable;
@@ -10,10 +10,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Sassnowski\Venture\WorkflowableJob;
+use Sassnowski\Venture\WorkflowStep;
 
-class SyncTeams implements ShouldQueue
+class VelocityTeams implements WorkflowableJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use WorkflowStep, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $baseUrl;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Velocity;
+namespace App\Metrics\Ingestors\Velocity;
 
 use App\Models\Engineer;
 use App\Models\Team;
@@ -11,19 +11,25 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Sassnowski\Venture\WorkflowableJob;
+use Sassnowski\Venture\WorkflowStep;
+use App\Models\Position;
 
-class SyncEngineers implements ShouldQueue
+class VelocityEngineers implements WorkflowableJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use WorkflowStep, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $baseUrl;
 
     protected $bearerToken;
 
+    protected $se1;
+
     public function __construct()
     {
         $this->baseUrl = 'https://api.velocity.codeclimate.com/v1';
         $this->bearerToken = config('services.velocity.token');
+        $this->se1 = Position::firstWhere('code', 'SE1')?->id;
     }
 
     public function handle(): void
@@ -71,6 +77,7 @@ class SyncEngineers implements ShouldQueue
                         $engineer = Engineer::create([
                             'name' => $p['attributes']['name'],
                             'email' => $p['attributes']['email'],
+                            'position_id' => $this->se1,
                         ]);
 
                         $engineer->identities()->create([
