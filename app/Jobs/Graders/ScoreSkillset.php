@@ -25,7 +25,6 @@ class ScoreSkillset implements ShouldQueue
     {
         $track = $this->skillset->position->track;
         $positions = Position::where('track', $track)->get();
-
         $scores = $this->skillset->getCurrentSkills();
         $diffs = [];
 

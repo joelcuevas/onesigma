@@ -103,8 +103,6 @@ class MetricsTest extends TestCase
 
     public function test_watched_metrics_are_rendered_in_team_details()
     {
-        $this->seed(ConfigsSeeder::class);
-
         MetricConfig::factory()->set('metric-1', 4, 1)->create();
         MetricConfig::factory()->set('metric-2', 3, 1)->create();
         MetricConfig::factory()->set('metric-3', 1, -1)->create();
@@ -130,8 +128,6 @@ class MetricsTest extends TestCase
 
     public function test_watched_metrics_are_rendered_in_engineer_profile()
     {
-        $this->seed(ConfigsSeeder::class);
-
         MetricConfig::factory()->set('perf1', 4, 1)->create();
         MetricConfig::factory()->set('perf2', 3, 1)->create();
         MetricConfig::factory()->set('perf3', 1, -1)->create();

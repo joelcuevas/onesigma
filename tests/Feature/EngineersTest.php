@@ -20,26 +20,27 @@ class EngineersTest extends TestCase
 
     public function test_engineers_can_be_edited(): void
     {
-        $this->seed(ConfigsSeeder::class);
-
         $manager = User::factory()->manager()->create();
         $team = Team::factory()->hasEngineers(1)->create();
         $manager->teams()->attach($team);
         $engineer = $team->engineers->first();
+        $position = Position::factory()->create();
+
+        $this->assertNotEquals($position->id, $engineer->position->id);
 
         Livewire::actingAs($manager)
             ->test(EditEngineer::class, ['engineer' => $engineer])
             ->assertOk()
             ->set('name', 'newname')
             ->set('email', 'new@email.com')
-            ->set('position_id', Position::firstWhere('code', 'SE7')->id)
+            ->set('position_id', $position->id)
             ->call('update');
 
         $engineer->refresh();
 
         $this->assertEquals('newname', $engineer->name);
         $this->assertEquals('new@email.com', $engineer->email);
-        $this->assertEquals('SE7', $engineer->position->code);
+        $this->assertEquals($position->code, $engineer->position->code);
     }
 
     public function test_engineers_can_be_scored(): void

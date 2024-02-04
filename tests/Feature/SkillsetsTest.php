@@ -25,15 +25,15 @@ class SkillsetsTest extends TestCase
 
     public function test_skillsets_are_scored_on_creation(): void
     {
-        $this->seed(ConfigsSeeder::class);
+        $se1 = Position::factory()->se1()->create();
+        $se7 = Position::factory()->se7()->create();
 
         $engineer = Engineer::factory()
-            ->se7()
+            ->recycle($se7)
             ->has(Skillset::factory()->se1())
             ->create();
 
         $skillset = $engineer->skillset;
-        $se7 = Position::firstWhere('code', 'SE7');
 
         $this->assertEquals($se7->id, $skillset->position_id);
         $this->assertEquals(7, $skillset->level);
@@ -43,8 +43,6 @@ class SkillsetsTest extends TestCase
 
     public function test_skill_charts_are_rendered_in_team_details()
     {
-        $this->seed(ConfigsSeeder::class);
-
         $team = Team::factory()
             ->hasSkillset()
             ->has(Engineer::factory(5)->hasSkillset())
@@ -63,8 +61,6 @@ class SkillsetsTest extends TestCase
 
     public function test_skill_charts_are_rendered_in_engineer_profile()
     {
-        $this->seed(ConfigsSeeder::class);
-
         $team = Team::factory()
             ->hasSkillset()
             ->has(Engineer::factory(5)->hasSkillset())

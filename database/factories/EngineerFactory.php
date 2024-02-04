@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Metric;
 use App\Models\Position;
+use App\Models\Engineer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,14 +29,14 @@ class EngineerFactory extends Factory
     public function se1()
     {
         return $this->state(fn (array $attributes) => [
-            'position_id' => Position::firstWhere('code', 'SE1')->id,
+            'position_id' => Position::factory()->se1(),
         ]);
     }
 
     public function se7()
     {
         return $this->state(fn (array $attributes) => [
-            'position_id' => Position::firstWhere('code', 'SE7')->id,
+            'position_id' => Position::factory()->se7(),
         ]);
     }
 
