@@ -19,6 +19,28 @@ trait HasMetrics
         return collect($watched);
     }
 
+    public function getGradedMetrics()
+    {
+        $grading = $this->position
+            ->getMetricConfigs()
+            ->filter(fn ($m) => $m->is_gradeable);
+
+        $graded = [];
+        $latest = $this->getLatestMetrics();
+
+        foreach ($grading as $g) {
+            $m = $g->metric;
+
+            if (isset($latest[$m])) {
+                $graded[$m] = $latest[$m]->setTarget($g->target);
+            } else {
+                $graded[$m] = new Metric(['metric' => $m, 'target' => $g->target]);
+            }
+        }
+
+        return $graded;
+    }
+
     public function getLatestMetrics()
     {
         $class = strtolower(class_basename(static::class));

@@ -9,7 +9,7 @@ new class extends Component
 
     public function mount($metricable)
     {
-        $this->metrics = $metricable->getWatchedMetrics();
+        $this->metrics = $metricable->getGradedMetrics();
     }
 
     public function badgeColor($metric)

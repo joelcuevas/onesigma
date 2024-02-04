@@ -13,12 +13,21 @@ class Metric extends Model
 
     const DECREASE = -1;
 
+    protected $customTarget = null;
+
     protected $with = ['config'];
 
     protected $casts = [
         'date' => 'date',
         'context' => 'array',
     ];
+
+    public function setTarget($target)
+    {
+        $this->customTarget = $target;
+
+        return $this;
+    }
 
     public function getLabelAttribute()
     {
@@ -27,6 +36,10 @@ class Metric extends Model
 
     public function getTargetAttribute()
     {
+        if ($this->customTarget !== null) {
+            return $this->customTarget;
+        }
+
         return $this->config->target;
     }
 

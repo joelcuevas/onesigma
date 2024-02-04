@@ -25,6 +25,21 @@ class Position extends Model
         return is_null($this->parent_id);
     }
 
+    public function createLevel(int $level)
+    {
+        if ($this->isTrack()) {
+            $position = new Position([
+                'type' => $this->type,
+                'code' => $this->code.$level,
+                'track' => $this->track,
+                'level' => $level,
+                'title' => $this->title.' '.$level,
+            ]);
+
+            $this->trackPositions()->save($position);
+        }
+    }
+
     public function getExpectedSkills()
     {
         $labels = $this->skills->pluck('skill_label', 'skill');
@@ -48,9 +63,17 @@ class Position extends Model
         return $this->skills->firstWhere('skill', $skill)?->skill_label;
     }
 
-    public function skills()
+    public function getMetricConfigs()
     {
-        return $this->hasMany(PositionSkill::class, 'track', 'track');
+        return $this->parentTrack
+            ->metrics
+            ->merge($this->metrics)
+            ->map(function ($m) {
+                $m->is_gradeable = (bool) $m->pivot->is_gradeable;
+                $m->target = $m->pivot->target ?? $m->target;
+
+                return $m;
+            });
     }
 
     public function trackPositions()
@@ -58,24 +81,25 @@ class Position extends Model
         return $this->hasMany(Position::class, 'parent_id', 'id');
     }
 
+    public function parentTrack()
+    {
+        return $this->belongsTo(Position::class, 'parent_id', 'id');
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(PositionSkill::class, 'track', 'track');
+    }
+
+    public function metrics()
+    {
+        return $this->belongsToMany(MetricConfig::class, 'position_metric')
+            ->withPivot('target', 'is_gradeable');
+    }
+
     public static function scopeTracks($query)
     {
         $query->whereNull('parent_id');
-    }
-
-    public function createLevel(int $level)
-    {
-        if ($this->isTrack()) {
-            $position = new Position([
-                'type' => $this->type,
-                'code' => $this->code.$level,
-                'track' => $this->track,
-                'level' => $level,
-                'title' => $this->title.' '.$level,
-            ]);
-
-            $this->trackPositions()->save($position);
-        }
     }
 
     public static function scopeType($query, $type)
