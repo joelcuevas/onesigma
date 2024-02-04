@@ -17,53 +17,63 @@ class ConfigsSeeder extends Seeder
      */
     public function run(): void
     {
-        MetricConfig::create([
-            'metric' => 'commits_per_day',
-            'label' => 'Commits per Day',
-            'target' => 3,
-            'goal' => 1,
-            'unit' => 'Commits',
-        ]);
+        // seed metric configs
 
-        MetricConfig::create([
-            'metric' => 'innovation_rate',
-            'label' => 'Innovation Rate',
-            'target' => 90,
-            'goal' => 1,
-            'unit' => '%',
-        ]);
+        $metricConfigs = [
+            [
+                'metric' => 'commits_per_day',
+                'label' => 'Commits per Day',
+                'target' => 3,
+                'goal' => 1,
+                'unit' => 'Commits',
+            ], [
+                'metric' => 'innovation_rate',
+                'label' => 'Innovation Rate',
+                'target' => 90,
+                'goal' => 1,
+                'unit' => '%',
+            ], [
+                'metric' => 'time_to_review',
+                'label' => 'Time to Review',
+                'target' => 0,
+                'goal' => -1,
+                'unit' => 'Horas',
+            ], [
+                'metric' => 'average_weekly_coding_days',
+                'label' => 'Weekly Coding Days',
+                'target' => 3.8,
+                'goal' => 1,
+                'unit' => 'Días',
+            ], [
+                'metric' => 'rework_ratio',
+                'label' => 'Rework',
+                'target' => 8,
+                'goal' => -1,
+                'unit' => '%',
+            ], [
+                'metric' => 'review_influence_ratio',
+                'label' => 'Review Influence',
+                'target' => 80,
+                'goal' => 1,
+                'unit' => '%',
+            ],
+        ];
 
-        MetricConfig::create([
-            'metric' => 'time_to_review',
-            'label' => 'Time to Review',
-            'target' => 0,
-            'goal' => -1,
-            'unit' => 'Horas',
-        ]);
+        $metrics = [];
 
-        MetricConfig::create([
-            'metric' => 'average_weekly_coding_days',
-            'label' => 'Weekly Coding Days',
-            'target' => 3.8,
-            'goal' => 1,
-            'unit' => 'Días',
-        ]);
+        foreach ($metricConfigs as $config) {
+            $metrics[] = MetricConfig::create($config);
+        }
 
-        MetricConfig::create([
-            'metric' => 'rework_ratio',
-            'label' => 'Rework',
-            'target' => 8,
-            'goal' => -1,
-            'unit' => '%',
-        ]);
+        $watchedMetrics = collect($metrics)
+            ->whereIn('metric', [
+                'average_weekly_coding_days',
+                'rework_ratio',
+                'review_influence_ratio',
+                'time_to_review',
+            ]);
 
-        MetricConfig::create([
-            'metric' => 'review_influence_ratio',
-            'label' => 'Review Influence',
-            'target' => 80,
-            'goal' => 1,
-            'unit' => '%',
-        ]);
+        // seed software engineers
 
         $trackEngineer = new Position([
             'type' => 'engineer',
@@ -74,6 +84,7 @@ class ConfigsSeeder extends Seeder
         ]);
 
         $trackEngineer->save();
+        $trackEngineer->metrics()->sync($watchedMetrics->pluck('id')->all());
 
         $engineerSkills = [
             1 => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -106,6 +117,8 @@ class ConfigsSeeder extends Seeder
             ]);
         }
 
+        // seed software teams
+
         $trackTeam = new Position([
             'type' => 'team',
             'code' => 'ST',
@@ -115,6 +128,7 @@ class ConfigsSeeder extends Seeder
         ]);
 
         $trackTeam->save();
+        $trackTeam->metrics()->sync($watchedMetrics->pluck('id')->all());
 
         $teamSkills = [
             1 => [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -142,6 +156,8 @@ class ConfigsSeeder extends Seeder
                 's9' => $scores[9],
             ]);
         }
+
+        // seed position skills
 
         $skillLabels = [
             0 => 'Technology',
@@ -171,6 +187,8 @@ class ConfigsSeeder extends Seeder
                 ]);
             }
         }
+
+        // seed base user
 
         $root = Team::create(['name' => 'Technology', 'is_cluster' => true]);
 

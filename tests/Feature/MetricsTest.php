@@ -7,7 +7,6 @@ use App\Models\Metric;
 use App\Models\MetricConfig;
 use App\Models\Team;
 use App\Models\User;
-use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -107,12 +106,16 @@ class MetricsTest extends TestCase
         MetricConfig::factory()->set('metric-2', 3, 1)->create();
         MetricConfig::factory()->set('metric-3', 1, -1)->create();
 
-        config(['onesigma.metrics.watching' => ['metric-1', 'metric-2', 'metric-3']]);
+        $watchedMetrics = MetricConfig::whereIn('metric', [
+            'metric-1', 'metric-2', 'metric-3',
+        ])->pluck('id')->all();
 
         $team = Team::factory()
             ->hasSkillset()
             ->hasEngineers(5)
             ->create();
+
+        $team->position->metrics()->sync($watchedMetrics);
 
         $user = User::factory()->admin()->create();
         $user->teams()->attach($team);
@@ -132,12 +135,13 @@ class MetricsTest extends TestCase
         MetricConfig::factory()->set('perf2', 3, 1)->create();
         MetricConfig::factory()->set('perf3', 1, -1)->create();
 
-        config(['onesigma.metrics.watching' => ['perf1', 'perf2', 'perf3']]);
+        $watchedMetrics = MetricConfig::whereIn('metric', [
+            'perf1', 'perf2', 'perf3',
+        ])->pluck('id')->all();
 
         $team = Team::factory()
             ->hasSkillset()
             ->has(Engineer::factory()
-                ->count(1)
                 ->addMetrics(3, ['perf1', 'perf2', 'perf3'])
                 ->hasSkillset()
             )
@@ -147,6 +151,8 @@ class MetricsTest extends TestCase
         $user->teams()->attach($team);
 
         $engineer = $team->engineers->first();
+        $engineer->position->metrics()->sync($watchedMetrics);
+
         $m = $engineer->getWatchedMetrics();
 
         $this->actingAs($user);
@@ -188,5 +194,25 @@ class MetricsTest extends TestCase
 
         $engineer->updateGrade([-25]);
         $this->assertEquals('F', $engineer->fresh()->grade);
+    }
+
+    public function test_metric_config_targets_can_be_overriden()
+    {
+        $perf1 = MetricConfig::factory()->set('perf1', 4, 1)->create();
+        $this->assertEquals(4, $perf1->target);
+
+        $team = Team::factory()
+            ->hasSkillset()
+            ->has(Engineer::factory()
+                ->addMetrics(3, ['perf1'])
+                ->hasSkillset()
+            )
+            ->create();
+
+        $engineer = $team->engineers->first();
+        $engineer->position->metrics()->sync([$perf1->id => ['target' => 999]]);
+
+        $watched = $engineer->getWatchedMetrics()->where('metric', 'perf1');
+        $this->assertEquals(999, $watched->first()->target);
     }
 }

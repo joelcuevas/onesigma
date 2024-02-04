@@ -65,15 +65,18 @@ class Position extends Model
 
     public function getMetricConfigs()
     {
-        return $this->parentTrack
-            ->metrics
-            ->merge($this->metrics)
-            ->map(function ($m) {
-                $m->is_gradeable = (bool) $m->pivot->is_gradeable;
-                $m->target = $m->pivot->target ?? $m->target;
+        $metrics = $this->metrics;
 
-                return $m;
-            });
+        if ($this->parentTrack) {
+            $metrics = $this->parentTrack->metrics->merge($metrics);
+        }
+
+        return $metrics->map(function ($m) {
+            $m->is_gradeable = (bool) $m->pivot->is_gradeable;
+            $m->target = $m->pivot->target ?? $m->target;
+
+            return $m;
+        });
     }
 
     public function trackPositions()

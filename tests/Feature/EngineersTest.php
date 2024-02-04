@@ -8,7 +8,6 @@ use App\Metrics\Graders\Engineers\GradeEngineer;
 use App\Models\Position;
 use App\Models\Team;
 use App\Models\User;
-use Database\Seeders\ConfigsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;

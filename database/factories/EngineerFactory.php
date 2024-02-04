@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Metric;
 use App\Models\Position;
-use App\Models\Engineer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

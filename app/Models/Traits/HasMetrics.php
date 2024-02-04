@@ -8,12 +8,21 @@ trait HasMetrics
 {
     public function getWatchedMetrics()
     {
-        $watching = config('onesigma.metrics.watching');
-        $watched = [];
+        $watching = $this->position->getMetricConfigs();
         $latest = $this->getLatestMetrics();
+        $watched = [];
 
         foreach ($watching as $w) {
-            $watched[$w] = $latest[$w] ?? new Metric(['metric' => $w]);
+            $name = $w->metric;
+
+            if (isset($latest[$name])) {
+                $watched[$name] = $latest[$name];
+            } else {
+                $watched[$name] = new Metric(['metric' => $name]);
+            }
+
+            $watched[$name]->setTarget($w->target);
+            $watched[$name]->is_gradeable = $w->is_gradeable;
         }
 
         return collect($watched);
@@ -21,24 +30,7 @@ trait HasMetrics
 
     public function getGradedMetrics()
     {
-        $grading = $this->position
-            ->getMetricConfigs()
-            ->filter(fn ($m) => $m->is_gradeable);
-
-        $graded = [];
-        $latest = $this->getLatestMetrics();
-
-        foreach ($grading as $g) {
-            $m = $g->metric;
-
-            if (isset($latest[$m])) {
-                $graded[$m] = $latest[$m]->setTarget($g->target);
-            } else {
-                $graded[$m] = new Metric(['metric' => $m, 'target' => $g->target]);
-            }
-        }
-
-        return $graded;
+        return $this->getWatchedMetrics()->filter(fn ($m) => $m->is_gradeable);
     }
 
     public function getLatestMetrics()
